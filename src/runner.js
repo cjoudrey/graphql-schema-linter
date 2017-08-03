@@ -15,6 +15,8 @@ export function run(options) {
   errors.map((error) => { formatter.error(error); });
   const output = formatter.output();
   process.stdout.write(output);
+
+  process.exit(errors.length > 0 ? 1 : 0);
 }
 
 function getSchema(options) {
