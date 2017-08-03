@@ -1,17 +1,17 @@
 {
-  "name": "eslint-plugin-graphql-schema",
+  "name": "graphql-schema-linter",
   "version": "0.0.1",
-  "description": "ESLint plugin to validate GraphQL schemas.",
+  "description": "Command line tool and package to validate GraphQL schemas against a set of rules.",
   "author": "Christian Joudrey",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/index.js",
     "prepublish": "babel ./src --ignore test --out-dir ./lib"
   },
-  "homepage": "https://github.com/cjoudrey/eslint-plugin-graphql-schema",
+  "homepage": "https://github.com/cjoudrey/graphql-schema-linter",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cjoudrey/eslint-plugin-graphql-schema.git"
+    "url": "git+https://github.com/cjoudrey/graphql-schema-linter.git"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -37,6 +37,6 @@
     "minimist": "^1.2.0"
   },
   "bin": {
-    "graphql-schema-lint": "lib/cli.js"
+    "graphql-schema-linter": "lib/cli.js"
   }
 }
