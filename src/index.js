@@ -1,5 +1,4 @@
-module.exports.rules = {
-  FieldsHaveDescriptions: require('./rules/fields_have_descriptions'),
-  DeprecationsHaveAReason: require('./rules/deprecations_have_a_reason.js'),
-  TypesHaveDescriptions: require('./rules/types_have_descriptions.js'),
-};
+module.exports.runner = require('./runner.js');
+module.exports.rules = require('./rules/index.js');
+module.exports.validator = require('./validator.js');
+module.exports.cli = require('./cli.js');
