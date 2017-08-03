@@ -78,7 +78,7 @@ Sample output:
 }
 ```
 
-## Current rules
+## Built-in rules
 
 ### `DeprecationsHaveAReason`
 
