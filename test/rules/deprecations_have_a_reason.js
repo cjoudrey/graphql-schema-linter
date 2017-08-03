@@ -84,5 +84,4 @@ describe('DeprecationsHaveAReason rule', () => {
     assert.equal(errors[0].message, 'The enum value `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.')
     assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }])
   });
-
 });
