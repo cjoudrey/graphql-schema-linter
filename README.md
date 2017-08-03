@@ -36,6 +36,48 @@ Options:
     Schema definition will be read from STDIN instead of specified file.
 ```
 
+## Output formatters
+
+The format of the output can be controlled via the `--format` option.
+
+The following formatters are currently available:
+
+### `TextFormatter` (default)
+
+Sample output:
+
+```
+5:1 The object type `QueryRoot` is missing a description.
+6:3 The field `QueryRoot.a` is missing a description.
+```
+
+Each error is prefixed with the line number and column the error occurred on.
+
+### `JSONFormatter`
+
+Sample output:
+
+```json
+{
+  "errors": [
+    {
+      "message": "The object type `QueryRoot` is missing a description.",
+      "location": {
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "message": "The field `QueryRoot.a` is missing a description.",
+      "location": {
+        "line": 6,
+        "column": 3
+      }
+    }
+  ]
+}
+```
+
 ## Current rules
 
 ### `DeprecationsHaveAReason`
