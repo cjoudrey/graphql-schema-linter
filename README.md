@@ -6,6 +6,14 @@ _This is still work in progress._
 
 ## Install
 
+Yarn:
+
+```
+yarn global add graphql-schema-linter
+```
+
+NPM:
+
 ```
 npm install -g graphql-schema-linter
 ```
