@@ -1,5 +1,5 @@
 export default class {
-  constructor(options) {
+  constructor(configuration) {
     this.errors = [];
   }
 

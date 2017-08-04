@@ -2,4 +2,6 @@
 
 import { run } from './runner';
 
-run(process.argv.slice(2));
+const exitCode = run(process.stdout, process.argv);
+
+process.exit(exitCode);
