@@ -1,4 +1,4 @@
-# graphql-schema-linter
+# graphql-schema-linter [![Travis CI](https://travis-ci.org/cjoudrey/graphql-schema-linter.svg?branch=master)](https://travis-ci.org/cjoudrey/graphql-schema-linter)
 
 This package provides a command line tool to validate GraphQL schema definitions against a set of rules.
 
