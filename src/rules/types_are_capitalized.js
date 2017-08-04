@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql/error';
 
-export default function(context) {
+export function TypesAreCapitalized(context) {
   return {
     ObjectTypeDefinition(node) {
       const typeName = node.name.value;

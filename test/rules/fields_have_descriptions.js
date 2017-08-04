@@ -4,7 +4,7 @@ import { visit, visitInParallel } from 'graphql/language/visitor';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 
-import rule from '../../src/rules/fields_have_descriptions';
+import { FieldsHaveDescriptions } from '../../src/rules/fields_have_descriptions';
 
 describe('FieldsHaveDescriptions rule', () => {
   it('catches fields that have no description', () => {
@@ -23,7 +23,7 @@ describe('FieldsHaveDescriptions rule', () => {
     `);
 
     const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [rule])
+    const errors = validate(schema, ast, [FieldsHaveDescriptions])
 
     assert.equal(errors.length, 2)
 

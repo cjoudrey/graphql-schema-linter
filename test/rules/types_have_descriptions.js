@@ -4,7 +4,7 @@ import { visit, visitInParallel } from 'graphql/language/visitor';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 
-import rule from '../../src/rules/types_have_descriptions';
+import { TypesHaveDescriptions } from '../../src/rules/types_have_descriptions';
 
 describe('TypesHaveDescriptions rule', () => {
   it('catches object types that have no description', () => {
@@ -19,7 +19,7 @@ describe('TypesHaveDescriptions rule', () => {
     `);
 
     const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [rule])
+    const errors = validate(schema, ast, [TypesHaveDescriptions])
 
     assert.equal(errors.length, 1)
 
@@ -44,7 +44,7 @@ describe('TypesHaveDescriptions rule', () => {
     `);
 
     const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [rule])
+    const errors = validate(schema, ast, [TypesHaveDescriptions])
 
     assert.equal(errors.length, 1)
 

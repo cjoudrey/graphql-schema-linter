@@ -4,7 +4,7 @@ import { visit, visitInParallel } from 'graphql/language/visitor';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 
-import rule from '../../src/rules/types_are_capitalized';
+import { TypesAreCapitalized } from '../../src/rules/types_are_capitalized';
 
 describe('TypesAreCapitalized rule', () => {
   it('catches object types that are not capitalized', () => {
@@ -23,7 +23,7 @@ describe('TypesAreCapitalized rule', () => {
     `);
 
     const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [rule])
+    const errors = validate(schema, ast, [TypesAreCapitalized])
 
     assert.equal(errors.length, 1)
 
@@ -47,7 +47,7 @@ describe('TypesAreCapitalized rule', () => {
     `);
 
     const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [rule])
+    const errors = validate(schema, ast, [TypesAreCapitalized])
 
     assert.equal(errors.length, 1)
 

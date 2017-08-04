@@ -4,7 +4,7 @@ import { visit, visitInParallel } from 'graphql/language/visitor';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 
-import rule from '../../src/rules/deprecations_have_a_reason';
+import { DeprecationsHaveAReason } from '../../src/rules/deprecations_have_a_reason';
 
 describe('DeprecationsHaveAReason rule', () => {
   it('catches deprecated fields that have no deprecation reason in object types', () => {
@@ -25,7 +25,7 @@ describe('DeprecationsHaveAReason rule', () => {
     `);
 
     const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [rule])
+    const errors = validate(schema, ast, [DeprecationsHaveAReason])
 
     assert.equal(errors.length, 1)
 
@@ -51,7 +51,7 @@ describe('DeprecationsHaveAReason rule', () => {
     `);
 
     const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [rule])
+    const errors = validate(schema, ast, [DeprecationsHaveAReason])
 
     assert.equal(errors.length, 1)
 
@@ -77,7 +77,7 @@ describe('DeprecationsHaveAReason rule', () => {
     `);
 
     const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [rule])
+    const errors = validate(schema, ast, [DeprecationsHaveAReason])
 
     assert.equal(errors.length, 1)
 

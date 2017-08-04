@@ -1,7 +1,7 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { GraphQLError } from 'graphql/error';
 
-export default function(context) {
+export function TypesHaveDescriptions(context) {
   return {
     InterfaceTypeDefinition(node) {
       if (getDescription(node)) {
