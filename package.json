@@ -1,6 +1,6 @@
 {
   "name": "graphql-schema-linter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Command line tool and package to validate GraphQL schemas against a set of rules.",
   "author": "Christian Joudrey",
   "main": "lib/index.js",
@@ -32,9 +32,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.11.0",
     "graphql": "^0.10.1",
-    "graphql-config": "^1.0.0",
-    "minimist": "^1.2.0"
+    "graphql-config": "^1.0.0"
   },
   "bin": {
     "graphql-schema-linter": "lib/cli.js"
