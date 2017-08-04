@@ -4,8 +4,15 @@ import { rules } from './index.js';
 import getGraphQLProjectConfig from 'graphql-config';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
+import minimist from 'minimist';
 
-export function run(options) {
+export function run(argv) {
+  const options = minimist(argv, {
+    string: ["format"],
+    boolean: ["stdin"],
+    default: {format: "text"},
+  });
+
   const schema = getSchema(options);
   const formatter = getFormatter(options);
   // TODO: Add a way to configure rules
