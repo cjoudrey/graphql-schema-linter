@@ -23,8 +23,8 @@ export class Configuration {
 
   getFormatter() {
     switch(this.options.format) {
-      case 'json': return new JSONFormatter(this);
-      case 'text': return new TextFormatter(this);
+      case 'json': return JSONFormatter;
+      case 'text': return TextFormatter;
       // TODO raise when invalid formatter
     }
   }

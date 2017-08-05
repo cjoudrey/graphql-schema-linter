@@ -28,9 +28,7 @@ export function run(stdout, argv) {
 
   const errors = validateSchemaDefinition(schema, rules);
 
-  formatter.start();
-  errors.map((error) => { formatter.error(error); });
-  stdout.write(formatter.output());
+  stdout.write(formatter(errors));
 
   return errors.length > 0 ? 1 : 0;
 }
