@@ -88,6 +88,8 @@ Sample output:
 ```
 5:1 The object type `QueryRoot` is missing a description.
 6:3 The field `QueryRoot.a` is missing a description.
+
+2 errors detected
 ```
 
 Each error is prefixed with the line number and column the error occurred on.

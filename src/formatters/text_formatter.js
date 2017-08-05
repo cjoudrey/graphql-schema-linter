@@ -1,6 +1,7 @@
 export default class {
   constructor(configuration) {
-    this.errors = '';
+    this.errorsText = '';
+    this.errorsCount = 0;
   }
 
   start() {
@@ -10,10 +11,19 @@ export default class {
   error(error) {
     const location = error.locations[0];
 
-    this.errors = this.errors + `${location.line}:${location.column} ${error.message}\n`;
+    this.errorsCount++;
+    this.errorsText = this.errorsText + `${location.line}:${location.column} ${error.message}\n`;
   }
 
   output() {
-    return this.errors;
+    var summary;
+
+    if (this.errorsCount == 1) {
+      summary = "1 error detected";
+    } else {
+      summary = `${this.errorsCount} errors detected`;
+    }
+
+    return this.errorsText + "\n" + summary + "\n";
   }
 }
