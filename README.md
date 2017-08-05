@@ -116,3 +116,14 @@ Sample output:
   ]
 }
 ```
+
+## Exit codes
+
+Verifying the exit code of the `graphql-schema-lint` process is a good way of knowing the result of the validation.
+
+If the process exits with `0` it means all rules passed.
+
+If the process exits with `1` it means one or many rules failed. Information about these failures can be obtained by
+reading the `stdout` and using the appropriate output formatter.
+
+If the process exits with `2` it means an uncaught error happen. This most likely means you found a bug.
