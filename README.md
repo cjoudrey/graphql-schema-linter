@@ -121,7 +121,8 @@ Sample output:
 
 ## Exit codes
 
-Verifying the exit code of the `graphql-schema-lint` process is a good way of knowing the result of the validation.
+Verifying the exit code of the `graphql-schema-lint` process is a good way of programmatically knowing the
+result of the validation.
 
 If the process exits with `0` it means all rules passed.
 
