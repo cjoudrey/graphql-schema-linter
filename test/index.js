@@ -9,4 +9,5 @@ require('babel-core').transform('code', {
 require('./rules/fields_have_descriptions')
 require('./rules/types_have_descriptions')
 require('./rules/deprecations_have_a_reason')
+require('./rules/enums_sorted_alphabetically')
 require('./rules/types_are_capitalized')
