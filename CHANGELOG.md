@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5 (August 5th, 2017)
+
+- Add some color to `--text` output format.
+
 ## 0.0.4 (August 4th, 2017)
 
 - Added `--only` and `--except` to control what rules get used to validate the schema.
