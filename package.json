@@ -32,7 +32,10 @@
   },
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.0.1",
+    "columnify": "^1.5.4",
     "commander": "^2.11.0",
+    "figures": "^2.0.0",
     "graphql": "^0.10.1",
     "graphql-config": "^1.0.0"
   },
