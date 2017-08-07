@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6 (August 7th, 2017)
+
+- Add `EnumValuesSortedAlphabetically` rule. (Thanks @goldcaddy77)
+
 ## 0.0.5 (August 5th, 2017)
 
 - Add some color to `--text` output format.
