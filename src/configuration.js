@@ -38,11 +38,11 @@ export class Configuration {
 
     if (this.options.only.length > 0) {
       rules = defaultRules.filter((rule) => {
-        return (this.options.only.indexOf(rule.name) >= 0);
+        return (this.options.only.map(toUpperCamelCase).indexOf(rule.name) >= 0);
       });
     } else if (this.options.except.length > 0) {
       rules = defaultRules.filter((rule) => {
-        return (this.options.except.indexOf(rule.name) == -1);
+        return (this.options.except.map(toUpperCamelCase).indexOf(rule.name) == -1);
       });
     } else {
       rules = defaultRules;
@@ -69,4 +69,8 @@ function getSchemaFromFileDescriptor(fd) {
 
 function getSchemaFromFile(path) {
   return readFileSync(path).toString('utf8');
+}
+
+function toUpperCamelCase(string) {
+  return string.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('')
 }
