@@ -32,13 +32,13 @@ Options:
 
     only the rules specified will be used to validate the schema
 
-    example: --only FieldsHaveDescriptions,TypesHaveDescriptions
+    example: --only fields-have-descriptions,types-have-descriptions
 
   -e, --except <rules>
 
     all rules except the ones specified will be used to validate the schema
 
-    example: --except FieldsHaveDescriptions,TypesHaveDescriptions
+    example: --except fields-have-descriptions,types-have-descriptions
 
   -f, --format <format>
 
@@ -61,23 +61,23 @@ Options:
 
 ## Built-in rules
 
-### `DeprecationsHaveAReason`
+### `deprecations-have-a-reason`
 
 This rule will validate that all deprecations have a reason.
 
-### `EnumValuesSortedAlphabetically`
+### `enum-values-sorted-alphabetically`
 
 This rule will validate that all enum values are sorted alphabetically.
 
-### `FieldsHaveDescriptions`
+### `fields-have-descriptions`
 
 This rule will validate that all fields have a description.
 
-### `TypesAreCapitalized`
+### `types-are-capitalized`
 
 This rule will validate that interface types and object types have capitalized names.
 
-### `TypesHaveDescriptions`
+### `types-have-descriptions`
 
 This will will validate that interface types and object types have descriptions.
 
