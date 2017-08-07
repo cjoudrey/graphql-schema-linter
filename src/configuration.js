@@ -5,15 +5,16 @@ import getGraphQLProjectConfig from 'graphql-config';
 import { readSync, readFileSync } from 'fs';
 
 export class Configuration {
-  constructor(options) {
+  constructor(options, stdinFd) {
     this.options = options;
+    this.stdinFd = stdinFd;
   }
 
   getSchema() {
     // TODO - Check for args.length > 1
 
     if (this.options.stdin) {
-      return getSchemaFromStdin();
+      return getSchemaFromFileDescriptor(this.stdinFd);
     } else if (this.options.args.length > 0) {
       return getSchemaFromFile(this.options.args[0]);
     } else {
@@ -37,11 +38,11 @@ export class Configuration {
 
     if (this.options.only.length > 0) {
       rules = defaultRules.filter((rule) => {
-        return (this.options.only.indexOf(rule.name) >= 0);
+        return (this.options.only.map(toUpperCamelCase).indexOf(rule.name) >= 0);
       });
     } else if (this.options.except.length > 0) {
       rules = defaultRules.filter((rule) => {
-        return (this.options.except.indexOf(rule.name) == -1);
+        return (this.options.except.map(toUpperCamelCase).indexOf(rule.name) == -1);
       });
     } else {
       rules = defaultRules;
@@ -51,12 +52,12 @@ export class Configuration {
   }
 };
 
-function getSchemaFromStdin() {
+function getSchemaFromFileDescriptor(fd) {
   var b = new Buffer(1024);
   var data = '';
 
   while (true) {
-    var n = readSync(process.stdin.fd, b, 0, b.length);
+    var n = readSync(fd, b, 0, b.length);
     if (!n) {
       break;
     }
@@ -68,4 +69,8 @@ function getSchemaFromStdin() {
 
 function getSchemaFromFile(path) {
   return readFileSync(path).toString('utf8');
+}
+
+function toUpperCamelCase(string) {
+  return string.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('')
 }
