@@ -5,15 +5,16 @@ import getGraphQLProjectConfig from 'graphql-config';
 import { readSync, readFileSync } from 'fs';
 
 export class Configuration {
-  constructor(options) {
+  constructor(options, stdinFd) {
     this.options = options;
+    this.stdinFd = stdinFd;
   }
 
   getSchema() {
     // TODO - Check for args.length > 1
 
     if (this.options.stdin) {
-      return getSchemaFromStdin();
+      return getSchemaFromFileDescriptor(this.stdinFd);
     } else if (this.options.args.length > 0) {
       return getSchemaFromFile(this.options.args[0]);
     } else {
@@ -51,12 +52,12 @@ export class Configuration {
   }
 };
 
-function getSchemaFromStdin() {
+function getSchemaFromFileDescriptor(fd) {
   var b = new Buffer(1024);
   var data = '';
 
   while (true) {
-    var n = readSync(process.stdin.fd, b, 0, b.length);
+    var n = readSync(fd, b, 0, b.length);
     if (!n) {
       break;
     }

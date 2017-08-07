@@ -4,7 +4,7 @@ import { version } from '../package.json';
 import commander from 'commander';
 import { Configuration } from './configuration.js';
 
-export function run(stdout, argv) {
+export function run(stdout, stdin, argv) {
   commander
     .usage('[options] [schema.graphql]')
     .option('-o, --only <rules>', 'only the rules specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions')
@@ -20,7 +20,7 @@ export function run(stdout, argv) {
     only: (commander.only && commander.only.split(',')) || [],
     except: (commander.except && commander.except.split(',')) || [],
     args: commander.args,
-  });
+  }, stdin.fd);
 
   const schema = configuration.getSchema();
   const formatter = configuration.getFormatter();
