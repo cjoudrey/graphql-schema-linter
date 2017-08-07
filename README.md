@@ -65,9 +65,9 @@ Options:
 
 This rule will validate that all deprecations have a reason.
 
-### `EnumsSortedAlphabetically`
+### `EnumValuesSortedAlphabetically`
 
-This rule will validate that all enums are sorted alphabetically.
+This rule will validate that all enum values are sorted alphabetically.
 
 ### `FieldsHaveDescriptions`
 

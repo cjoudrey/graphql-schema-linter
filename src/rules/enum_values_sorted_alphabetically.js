@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql/error";
 
-export function EnumsSortedAlphabetically(context) {
+export function EnumValuesSortedAlphabetically(context) {
   return {
     EnumTypeDefinition: function EnumTypeDefinition(node, key, parent, path, ancestors) {
       var enumValues = node.values.map(val => {
@@ -9,7 +9,7 @@ export function EnumsSortedAlphabetically(context) {
 
       if (!arraysEqual(enumValues, enumValues.slice().sort())) {
         context.reportError(
-          new GraphQLError("The enum `" + node.name.value + "` should be sorted alphabetically: " + enumValues, [
+          new GraphQLError("The enum `" + node.name.value + "` should be sorted alphabetically", [
             node
           ])
         );
