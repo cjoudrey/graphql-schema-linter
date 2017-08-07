@@ -1,8 +1,12 @@
 # Changelog
 
+## 0.0.7 (August 7th, 2017)
+
+- Rule names passed to `--only` and `--except` should now be passed in kebab-case instead of UpperCamelCase. #2
+
 ## 0.0.6 (August 7th, 2017)
 
-- Add `EnumValuesSortedAlphabetically` rule. (Thanks @goldcaddy77)
+- Add `EnumValuesSortedAlphabetically` rule. #1 (Thanks @goldcaddy77)
 
 ## 0.0.5 (August 5th, 2017)
 
