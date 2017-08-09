@@ -22,13 +22,16 @@ describe('TypesAreCapitalized rule', () => {
       }
     `);
 
-    const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [TypesAreCapitalized])
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesAreCapitalized]);
 
-    assert.equal(errors.length, 1)
+    assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].message, 'The object type `a` should start with a capital letter.')
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }])
+    assert.equal(
+      errors[0].message,
+      'The object type `a` should start with a capital letter.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
   });
 
   it('catches interface types that are not capitalized', () => {
@@ -46,12 +49,15 @@ describe('TypesAreCapitalized rule', () => {
       }
     `);
 
-    const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [TypesAreCapitalized])
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesAreCapitalized]);
 
-    assert.equal(errors.length, 1)
+    assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].message, 'The interface type `a` should start with a capital letter.')
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }])
+    assert.equal(
+      errors[0].message,
+      'The interface type `a` should start with a capital letter.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
   });
 });

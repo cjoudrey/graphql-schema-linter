@@ -22,15 +22,21 @@ describe('FieldsHaveDescriptions rule', () => {
       }
     `);
 
-    const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [FieldsHaveDescriptions])
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [FieldsHaveDescriptions]);
 
-    assert.equal(errors.length, 2)
+    assert.equal(errors.length, 2);
 
-    assert.equal(errors[0].message, 'The field `QueryRoot.withoutDescription` is missing a description.')
-    assert.deepEqual(errors[0].locations, [{ line: 3, column: 9 }])
+    assert.equal(
+      errors[0].message,
+      'The field `QueryRoot.withoutDescription` is missing a description.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 3, column: 9 }]);
 
-    assert.equal(errors[1].message, 'The field `QueryRoot.withoutDescriptionAgain` is missing a description.')
-    assert.deepEqual(errors[1].locations, [{ line: 4, column: 9 }])
+    assert.equal(
+      errors[1].message,
+      'The field `QueryRoot.withoutDescriptionAgain` is missing a description.'
+    );
+    assert.deepEqual(errors[1].locations, [{ line: 4, column: 9 }]);
   });
 });

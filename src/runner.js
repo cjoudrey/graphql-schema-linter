@@ -7,20 +7,35 @@ import { Configuration } from './configuration.js';
 export function run(stdout, stdin, argv) {
   commander
     .usage('[options] [schema.graphql]')
-    .option('-o, --only <rules>', 'only the rules specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions')
-    .option('-e, --except <rules>', 'all rules except the ones specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions')
-    .option('-f, --format <format>', 'choose the output format of the report. Possible values: json, text')
-    .option('-s, --stdin', 'schema definition will be read from STDIN instead of specified file.')
+    .option(
+      '-o, --only <rules>',
+      'only the rules specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions'
+    )
+    .option(
+      '-e, --except <rules>',
+      'all rules except the ones specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions'
+    )
+    .option(
+      '-f, --format <format>',
+      'choose the output format of the report. Possible values: json, text'
+    )
+    .option(
+      '-s, --stdin',
+      'schema definition will be read from STDIN instead of specified file.'
+    )
     .version(version, '--version')
     .parse(argv);
 
-  const configuration = new Configuration({
-    format: (commander.format && commander.format.toLowerCase()) || 'text',
-    stdin: commander.stdin,
-    only: (commander.only && commander.only.split(',')) || [],
-    except: (commander.except && commander.except.split(',')) || [],
-    args: commander.args,
-  }, stdin.fd);
+  const configuration = new Configuration(
+    {
+      format: (commander.format && commander.format.toLowerCase()) || 'text',
+      stdin: commander.stdin,
+      only: (commander.only && commander.only.split(',')) || [],
+      except: (commander.except && commander.except.split(',')) || [],
+      args: commander.args,
+    },
+    stdin.fd
+  );
 
   const schema = configuration.getSchema();
   const formatter = configuration.getFormatter();

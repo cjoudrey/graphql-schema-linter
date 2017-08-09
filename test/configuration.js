@@ -14,7 +14,10 @@ describe('Configuration', () => {
     it('reads schema from file when provided', () => {
       const fixturePath = `${__dirname}/fixtures/schema.graphql`;
       const configuration = new Configuration({ args: [fixturePath] });
-      assert.equal(configuration.getSchema(), readFileSync(fixturePath).toString('utf8'));
+      assert.equal(
+        configuration.getSchema(),
+        readFileSync(fixturePath).toString('utf8')
+      );
     });
 
     it('reads schema from stdin when --stdin is set', () => {
@@ -22,7 +25,10 @@ describe('Configuration', () => {
       const fd = openSync(fixturePath, 'r');
 
       const configuration = new Configuration({ args: [], stdin: true }, fd);
-      assert.equal(configuration.getSchema(), readFileSync(fixturePath).toString('utf8'));
+      assert.equal(
+        configuration.getSchema(),
+        readFileSync(fixturePath).toString('utf8')
+      );
     });
   });
 
@@ -53,41 +59,89 @@ describe('Configuration', () => {
     });
 
     it('omits rules that are not specified in --only', () => {
-      const configuration = new Configuration({ only: ['fields-have-descriptions', 'types-have-descriptions'], except: [] });
+      const configuration = new Configuration({
+        only: ['fields-have-descriptions', 'types-have-descriptions'],
+        except: [],
+      });
 
       const rules = configuration.getRules();
 
       assert.equal(rules.length, 2);
-      assert.equal(rules[0], defaultRules.find((rule) => { return rule.name == 'FieldsHaveDescriptions'; }));
-      assert.equal(rules[1], defaultRules.find((rule) => { return rule.name == 'TypesHaveDescriptions'; }));
+      assert.equal(
+        rules[0],
+        defaultRules.find(rule => {
+          return rule.name == 'FieldsHaveDescriptions';
+        })
+      );
+      assert.equal(
+        rules[1],
+        defaultRules.find(rule => {
+          return rule.name == 'TypesHaveDescriptions';
+        })
+      );
     });
 
     it('omits rules that are specified in --except', () => {
-      const configuration = new Configuration({ only: [], except: ['fields-have-descriptions', 'types-have-descriptions'] });
+      const configuration = new Configuration({
+        only: [],
+        except: ['fields-have-descriptions', 'types-have-descriptions'],
+      });
 
       const rules = configuration.getRules();
 
       assert.equal(rules.length, defaultRules.length - 2);
-      assert.equal(0, rules.filter((rule) => { return rule.name == 'FieldsHaveDescriptions' || rule.name == 'TypesHaveDescriptions'; }).length);
+      assert.equal(
+        0,
+        rules.filter(rule => {
+          return (
+            rule.name == 'FieldsHaveDescriptions' ||
+            rule.name == 'TypesHaveDescriptions'
+          );
+        }).length
+      );
     });
 
     it('omits rules that are not specified in --only (PascalCase)', () => {
-      const configuration = new Configuration({ only: ['FieldsHaveDescriptions', 'TypesHaveDescriptions'], except: [] });
+      const configuration = new Configuration({
+        only: ['FieldsHaveDescriptions', 'TypesHaveDescriptions'],
+        except: [],
+      });
 
       const rules = configuration.getRules();
 
       assert.equal(rules.length, 2);
-      assert.equal(rules[0], defaultRules.find((rule) => { return rule.name == 'FieldsHaveDescriptions'; }));
-      assert.equal(rules[1], defaultRules.find((rule) => { return rule.name == 'TypesHaveDescriptions'; }));
+      assert.equal(
+        rules[0],
+        defaultRules.find(rule => {
+          return rule.name == 'FieldsHaveDescriptions';
+        })
+      );
+      assert.equal(
+        rules[1],
+        defaultRules.find(rule => {
+          return rule.name == 'TypesHaveDescriptions';
+        })
+      );
     });
 
     it('omits rules that are specified in --except (PascalCase)', () => {
-      const configuration = new Configuration({ only: [], except: ['FieldsHaveDescriptions', 'TypesHaveDescriptions'] });
+      const configuration = new Configuration({
+        only: [],
+        except: ['FieldsHaveDescriptions', 'TypesHaveDescriptions'],
+      });
 
       const rules = configuration.getRules();
 
       assert.equal(rules.length, defaultRules.length - 2);
-      assert.equal(0, rules.filter((rule) => { return rule.name == 'FieldsHaveDescriptions' || rule.name == 'TypesHaveDescriptions'; }).length);
+      assert.equal(
+        0,
+        rules.filter(rule => {
+          return (
+            rule.name == 'FieldsHaveDescriptions' ||
+            rule.name == 'TypesHaveDescriptions'
+          );
+        }).length
+      );
     });
   });
 });

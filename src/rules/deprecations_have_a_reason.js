@@ -14,9 +14,9 @@ export function DeprecationsHaveAReason(context) {
       context.reportError(
         new GraphQLError(
           `The field \`${parentName}.${fieldName}\` is deprecated but has no deprecation reason.`,
-          [node],
+          [node]
         )
-      )
+      );
     },
 
     EnumValueDefinition(node, key, parent, path, ancestors) {
@@ -30,15 +30,15 @@ export function DeprecationsHaveAReason(context) {
       context.reportError(
         new GraphQLError(
           `The enum value \`${parentName}.${fieldName}\` is deprecated but has no deprecation reason.`,
-          [node],
+          [node]
         )
-      )
-    }
+      );
+    },
   };
-};
+}
 
 function isDeprecatedWithoutReason(node) {
-  const deprecatedDirective = node.directives.find((directive) => {
+  const deprecatedDirective = node.directives.find(directive => {
     if (directive.name.value != 'deprecated') {
       return false;
     }
@@ -50,7 +50,7 @@ function isDeprecatedWithoutReason(node) {
     return false;
   }
 
-  const reasonArgument = deprecatedDirective.arguments.find((arg) => {
+  const reasonArgument = deprecatedDirective.arguments.find(arg => {
     if (arg.name.value == 'reason') {
       return true;
     }

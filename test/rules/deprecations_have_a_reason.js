@@ -24,13 +24,16 @@ describe('DeprecationsHaveAReason rule', () => {
       }
     `);
 
-    const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [DeprecationsHaveAReason])
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [DeprecationsHaveAReason]);
 
-    assert.equal(errors.length, 1)
+    assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].message, 'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.')
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }])
+    assert.equal(
+      errors[0].message,
+      'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }]);
   });
 
   it('catches deprecated fields that have no deprecation reason in interface types', () => {
@@ -50,13 +53,16 @@ describe('DeprecationsHaveAReason rule', () => {
       }
     `);
 
-    const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [DeprecationsHaveAReason])
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [DeprecationsHaveAReason]);
 
-    assert.equal(errors.length, 1)
+    assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].message, 'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.')
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }])
+    assert.equal(
+      errors[0].message,
+      'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }]);
   });
 
   it('catches deprecated enum values that have no deprecation reason', () => {
@@ -76,12 +82,15 @@ describe('DeprecationsHaveAReason rule', () => {
       }
     `);
 
-    const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [DeprecationsHaveAReason])
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [DeprecationsHaveAReason]);
 
-    assert.equal(errors.length, 1)
+    assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].message, 'The enum value `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.')
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }])
+    assert.equal(
+      errors[0].message,
+      'The enum value `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }]);
   });
 });

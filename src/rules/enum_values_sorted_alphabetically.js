@@ -1,20 +1,29 @@
-import { GraphQLError } from "graphql/error";
+import { GraphQLError } from 'graphql/error';
 
 export function EnumValuesSortedAlphabetically(context) {
   return {
-    EnumTypeDefinition: function EnumTypeDefinition(node, key, parent, path, ancestors) {
+    EnumTypeDefinition: function EnumTypeDefinition(
+      node,
+      key,
+      parent,
+      path,
+      ancestors
+    ) {
       var enumValues = node.values.map(val => {
         return val.name.value;
       });
 
       if (!arraysEqual(enumValues, enumValues.slice().sort())) {
         context.reportError(
-          new GraphQLError("The enum `" + node.name.value + "` should be sorted alphabetically", [
-            node
-          ])
+          new GraphQLError(
+            'The enum `' +
+              node.name.value +
+              '` should be sorted alphabetically',
+            [node]
+          )
         );
       }
-    }
+    },
   };
 }
 

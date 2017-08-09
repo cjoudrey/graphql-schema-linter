@@ -13,9 +13,9 @@ export function TypesHaveDescriptions(context) {
       context.reportError(
         new GraphQLError(
           `The interface type \`${interfaceTypeName}\` is missing a description.`,
-          [node],
+          [node]
         )
-      )
+      );
     },
 
     ObjectTypeDefinition(node) {
@@ -28,9 +28,9 @@ export function TypesHaveDescriptions(context) {
       context.reportError(
         new GraphQLError(
           `The object type \`${objectTypeName}\` is missing a description.`,
-          [node],
+          [node]
         )
-      )
-    }
+      );
+    },
   };
-};
+}

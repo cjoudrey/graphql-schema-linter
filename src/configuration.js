@@ -1,4 +1,4 @@
-import defaultRules from './rules/index.js'
+import defaultRules from './rules/index.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
 import getGraphQLProjectConfig from 'graphql-config';
@@ -23,9 +23,11 @@ export class Configuration {
   }
 
   getFormatter() {
-    switch(this.options.format) {
-      case 'json': return JSONFormatter;
-      case 'text': return TextFormatter;
+    switch (this.options.format) {
+      case 'json':
+        return JSONFormatter;
+      case 'text':
+        return TextFormatter;
       // TODO raise when invalid formatter
     }
   }
@@ -37,12 +39,14 @@ export class Configuration {
     var rules;
 
     if (this.options.only.length > 0) {
-      rules = defaultRules.filter((rule) => {
-        return (this.options.only.map(toUpperCamelCase).indexOf(rule.name) >= 0);
+      rules = defaultRules.filter(rule => {
+        return this.options.only.map(toUpperCamelCase).indexOf(rule.name) >= 0;
       });
     } else if (this.options.except.length > 0) {
-      rules = defaultRules.filter((rule) => {
-        return (this.options.except.map(toUpperCamelCase).indexOf(rule.name) == -1);
+      rules = defaultRules.filter(rule => {
+        return (
+          this.options.except.map(toUpperCamelCase).indexOf(rule.name) == -1
+        );
       });
     } else {
       rules = defaultRules;
@@ -50,7 +54,7 @@ export class Configuration {
 
     return rules;
   }
-};
+}
 
 function getSchemaFromFileDescriptor(fd) {
   var b = new Buffer(1024);
@@ -72,5 +76,8 @@ function getSchemaFromFile(path) {
 }
 
 function toUpperCamelCase(string) {
-  return string.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('')
+  return string
+    .split('-')
+    .map(part => part[0].toUpperCase() + part.slice(1))
+    .join('');
 }

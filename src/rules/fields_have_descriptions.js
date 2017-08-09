@@ -14,9 +14,9 @@ export function FieldsHaveDescriptions(context) {
       context.reportError(
         new GraphQLError(
           `The field \`${parentName}.${fieldName}\` is missing a description.`,
-          [node],
+          [node]
         )
-      )
-    }
+      );
+    },
   };
-};
+}

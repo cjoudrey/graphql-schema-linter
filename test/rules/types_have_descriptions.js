@@ -18,13 +18,16 @@ describe('TypesHaveDescriptions rule', () => {
       }
     `);
 
-    const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [TypesHaveDescriptions])
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesHaveDescriptions]);
 
-    assert.equal(errors.length, 1)
+    assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].message, 'The object type `QueryRoot` is missing a description.')
-    assert.deepEqual(errors[0].locations, [{ line: 2, column: 7 }])
+    assert.equal(
+      errors[0].message,
+      'The object type `QueryRoot` is missing a description.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 2, column: 7 }]);
   });
 
   it('catches interface types that have no description', () => {
@@ -43,12 +46,15 @@ describe('TypesHaveDescriptions rule', () => {
       }
     `);
 
-    const schema = buildASTSchema(ast)
-    const errors = validate(schema, ast, [TypesHaveDescriptions])
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesHaveDescriptions]);
 
-    assert.equal(errors.length, 1)
+    assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].message, 'The interface type `A` is missing a description.')
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }])
+    assert.equal(
+      errors[0].message,
+      'The interface type `A` is missing a description.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 });

@@ -8,9 +8,9 @@ export function TypesAreCapitalized(context) {
         context.reportError(
           new GraphQLError(
             `The object type \`${typeName}\` should start with a capital letter.`,
-            [node],
+            [node]
           )
-        )
+        );
       }
     },
 
@@ -20,10 +20,10 @@ export function TypesAreCapitalized(context) {
         context.reportError(
           new GraphQLError(
             `The interface type \`${typeName}\` should start with a capital letter.`,
-            [node],
+            [node]
           )
-        )
+        );
       }
-    }
+    },
   };
 }
