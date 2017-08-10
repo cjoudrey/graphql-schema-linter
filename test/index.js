@@ -12,3 +12,4 @@ require('./rules/types_have_descriptions');
 require('./rules/deprecations_have_a_reason');
 require('./rules/enum_values_sorted_alphabetically');
 require('./rules/types_are_capitalized');
+require('./rules/defined_types_are_used');
