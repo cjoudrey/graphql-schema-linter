@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.8 (August 10th, 2017)
+
+- Add `defined-types-are-used` rule. [#24](https://github.com/cjoudrey/graphql-schema-linter/pull/24)
+
 ## 0.0.7 (August 7th, 2017)
 
 - Rule names passed to `--only` and `--except` should now be passed in kebab-case instead of UpperCamelCase. [#19](https://github.com/cjoudrey/graphql-schema-linter/pull/19)
