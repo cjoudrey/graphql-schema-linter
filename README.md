@@ -61,6 +61,10 @@ Options:
 
 ## Built-in rules
 
+### `defined-types-are-used`
+
+This rule will validate that all defined types are used at least once in the schema.
+
 ### `deprecations-have-a-reason`
 
 This rule will validate that all deprecations have a reason.
