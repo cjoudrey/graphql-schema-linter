@@ -31,7 +31,7 @@ describe('TypesAreCapitalized rule', () => {
       errors[0].message,
       'The object type `a` should start with a capital letter.'
     );
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
+    assert.deepEqual(errors[0].locations, [{ line: 6, column: 12 }]);
   });
 
   it('catches interface types that are not capitalized', () => {
@@ -58,6 +58,6 @@ describe('TypesAreCapitalized rule', () => {
       errors[0].message,
       'The interface type `a` should start with a capital letter.'
     );
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
+    assert.deepEqual(errors[0].locations, [{ line: 6, column: 17 }]);
   });
 });
