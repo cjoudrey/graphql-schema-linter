@@ -4,7 +4,13 @@ import { GraphQLError } from 'graphql/error';
 export function DeprecationsHaveAReason(context) {
   return {
     FieldDefinition(node, key, parent, path, ancestors) {
-      if (!isDeprecatedWithoutReason(node)) {
+      const deprecatedDirective = getDeprecatedDirective(node);
+      if (!deprecatedDirective) {
+        return;
+      }
+
+      const reasonArgument = getReasonArgument(deprecatedDirective);
+      if (reasonArgument) {
         return;
       }
 
@@ -14,13 +20,19 @@ export function DeprecationsHaveAReason(context) {
       context.reportError(
         new GraphQLError(
           `The field \`${parentName}.${fieldName}\` is deprecated but has no deprecation reason.`,
-          [node]
+          [deprecatedDirective]
         )
       );
     },
 
     EnumValueDefinition(node, key, parent, path, ancestors) {
-      if (!isDeprecatedWithoutReason(node)) {
+      const deprecatedDirective = getDeprecatedDirective(node);
+      if (!deprecatedDirective) {
+        return;
+      }
+
+      const reasonArgument = getReasonArgument(deprecatedDirective);
+      if (reasonArgument) {
         return;
       }
 
@@ -30,14 +42,14 @@ export function DeprecationsHaveAReason(context) {
       context.reportError(
         new GraphQLError(
           `The enum value \`${parentName}.${fieldName}\` is deprecated but has no deprecation reason.`,
-          [node]
+          [deprecatedDirective]
         )
       );
     },
   };
 }
 
-function isDeprecatedWithoutReason(node) {
+function getDeprecatedDirective(node) {
   const deprecatedDirective = node.directives.find(directive => {
     if (directive.name.value != 'deprecated') {
       return false;
@@ -46,10 +58,10 @@ function isDeprecatedWithoutReason(node) {
     return true;
   });
 
-  if (!deprecatedDirective) {
-    return false;
-  }
+  return deprecatedDirective;
+}
 
+function getReasonArgument(deprecatedDirective) {
   const reasonArgument = deprecatedDirective.arguments.find(arg => {
     if (arg.name.value == 'reason') {
       return true;
@@ -58,5 +70,5 @@ function isDeprecatedWithoutReason(node) {
     return false;
   });
 
-  return !reasonArgument;
+  return reasonArgument;
 }

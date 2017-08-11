@@ -33,7 +33,7 @@ describe('DeprecationsHaveAReason rule', () => {
       errors[0].message,
       'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.'
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }]);
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 41 }]);
   });
 
   it('catches deprecated fields that have no deprecation reason in interface types', () => {
@@ -62,7 +62,7 @@ describe('DeprecationsHaveAReason rule', () => {
       errors[0].message,
       'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.'
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 9 }]);
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 41 }]);
   });
 
   it('catches deprecated enum values that have no deprecation reason', () => {
