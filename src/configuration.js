@@ -35,7 +35,7 @@ export class Configuration {
     }
   }
 
-  getRules(searchDirectory) {
+  getRules() {
     // TODO Cannot have both except and only -- raise in this case
     // TODO validate that all rules passed to only/except exist.
 
@@ -50,7 +50,7 @@ export class Configuration {
         );
       });
     } else {
-      const directory = searchDirectory || process.cwd();
+      const directory = this.options.searchDirectory || process.cwd();
       const cosmic = cosmiconfig('graphql-schema-linter', {
         cache: false,
         sync: true,
