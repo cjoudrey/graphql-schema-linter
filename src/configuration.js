@@ -1,8 +1,11 @@
+const cosmiconfig = require('cosmiconfig');
+import { readSync, readFileSync } from 'fs';
+import getGraphQLProjectConfig from 'graphql-config';
+import path from 'path';
+
 import defaultRules from './rules/index.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
-import getGraphQLProjectConfig from 'graphql-config';
-import { readSync, readFileSync } from 'fs';
 
 export class Configuration {
   constructor(options, stdinFd) {
@@ -32,16 +35,14 @@ export class Configuration {
     }
   }
 
-  getRules() {
+  getRules(searchDirectory) {
     // TODO Cannot have both except and only -- raise in this case
     // TODO validate that all rules passed to only/except exist.
 
-    var rules;
+    var rules = defaultRules;
 
     if (this.options.only.length > 0) {
-      rules = defaultRules.filter(rule => {
-        return this.options.only.map(toUpperCamelCase).indexOf(rule.name) >= 0;
-      });
+      rules = filterRules(this.options.only);
     } else if (this.options.except.length > 0) {
       rules = defaultRules.filter(rule => {
         return (
@@ -49,11 +50,25 @@ export class Configuration {
         );
       });
     } else {
-      rules = defaultRules;
+      const directory = searchDirectory || process.cwd();
+      const cosmic = cosmiconfig('graphql-schema-linter', {
+        cache: false,
+        sync: true,
+      }).load(directory);
+
+      if (cosmic) {
+        rules = filterRules(cosmic.config.rules);
+      }
     }
 
     return rules;
   }
+}
+
+function filterRules(rules) {
+  return defaultRules.filter(rule => {
+    return rules.map(toUpperCamelCase).indexOf(rule.name) >= 0;
+  });
 }
 
 function getSchemaFromFileDescriptor(fd) {

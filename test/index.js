@@ -13,3 +13,6 @@ require('./rules/deprecations_have_a_reason');
 require('./rules/enum_values_sorted_alphabetically');
 require('./rules/types_are_capitalized');
 require('./rules/defined_types_are_used');
+require('./config/rc_file/test');
+require('./config/package_json/test');
+require('./config/js_file/test');
