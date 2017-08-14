@@ -5,9 +5,7 @@ describe('Config', () => {
   describe('getRules', () => {
     it('pulls rule config from a .graphql-schema-linterrc dotfile', () => {
       const configuration = new Configuration({
-        only: [],
-        except: [],
-        searchDirectory: __dirname,
+        configDirectory: __dirname,
       });
 
       const rules = configuration.getRules();

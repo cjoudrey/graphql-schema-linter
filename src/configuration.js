@@ -8,8 +8,22 @@ import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
 
 export class Configuration {
-  constructor(options, stdinFd) {
-    this.options = options;
+  /*
+    options:
+      - configDirectory: path to begin searching for config files
+      - except: [string array] blacklist rules
+      - format: (required) `text` | `json`
+      - only: [string array] whitelist rules
+      - schemaFileName: [string] file to read schema from
+      - stdin: [boolean] pass schema via stdin?
+  */
+  constructor(options = {}, stdinFd = null) {
+    const defaultOptions = { format: 'text' };
+    const configOptions = loadOptionsFromConfig(
+      options.configDirectory || process.cwd()
+    );
+
+    this.options = Object.assign({}, defaultOptions, configOptions, options);
     this.stdinFd = stdinFd;
   }
 
@@ -18,8 +32,8 @@ export class Configuration {
 
     if (this.options.stdin) {
       return getSchemaFromFileDescriptor(this.stdinFd);
-    } else if (this.options.args.length > 0) {
-      return getSchemaFromFile(this.options.args[0]);
+    } else if (this.options.schemaFileName) {
+      return getSchemaFromFile(this.options.schemaFileName);
     } else {
       // TODO: Get schema from .graphqlconfig file
     }
@@ -41,28 +55,33 @@ export class Configuration {
 
     var rules = defaultRules;
 
-    if (this.options.only.length > 0) {
+    if (this.options.only && this.options.only.length > 0) {
       rules = filterRules(this.options.only);
-    } else if (this.options.except.length > 0) {
+    } else if (this.options.except && this.options.except.length > 0) {
       rules = defaultRules.filter(rule => {
         return (
           this.options.except.map(toUpperCamelCase).indexOf(rule.name) == -1
         );
       });
-    } else {
-      const directory = this.options.searchDirectory || process.cwd();
-      const cosmic = cosmiconfig('graphql-schema-linter', {
-        cache: false,
-        sync: true,
-      }).load(directory);
-
-      if (cosmic) {
-        rules = filterRules(cosmic.config.rules);
-      }
     }
 
     return rules;
   }
+}
+
+function loadOptionsFromConfig(directory) {
+  const cosmic = cosmiconfig('graphql-schema-linter', {
+    cache: false,
+    sync: true,
+  }).load(directory);
+  let options = {};
+  if (cosmic) {
+    // Map config.rules -> `only` param
+    if (cosmic.config.rules) {
+      options.only = cosmic.config.rules;
+    }
+  }
+  return options;
 }
 
 function filterRules(rules) {
