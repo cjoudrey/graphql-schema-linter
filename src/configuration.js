@@ -19,9 +19,7 @@ export class Configuration {
   */
   constructor(options = {}, stdinFd = null) {
     const defaultOptions = { format: 'text' };
-    const configOptions = loadOptionsFromConfig(
-      options.configDirectory || process.cwd()
-    );
+    const configOptions = loadOptionsFromConfig(options.configDirectory);
 
     this.options = Object.assign({}, defaultOptions, configOptions, options);
     this.stdinFd = stdinFd;
@@ -69,11 +67,15 @@ export class Configuration {
   }
 }
 
-function loadOptionsFromConfig(directory) {
+function loadOptionsFromConfig(configDirectory) {
+  // If config path is not specified, look in root directory of project
+  // the first option to cosmiconfig.load can be absolute or relative
+  const searchPath = configDirectory || './'
+
   const cosmic = cosmiconfig('graphql-schema-linter', {
     cache: false,
     sync: true,
-  }).load(directory);
+  }).load(searchPath);
   let options = {};
   if (cosmic) {
     // Map config.rules -> `only` param
