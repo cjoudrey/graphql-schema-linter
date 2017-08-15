@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.10 (August 15th, 2017)
+
+- Add ability to configure `graphql-schema-linter` via configuration files. [#26](https://github.com/cjoudrey/graphql-schema-linter/pull/26)
+
 ## 0.0.9 (August 10th, 2017)
 
 - Fix a bug where the wrong location (column/line) was being reported for `DeprecationsHaveAReason` rule. [#13](https://github.com/cjoudrey/graphql-schema-linter/issues/13)
