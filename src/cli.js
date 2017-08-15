@@ -11,7 +11,7 @@ process.on('uncaughtException', err => {
     'It would be super helpful if you could report this here: https://github.com/cjoudrey/graphql-schema-linter/issues/new'
   );
   console.error('');
-  console.error(err);
+  console.error(err.stack);
   process.exit(2);
 });
 

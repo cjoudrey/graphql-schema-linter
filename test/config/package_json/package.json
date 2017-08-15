@@ -1,0 +1,5 @@
+{
+  "graphql-schema-linter": {
+    "rules": ["enum-values-sorted-alphabetically"]
+  }
+}

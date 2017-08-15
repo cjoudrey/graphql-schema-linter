@@ -12,6 +12,10 @@ export function run(stdout, stdin, argv) {
       'only the rules specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions'
     )
     .option(
+      '-c, --config-directory <path>',
+      'path to begin searching for config files.'
+    )
+    .option(
       '-e, --except <rules>',
       'all rules except the ones specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions'
     )
@@ -27,13 +31,7 @@ export function run(stdout, stdin, argv) {
     .parse(argv);
 
   const configuration = new Configuration(
-    {
-      format: (commander.format && commander.format.toLowerCase()) || 'text',
-      stdin: commander.stdin,
-      only: (commander.only && commander.only.split(',')) || [],
-      except: (commander.except && commander.except.split(',')) || [],
-      args: commander.args,
-    },
+    getOptionsFromCommander(commander),
     stdin.fd
   );
 
@@ -46,4 +44,30 @@ export function run(stdout, stdin, argv) {
   stdout.write(formatter(errors));
 
   return errors.length > 0 ? 1 : 0;
+}
+
+function getOptionsFromCommander(commander) {
+  let options = { stdin: commander.stdin };
+
+  if (commander.configDirectory) {
+    options.configDirectory = commander.configDirectory;
+  }
+
+  if (commander.except) {
+    options.except = commander.except.split(',');
+  }
+
+  if (commander.format) {
+    options.format = commander.format;
+  }
+
+  if (commander.only) {
+    options.only = commander.only.split(',');
+  }
+
+  if (commander.args && commander.args.length) {
+    options.schemaFileName = commander.args[0];
+  }
+
+  return options;
 }

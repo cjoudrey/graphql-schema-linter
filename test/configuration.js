@@ -13,7 +13,7 @@ describe('Configuration', () => {
 
     it('reads schema from file when provided', () => {
       const fixturePath = `${__dirname}/fixtures/schema.graphql`;
-      const configuration = new Configuration({ args: [fixturePath] });
+      const configuration = new Configuration({ schemaFileName: fixturePath });
       assert.equal(
         configuration.getSchema(),
         readFileSync(fixturePath).toString('utf8')
@@ -54,14 +54,13 @@ describe('Configuration', () => {
     });
 
     it('returns default rules when --only and --except are not specified', () => {
-      const configuration = new Configuration({ only: [], except: [] });
+      const configuration = new Configuration();
       assert.equal(configuration.getRules(), defaultRules);
     });
 
     it('omits rules that are not specified in --only', () => {
       const configuration = new Configuration({
         only: ['fields-have-descriptions', 'types-have-descriptions'],
-        except: [],
       });
 
       const rules = configuration.getRules();
@@ -83,7 +82,6 @@ describe('Configuration', () => {
 
     it('omits rules that are specified in --except', () => {
       const configuration = new Configuration({
-        only: [],
         except: ['fields-have-descriptions', 'types-have-descriptions'],
       });
 
@@ -104,7 +102,6 @@ describe('Configuration', () => {
     it('omits rules that are not specified in --only (PascalCase)', () => {
       const configuration = new Configuration({
         only: ['FieldsHaveDescriptions', 'TypesHaveDescriptions'],
-        except: [],
       });
 
       const rules = configuration.getRules();
@@ -126,7 +123,6 @@ describe('Configuration', () => {
 
     it('omits rules that are specified in --except (PascalCase)', () => {
       const configuration = new Configuration({
-        only: [],
         except: ['FieldsHaveDescriptions', 'TypesHaveDescriptions'],
       });
 

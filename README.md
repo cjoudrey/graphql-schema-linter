@@ -59,6 +59,36 @@ Options:
     output usage information
 ```
 
+## Config
+
+In addition to being able to spefify rules on the command line, config can also be placed in the following locations:
+
+### In `package.json`
+
+```json
+{
+  "graphql-schema-linter": {
+    "rules": ["enum-values-sorted-alphabetically"]
+  }
+}
+```
+
+### In `.graphql-schema-linterrc`
+
+```json
+{
+  "rules": ["enum-values-sorted-alphabetically"]
+}
+```
+
+### In `graphql-schema-linter.config.js`
+
+```js
+module.exports = {
+  rules: ['enum-values-sorted-alphabetically'],
+};
+```
+
 ## Built-in rules
 
 ### `defined-types-are-used`
