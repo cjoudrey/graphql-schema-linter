@@ -28,17 +28,11 @@ Usage: graphql-schema-linter [options] [schema.graphql]
 
 Options:
 
-  -o, --only <rules>
+  -r, --rules <rules>
 
     only the rules specified will be used to validate the schema
 
-    example: --only fields-have-descriptions,types-have-descriptions
-
-  -e, --except <rules>
-
-    all rules except the ones specified will be used to validate the schema
-
-    example: --except fields-have-descriptions,types-have-descriptions
+    example: --rules fields-have-descriptions,types-have-descriptions
 
   -f, --format <format>
 

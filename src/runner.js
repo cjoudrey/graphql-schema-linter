@@ -3,21 +3,15 @@ import { rules } from './index.js';
 import { version } from '../package.json';
 import commander from 'commander';
 import { Configuration } from './configuration.js';
+import figures from 'figures';
+import chalk from 'chalk';
 
-export function run(stdout, stdin, argv) {
+export function run(stdout, stdin, stderr, argv) {
   commander
     .usage('[options] [schema.graphql]')
     .option(
-      '-o, --only <rules>',
-      'only the rules specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions'
-    )
-    .option(
-      '-c, --config-directory <path>',
-      'path to begin searching for config files.'
-    )
-    .option(
-      '-e, --except <rules>',
-      'all rules except the ones specified will be used to validate the schema. Example: FieldsHaveDescriptions,TypesHaveDescriptions'
+      '-r, --rules <rules>',
+      'only the rules specified will be used to validate the schema. Example: fields-have-descriptions,types-have-descriptions'
     )
     .option(
       '-f, --format <format>',
@@ -27,8 +21,33 @@ export function run(stdout, stdin, argv) {
       '-s, --stdin',
       'schema definition will be read from STDIN instead of specified file.'
     )
+    .option(
+      '-c, --config-directory <path>',
+      'path to begin searching for config files.'
+    )
+    // DEPRECATED - This code should be removed in v1.0.0.
+    .option(
+      '-o, --only <rules>',
+      'This option is DEPRECATED. Use `--rules` instead.'
+    )
+    // DEPRECATED - This code should be removed in v1.0.0.
+    .option(
+      '-e, --except <rules>',
+      'This option is DEPRECATED. Use `--rules` instead.'
+    )
     .version(version, '--version')
     .parse(argv);
+
+  if (commander.only || commander.except) {
+    stderr.write(
+      `${chalk.yellow(figures.warning)} The ${chalk.bold(
+        '--only'
+      )} and ${chalk.bold('--except')} command line options ` +
+        `have been deprecated. They will be removed in ${chalk.bold(
+          'v1.0.0'
+        )}.\n\n`
+    );
+  }
 
   const configuration = new Configuration(
     getOptionsFromCommander(commander),
@@ -63,6 +82,10 @@ function getOptionsFromCommander(commander) {
 
   if (commander.only) {
     options.only = commander.only.split(',');
+  }
+
+  if (commander.rules) {
+    options.rules = commander.rules.split(',');
   }
 
   if (commander.args && commander.args.length) {
