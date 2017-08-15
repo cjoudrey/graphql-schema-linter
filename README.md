@@ -61,7 +61,7 @@ Options:
 
 ## Config
 
-In addition to being able to spefify rules on the command line, config can also be placed in the following locations:
+In addition to being able to specify rules on the command line, config can also be placed in the following locations:
 
 ### In `package.json`
 
