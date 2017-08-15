@@ -70,7 +70,7 @@ export class Configuration {
 function loadOptionsFromConfig(configDirectory) {
   // If config path is not specified, look in root directory of project
   // the first option to cosmiconfig.load can be absolute or relative
-  const searchPath = configDirectory || './'
+  const searchPath = configDirectory || './';
 
   const cosmic = cosmiconfig('graphql-schema-linter', {
     cache: false,
