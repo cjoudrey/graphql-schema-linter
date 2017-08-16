@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.11 (August 15th, 2017)
+
+- Deprecate `--only` and `--except` in favour of `--rules`. [#29](https://github.com/cjoudrey/graphql-schema-linter/pull/29)
+
 ## 0.0.10 (August 15th, 2017)
 
 - Add ability to configure `graphql-schema-linter` via configuration files. [#26](https://github.com/cjoudrey/graphql-schema-linter/pull/26)
