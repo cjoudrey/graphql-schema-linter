@@ -88,7 +88,9 @@ function loadOptionsFromConfig(configDirectory) {
   }).load(searchPath);
 
   if (cosmic) {
-    return cosmic.config;
+    return {
+      rules: cosmic.config.rules,
+    };
   } else {
     return {};
   }
