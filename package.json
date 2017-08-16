@@ -7,7 +7,7 @@
   "scripts": {
     "fmt": "node_modules/prettier/bin/prettier.js --single-quote --trailing-comma es5 --write -l \"{test,src}/**/*.js\"",
     "test": "mocha test/index.js",
-    "prepublish": "babel ./src --ignore test --out-dir ./lib"
+    "prepare": "babel ./src --ignore test --out-dir ./lib"
   },
   "homepage": "https://github.com/cjoudrey/graphql-schema-linter",
   "repository": {
