@@ -6,7 +6,7 @@
 
 ## 0.0.10 (August 15th, 2017)
 
-- Add ability to configure `graphql-schema-linter` via configuration files. [#26](https://github.com/cjoudrey/graphql-schema-linter/pull/26)
+- Add ability to configure `graphql-schema-linter` via configuration files. [#26](https://github.com/cjoudrey/graphql-schema-linter/pull/26) (Thanks @goldcaddy77)
 
 ## 0.0.9 (August 10th, 2017)
 
