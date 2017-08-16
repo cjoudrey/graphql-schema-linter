@@ -21,7 +21,7 @@ describe('EnumValuesSortedAlphabetically rule', () => {
 
     assert.equal(
       errors[0].message,
-      'The enum `Stage` should be sorted alphabetically'
+      'The enum `Stage` should be sorted alphabetically.'
     );
     assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
