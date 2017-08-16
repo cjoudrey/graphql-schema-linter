@@ -15,6 +15,11 @@ process.on('uncaughtException', err => {
   process.exit(2);
 });
 
-const exitCode = run(process.stdout, process.stdin, process.argv);
+const exitCode = run(
+  process.stdout,
+  process.stdin,
+  process.stderr,
+  process.argv
+);
 
 process.exit(exitCode);

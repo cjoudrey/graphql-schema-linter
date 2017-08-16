@@ -11,9 +11,8 @@ export class Configuration {
   /*
     options:
       - configDirectory: path to begin searching for config files
-      - except: [string array] blacklist rules
       - format: (required) `text` | `json`
-      - only: [string array] whitelist rules
+      - rules: [string array] whitelist rules
       - schemaFileName: [string] file to read schema from
       - stdin: [boolean] pass schema via stdin?
   */
@@ -21,19 +20,17 @@ export class Configuration {
     const defaultOptions = { format: 'text' };
     const configOptions = loadOptionsFromConfig(options.configDirectory);
 
+    // TODO Get configs from .graphqlconfig file
+
     this.options = Object.assign({}, defaultOptions, configOptions, options);
     this.stdinFd = stdinFd;
   }
 
   getSchema() {
-    // TODO - Check for args.length > 1
-
     if (this.options.stdin) {
       return getSchemaFromFileDescriptor(this.stdinFd);
     } else if (this.options.schemaFileName) {
       return getSchemaFromFile(this.options.schemaFileName);
-    } else {
-      // TODO: Get schema from .graphqlconfig file
     }
   }
 
@@ -43,23 +40,38 @@ export class Configuration {
         return JSONFormatter;
       case 'text':
         return TextFormatter;
+
       // TODO raise when invalid formatter
     }
   }
 
   getRules() {
-    // TODO Cannot have both except and only -- raise in this case
-    // TODO validate that all rules passed to only/except exist.
+    // TODO validate that all specified rules actually exist. This way we can
+    //      prevent people from making typos.
 
     var rules = defaultRules;
+    var specifiedRules;
 
+    if (this.options.rules && this.options.rules.length > 0) {
+      specifiedRules = this.options.rules.map(toUpperCamelCase);
+      rules = rules.filter(rule => {
+        return specifiedRules.indexOf(rule.name) >= 0;
+      });
+    }
+
+    // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.only && this.options.only.length > 0) {
-      rules = filterRules(this.options.only);
-    } else if (this.options.except && this.options.except.length > 0) {
+      specifiedRules = this.options.only.map(toUpperCamelCase);
       rules = defaultRules.filter(rule => {
-        return (
-          this.options.except.map(toUpperCamelCase).indexOf(rule.name) == -1
-        );
+        return specifiedRules.indexOf(rule.name) >= 0;
+      });
+    }
+
+    // DEPRECATED - This code should be removed in v1.0.0.
+    if (this.options.except && this.options.except.length > 0) {
+      specifiedRules = this.options.except.map(toUpperCamelCase);
+      rules = defaultRules.filter(rule => {
+        return specifiedRules.indexOf(rule.name) == -1;
       });
     }
 
@@ -68,28 +80,20 @@ export class Configuration {
 }
 
 function loadOptionsFromConfig(configDirectory) {
-  // If config path is not specified, look in root directory of project
-  // the first option to cosmiconfig.load can be absolute or relative
   const searchPath = configDirectory || './';
 
   const cosmic = cosmiconfig('graphql-schema-linter', {
     cache: false,
     sync: true,
   }).load(searchPath);
-  let options = {};
-  if (cosmic) {
-    // Map config.rules -> `only` param
-    if (cosmic.config.rules) {
-      options.only = cosmic.config.rules;
-    }
-  }
-  return options;
-}
 
-function filterRules(rules) {
-  return defaultRules.filter(rule => {
-    return rules.map(toUpperCamelCase).indexOf(rule.name) >= 0;
-  });
+  if (cosmic) {
+    return {
+      rules: cosmic.config.rules,
+    };
+  } else {
+    return {};
+  }
 }
 
 function getSchemaFromFileDescriptor(fd) {
