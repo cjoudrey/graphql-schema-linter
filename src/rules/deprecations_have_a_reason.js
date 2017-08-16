@@ -36,12 +36,12 @@ export function DeprecationsHaveAReason(context) {
         return;
       }
 
-      const fieldName = node.name.value;
+      const enumValueName = node.name.value;
       const parentName = ancestors[ancestors.length - 1].name.value;
 
       context.reportError(
         new GraphQLError(
-          `The enum value \`${parentName}.${fieldName}\` is deprecated but has no deprecation reason.`,
+          `The enum value \`${parentName}.${enumValueName}\` is deprecated but has no deprecation reason.`,
           [deprecatedDirective]
         )
       );

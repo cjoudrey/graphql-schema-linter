@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import { validateSchemaString } from '../utils'
+import { validateSchemaString } from '../utils';
 import { EnumValuesAllCaps } from '../../src/rules/enum_values_all_caps';
 
 describe('EnumValuesAllCaps rule', () => {
