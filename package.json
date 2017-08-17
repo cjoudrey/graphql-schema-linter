@@ -5,7 +5,6 @@
   "author": "Christian Joudrey",
   "main": "lib/index.js",
   "scripts": {
-    "fmt": "prettier --single-quote --trailing-comma es5 --write -l \"{test,src}/**/*.js\"",
     "precommit": "lint-staged",
     "test": "mocha test/index.js",
     "prepare": "babel ./src --ignore test --out-dir ./lib"
