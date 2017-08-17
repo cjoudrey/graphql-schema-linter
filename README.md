@@ -93,6 +93,10 @@ This rule will validate that all defined types are used at least once in the sch
 
 This rule will validate that all deprecations have a reason.
 
+### `enum-values-all-caps`
+
+This rule will validate that all enum values are capitalized.
+
 ### `enum-values-sorted-alphabetically`
 
 This rule will validate that all enum values are sorted alphabetically.

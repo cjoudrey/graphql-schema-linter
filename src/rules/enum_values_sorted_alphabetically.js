@@ -18,7 +18,7 @@ export function EnumValuesSortedAlphabetically(context) {
           new GraphQLError(
             'The enum `' +
               node.name.value +
-              '` should be sorted alphabetically',
+              '` should be sorted alphabetically.',
             [node]
           )
         );
