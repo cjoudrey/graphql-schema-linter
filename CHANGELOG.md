@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.12 (August 16th, 2017)
+
+- Add `enum-values-all-caps` rule. [#30](https://github.com/cjoudrey/graphql-schema-linter/pull/30) (Thanks @goldcaddy77)
+
 ## 0.0.11 (August 15th, 2017)
 
 - Deprecate `--only` and `--except` in favour of `--rules`. [#29](https://github.com/cjoudrey/graphql-schema-linter/pull/29)
