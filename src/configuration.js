@@ -2,6 +2,7 @@ const cosmiconfig = require('cosmiconfig');
 import { readSync, readFileSync } from 'fs';
 import getGraphQLProjectConfig from 'graphql-config';
 import path from 'path';
+import { sync as globSync } from 'glob';
 
 import defaultRules from './rules/index.js';
 import JSONFormatter from './formatters/json_formatter.js';
@@ -24,14 +25,40 @@ export class Configuration {
 
     this.options = Object.assign({}, defaultOptions, configOptions, options);
     this.stdinFd = stdinFd;
+    this.schemaFileOffsets = null;
+    this.schema = null;
   }
 
   getSchema() {
-    if (this.options.stdin) {
-      return getSchemaFromFileDescriptor(this.stdinFd);
-    } else if (this.options.schemaFileName) {
-      return getSchemaFromFile(this.options.schemaFileName);
+    if (this.schema) {
+      return this.schema;
     }
+
+    var schema;
+
+    if (this.options.stdin) {
+      this.schema = getSchemaFromFileDescriptor(this.stdinFd);
+      this.schemaFileOffsets = computeSchemaFileOffsets(
+        ['stdin'],
+        [this.schema]
+      );
+    } else if (this.options.schemaFileName) {
+      var paths = globSync(this.options.schemaFileName);
+      var segments = getSchemaFromFiles(paths);
+
+      this.schemaFileOffsets = computeSchemaFileOffsets(paths, segments);
+      this.schema = segments.join('\n');
+    }
+
+    return this.schema;
+  }
+
+  getSchemaFileOffsets() {
+    if (!this.schemaFileOffsets) {
+      this.getSchema();
+    }
+
+    return this.schemaFileOffsets;
   }
 
   getFormatter() {
@@ -113,6 +140,30 @@ function getSchemaFromFileDescriptor(fd) {
 
 function getSchemaFromFile(path) {
   return readFileSync(path).toString('utf8');
+}
+
+function getSchemaFromFiles(paths) {
+  return paths.map(getSchemaFromFile);
+}
+
+function computeSchemaFileOffsets(paths, segments) {
+  var currentOffset = 1;
+
+  return paths.map((path, index) => {
+    const currentSegment = segments[index];
+    const amountLines = currentSegment.match(/\r?\n/g).length;
+
+    const startLine = currentOffset;
+    const endLine = currentOffset + amountLines;
+
+    currentOffset = currentOffset + amountLines + 1;
+
+    return {
+      startLine,
+      endLine,
+      filename: path,
+    };
+  });
 }
 
 function toUpperCamelCase(string) {

@@ -7,8 +7,29 @@ import { openSync, readFileSync } from 'fs';
 
 describe('Configuration', () => {
   describe('getSchema', () => {
-    it('raises when more than one file is specified', () => {
-      // TODO
+    it('concatenates multiple files when given a glob', () => {
+      const schemaPath = `${__dirname}/fixtures/schema/**/*.graphql`;
+      const configuration = new Configuration({ schemaFileName: schemaPath });
+
+      const expectedSchema = `type Query {
+  something: String!
+}
+
+schema {
+  query: Query
+}
+
+type User {
+  username: String!
+  email: String!
+}
+
+extend type Query {
+  viewer: User!
+}
+`;
+
+      assert.equal(configuration.getSchema(), expectedSchema);
     });
 
     it('reads schema from file when provided', () => {
@@ -138,6 +159,41 @@ describe('Configuration', () => {
           );
         }).length
       );
+    });
+  });
+
+  describe('getSchemaFileOffsets', () => {
+    it('returns offsets for a schema built from a single GraphQL file', () => {
+      const schemaPath = `${__dirname}/fixtures`;
+      const configuration = new Configuration({
+        schemaFileName: `${schemaPath}/schema.graphql`,
+      });
+      assert.deepEqual(configuration.getSchemaFileOffsets(), [
+        { startLine: 1, endLine: 4, filename: `${schemaPath}/schema.graphql` },
+      ]);
+    });
+
+    it('returns offsets for a schema built from multiple GraphQL files', () => {
+      const schemaPath = `${__dirname}/fixtures/schema`;
+      const configuration = new Configuration({
+        schemaFileName: `${schemaPath}/*.graphql`,
+      });
+
+      assert.deepEqual(configuration.getSchemaFileOffsets(), [
+        { startLine: 1, endLine: 8, filename: `${schemaPath}/schema.graphql` },
+        { startLine: 9, endLine: 17, filename: `${schemaPath}/user.graphql` },
+      ]);
+    });
+
+    it('returns offsets for a schema built from stdin', () => {
+      const fixturePath = `${__dirname}/fixtures/schema.graphql`;
+      const fd = openSync(fixturePath, 'r');
+
+      const configuration = new Configuration({ args: [], stdin: true }, fd);
+
+      assert.deepEqual(configuration.getSchemaFileOffsets(), [
+        { startLine: 1, endLine: 4, filename: 'stdin' },
+      ]);
     });
   });
 });

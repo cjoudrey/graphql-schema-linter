@@ -1,0 +1,8 @@
+type User {
+  username: String!
+  email: String!
+}
+
+extend type Query {
+  viewer: User!
+}

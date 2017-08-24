@@ -57,8 +57,9 @@ export function run(stdout, stdin, stderr, argv) {
   const schema = configuration.getSchema();
   const formatter = configuration.getFormatter();
   const rules = configuration.getRules();
+  const schemaFileOffsets = configuration.getSchemaFileOffsets();
 
-  const errors = validateSchemaDefinition(schema, rules);
+  const errors = validateSchemaDefinition(schema, schemaFileOffsets, rules);
 
   stdout.write(formatter(errors));
 
