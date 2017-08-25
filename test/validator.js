@@ -7,7 +7,7 @@ import { GraphQLError } from 'graphql/error';
 describe('validateSchemaDefinition', () => {
   it('returns errors sorted by line number', () => {
     const schemaPath = `${__dirname}/fixtures/schema/**/*.graphql`;
-    const configuration = new Configuration({ schemaFileName: schemaPath });
+    const configuration = new Configuration({ schemaPaths: [schemaPath] });
 
     const schemaDefinition = configuration.getSchema();
     const rules = [FieldsHaveDescriptions, DummyValidator];

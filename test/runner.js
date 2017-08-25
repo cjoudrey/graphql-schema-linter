@@ -59,5 +59,40 @@ describe('Runner', () => {
       var errors = JSON.parse(stdout);
       assert.equal(1, errors['errors'].length);
     });
+
+    it('validates a schema composed of multiple files (glob) and outputs in json', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'json',
+        '--rules',
+        'fields-have-descriptions',
+        `${__dirname}/fixtures/schema/*.graphql`,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      var errors = JSON.parse(stdout);
+      assert.equal(4, errors['errors'].length);
+    });
+
+    it('validates a schema composed of multiple files (args) and outputs in json', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'json',
+        '--rules',
+        'fields-have-descriptions',
+        `${__dirname}/fixtures/schema/schema.graphql`,
+        `${__dirname}/fixtures/schema/user.graphql`,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      var errors = JSON.parse(stdout);
+      assert.equal(4, errors['errors'].length);
+    });
   });
 });

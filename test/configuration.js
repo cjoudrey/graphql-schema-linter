@@ -9,7 +9,7 @@ describe('Configuration', () => {
   describe('getSchema', () => {
     it('concatenates multiple files when given a glob', () => {
       const schemaPath = `${__dirname}/fixtures/schema/**/*.graphql`;
-      const configuration = new Configuration({ schemaFileName: schemaPath });
+      const configuration = new Configuration({ schemaPaths: [schemaPath] });
 
       const expectedSchema = `type Query {
   something: String!
@@ -34,7 +34,7 @@ extend type Query {
 
     it('reads schema from file when provided', () => {
       const fixturePath = `${__dirname}/fixtures/schema.graphql`;
-      const configuration = new Configuration({ schemaFileName: fixturePath });
+      const configuration = new Configuration({ schemaPaths: [fixturePath] });
       assert.equal(
         configuration.getSchema(),
         readFileSync(fixturePath).toString('utf8')
