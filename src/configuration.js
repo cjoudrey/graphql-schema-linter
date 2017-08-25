@@ -5,6 +5,7 @@ import path from 'path';
 import { sync as globSync } from 'glob';
 
 import defaultRules from './rules/index.js';
+import { SourceMap } from './source_map.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
 
@@ -25,8 +26,8 @@ export class Configuration {
 
     this.options = Object.assign({}, defaultOptions, configOptions, options);
     this.stdinFd = stdinFd;
-    this.schemaFileOffsets = null;
     this.schema = null;
+    this.sourceMap = null;
   }
 
   getSchema() {
@@ -38,27 +39,24 @@ export class Configuration {
 
     if (this.options.stdin) {
       this.schema = getSchemaFromFileDescriptor(this.stdinFd);
-      this.schemaFileOffsets = computeSchemaFileOffsets(
-        ['stdin'],
-        [this.schema]
-      );
+      this.sourceMap = new SourceMap({ stdin: this.schema });
     } else if (this.options.schemaFileName) {
       var paths = globSync(this.options.schemaFileName);
-      var segments = getSchemaFromFiles(paths);
+      var segments = getSchemaSegmentsFromFiles(paths);
 
-      this.schemaFileOffsets = computeSchemaFileOffsets(paths, segments);
-      this.schema = segments.join('\n');
+      this.sourceMap = new SourceMap(segments);
+      this.schema = this.sourceMap.getCombinedSource();
     }
 
     return this.schema;
   }
 
-  getSchemaFileOffsets() {
-    if (!this.schemaFileOffsets) {
+  getSchemaSourceMap() {
+    if (!this.sourceMap) {
       this.getSchema();
     }
 
-    return this.schemaFileOffsets;
+    return this.sourceMap;
   }
 
   getFormatter() {
@@ -142,28 +140,11 @@ function getSchemaFromFile(path) {
   return readFileSync(path).toString('utf8');
 }
 
-function getSchemaFromFiles(paths) {
-  return paths.map(getSchemaFromFile);
-}
-
-function computeSchemaFileOffsets(paths, segments) {
-  var currentOffset = 1;
-
-  return paths.map((path, index) => {
-    const currentSegment = segments[index];
-    const amountLines = currentSegment.match(/\r?\n/g).length;
-
-    const startLine = currentOffset;
-    const endLine = currentOffset + amountLines;
-
-    currentOffset = currentOffset + amountLines + 1;
-
-    return {
-      startLine,
-      endLine,
-      filename: path,
-    };
-  });
+function getSchemaSegmentsFromFiles(paths) {
+  return paths.reduce((segments, path) => {
+    segments[path] = getSchemaFromFile(path);
+    return segments;
+  }, {});
 }
 
 function toUpperCamelCase(string) {

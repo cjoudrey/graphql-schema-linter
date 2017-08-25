@@ -161,39 +161,4 @@ extend type Query {
       );
     });
   });
-
-  describe('getSchemaFileOffsets', () => {
-    it('returns offsets for a schema built from a single GraphQL file', () => {
-      const schemaPath = `${__dirname}/fixtures`;
-      const configuration = new Configuration({
-        schemaFileName: `${schemaPath}/schema.graphql`,
-      });
-      assert.deepEqual(configuration.getSchemaFileOffsets(), [
-        { startLine: 1, endLine: 4, filename: `${schemaPath}/schema.graphql` },
-      ]);
-    });
-
-    it('returns offsets for a schema built from multiple GraphQL files', () => {
-      const schemaPath = `${__dirname}/fixtures/schema`;
-      const configuration = new Configuration({
-        schemaFileName: `${schemaPath}/*.graphql`,
-      });
-
-      assert.deepEqual(configuration.getSchemaFileOffsets(), [
-        { startLine: 1, endLine: 8, filename: `${schemaPath}/schema.graphql` },
-        { startLine: 9, endLine: 17, filename: `${schemaPath}/user.graphql` },
-      ]);
-    });
-
-    it('returns offsets for a schema built from stdin', () => {
-      const fixturePath = `${__dirname}/fixtures/schema.graphql`;
-      const fd = openSync(fixturePath, 'r');
-
-      const configuration = new Configuration({ args: [], stdin: true }, fd);
-
-      assert.deepEqual(configuration.getSchemaFileOffsets(), [
-        { startLine: 1, endLine: 4, filename: 'stdin' },
-      ]);
-    });
-  });
 });

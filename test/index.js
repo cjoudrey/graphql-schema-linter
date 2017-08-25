@@ -8,6 +8,7 @@ require('babel-core').transform('code', {
 // The tests, however, can and should be written with ECMAScript 2015.
 require('./configuration');
 require('./runner');
+require('./source_map');
 require('./validator');
 require('./rules/fields_have_descriptions');
 require('./rules/types_have_descriptions');

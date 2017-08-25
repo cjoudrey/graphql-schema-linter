@@ -57,13 +57,28 @@ export function run(stdout, stdin, stderr, argv) {
   const schema = configuration.getSchema();
   const formatter = configuration.getFormatter();
   const rules = configuration.getRules();
-  const schemaFileOffsets = configuration.getSchemaFileOffsets();
+  const schemaSourceMap = configuration.getSchemaSourceMap();
 
-  const errors = validateSchemaDefinition(schema, schemaFileOffsets, rules);
+  const errors = validateSchemaDefinition(schema, rules);
 
-  stdout.write(formatter(errors));
+  const groupedErrors = groupErrorsBySchemaFilePath(errors, schemaSourceMap);
+
+  stdout.write(formatter(groupedErrors));
 
   return errors.length > 0 ? 1 : 0;
+}
+
+function groupErrorsBySchemaFilePath(errors, schemaSourceMap) {
+  return errors.reduce((groupedErrors, error) => {
+    const path = schemaSourceMap.getOriginalPathForLine(
+      error.locations[0].line
+    );
+
+    groupedErrors[path] = groupedErrors[path] || [];
+    groupedErrors[path].push(error);
+
+    return groupedErrors;
+  }, {});
 }
 
 function getOptionsFromCommander(commander) {

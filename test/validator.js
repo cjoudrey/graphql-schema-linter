@@ -2,48 +2,33 @@ import assert from 'assert';
 import { validateSchemaDefinition } from '../src/validator';
 import { Configuration } from '../src/configuration';
 import { FieldsHaveDescriptions } from '../src/rules/fields_have_descriptions';
+import { GraphQLError } from 'graphql/error';
 
 describe('validateSchemaDefinition', () => {
-  it('returns errors for a schema grouped by files', () => {
+  it('returns errors sorted by line number', () => {
     const schemaPath = `${__dirname}/fixtures/schema/**/*.graphql`;
     const configuration = new Configuration({ schemaFileName: schemaPath });
 
     const schemaDefinition = configuration.getSchema();
-    const schemaFileOffsets = configuration.getSchemaFileOffsets();
-    const rules = [FieldsHaveDescriptions];
+    const rules = [FieldsHaveDescriptions, DummyValidator];
 
-    const errors = validateSchemaDefinition(
-      schemaDefinition,
-      schemaFileOffsets,
-      rules
-    );
+    const errors = validateSchemaDefinition(schemaDefinition, rules);
 
-    assert.deepEqual(Object.keys(errors), [
-      `${__dirname}/fixtures/schema/schema.graphql`,
-      `${__dirname}/fixtures/schema/user.graphql`,
-    ]);
-
-    assert.equal(
-      1,
-      errors[`${__dirname}/fixtures/schema/schema.graphql`].length
-    );
-    assert.equal(
-      2,
-      errors[`${__dirname}/fixtures/schema/schema.graphql`][0].locations[0].line
-    );
-
-    assert.equal(3, errors[`${__dirname}/fixtures/schema/user.graphql`].length);
-    assert.equal(
-      2,
-      errors[`${__dirname}/fixtures/schema/user.graphql`][0].locations[0].line
-    );
-    assert.equal(
-      3,
-      errors[`${__dirname}/fixtures/schema/user.graphql`][1].locations[0].line
-    );
-    assert.equal(
-      7,
-      errors[`${__dirname}/fixtures/schema/user.graphql`][2].locations[0].line
-    );
+    assert.equal(5, errors.length);
+    assert.equal(1, errors[0].locations[0].line);
+    assert.equal(2, errors[1].locations[0].line);
+    assert.equal(10, errors[2].locations[0].line);
+    assert.equal(11, errors[3].locations[0].line);
+    assert.equal(15, errors[4].locations[0].line);
   });
 });
+
+function DummyValidator(context) {
+  return {
+    Document: {
+      leave: node => {
+        context.reportError(new GraphQLError('Dummy message', [node]));
+      },
+    },
+  };
+}
