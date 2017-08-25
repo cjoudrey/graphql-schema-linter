@@ -1,14 +1,14 @@
 import { validateSchemaDefinition } from './validator.js';
 import { rules } from './index.js';
 import { version } from '../package.json';
-import commander from 'commander';
+import { Command } from 'commander';
 import { Configuration } from './configuration.js';
 import figures from 'figures';
 import chalk from 'chalk';
 
 export function run(stdout, stdin, stderr, argv) {
-  commander
-    .usage('[options] [schema.graphql]')
+  const commander = new Command()
+    .usage('[options] [schema.graphql ...]')
     .option(
       '-r, --rules <rules>',
       'only the rules specified will be used to validate the schema. Example: fields-have-descriptions,types-have-descriptions'
@@ -105,7 +105,7 @@ function getOptionsFromCommander(commander) {
   }
 
   if (commander.args && commander.args.length) {
-    options.schemaFileName = commander.args[0];
+    options.schemaPaths = commander.args;
   }
 
   return options;
