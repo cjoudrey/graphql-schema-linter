@@ -23,7 +23,7 @@ npm install -g graphql-schema-linter
 ## Usage
 
 ```
-Usage: graphql-schema-linter [options] [schema.graphql]
+Usage: graphql-schema-linter [options] [schema.graphql ...]
 
 
 Options:
