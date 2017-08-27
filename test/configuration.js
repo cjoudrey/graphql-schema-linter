@@ -11,7 +11,12 @@ describe('Configuration', () => {
       const schemaPath = `${__dirname}/fixtures/schema/**/*.graphql`;
       const configuration = new Configuration({ schemaPaths: [schemaPath] });
 
-      const expectedSchema = `type Query {
+      const expectedSchema = `type Comment {
+  body: String!
+  author: User!
+}
+
+type Query {
   something: String!
 }
 

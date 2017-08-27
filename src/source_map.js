@@ -9,7 +9,7 @@ export class SourceMap {
 
     const paths = Object.keys(this.sourceFiles);
 
-    return paths.map(path => {
+    return paths.reduce((offsets, path) => {
       const currentSegment = this.sourceFiles[path];
       const amountLines = currentSegment.match(/\r?\n/g).length;
 
@@ -18,12 +18,14 @@ export class SourceMap {
 
       currentOffset = currentOffset + amountLines + 1;
 
-      return {
+      offsets[path] = {
         startLine,
         endLine,
         filename: path,
       };
-    });
+
+      return offsets;
+    }, {});
   }
 
   getCombinedSource() {
@@ -31,13 +33,19 @@ export class SourceMap {
   }
 
   getOriginalPathForLine(lineNumber) {
-    for (var i = 0; i < this.offsets.length; i++) {
+    const offsets = Object.values(this.offsets);
+
+    for (var i = 0; i < offsets.length; i++) {
       if (
-        this.offsets[i].startLine <= lineNumber &&
-        lineNumber <= this.offsets[i].endLine
+        offsets[i].startLine <= lineNumber &&
+        lineNumber <= offsets[i].endLine
       ) {
-        return this.offsets[i].filename;
+        return offsets[i].filename;
       }
     }
+  }
+
+  getOffsetForPath(path) {
+    return this.offsets[path];
   }
 }

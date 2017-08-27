@@ -13,13 +13,13 @@ describe('validateSchemaDefinition', () => {
     const rules = [FieldsHaveDescriptions, DummyValidator];
 
     const errors = validateSchemaDefinition(schemaDefinition, rules);
+    const errorLineNumbers = errors.map(error => {
+      return error.locations[0].line;
+    });
 
-    assert.equal(5, errors.length);
-    assert.equal(1, errors[0].locations[0].line);
-    assert.equal(2, errors[1].locations[0].line);
-    assert.equal(10, errors[2].locations[0].line);
-    assert.equal(11, errors[3].locations[0].line);
-    assert.equal(15, errors[4].locations[0].line);
+    assert.equal(7, errors.length);
+
+    assert.deepEqual(errorLineNumbers.sort(), errorLineNumbers);
   });
 });
 
