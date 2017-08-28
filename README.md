@@ -143,14 +143,16 @@ Sample output:
       "message": "The object type `QueryRoot` is missing a description.",
       "location": {
         "line": 5,
-        "column": 1
+        "column": 1,
+        "file": "schema.graphql"
       }
     },
     {
       "message": "The field `QueryRoot.a` is missing a description.",
       "location": {
         "line": 6,
-        "column": 3
+        "column": 3,
+        "file": "schema.graphql"
       }
     }
   ]
