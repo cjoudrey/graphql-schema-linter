@@ -2,8 +2,10 @@ const cosmiconfig = require('cosmiconfig');
 import { readSync, readFileSync } from 'fs';
 import getGraphQLProjectConfig from 'graphql-config';
 import path from 'path';
+import { sync as globSync, hasMagic as globHasMagic } from 'glob';
 
 import defaultRules from './rules/index.js';
+import { SourceMap } from './source_map.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
 
@@ -13,7 +15,7 @@ export class Configuration {
       - configDirectory: path to begin searching for config files
       - format: (required) `text` | `json`
       - rules: [string array] whitelist rules
-      - schemaFileName: [string] file to read schema from
+      - schemaPaths: [string array] file(s) to read schema from
       - stdin: [boolean] pass schema via stdin?
   */
   constructor(options = {}, stdinFd = null) {
@@ -24,14 +26,47 @@ export class Configuration {
 
     this.options = Object.assign({}, defaultOptions, configOptions, options);
     this.stdinFd = stdinFd;
+    this.schema = null;
+    this.sourceMap = null;
   }
 
   getSchema() {
-    if (this.options.stdin) {
-      return getSchemaFromFileDescriptor(this.stdinFd);
-    } else if (this.options.schemaFileName) {
-      return getSchemaFromFile(this.options.schemaFileName);
+    if (this.schema) {
+      return this.schema;
     }
+
+    var schema;
+
+    if (this.options.stdin) {
+      this.schema = getSchemaFromFileDescriptor(this.stdinFd);
+      this.sourceMap = new SourceMap({ stdin: this.schema });
+    } else if (this.options.schemaPaths) {
+      var paths = this.options.schemaPaths
+        .map(path => {
+          if (globHasMagic(path)) {
+            return globSync(path);
+          } else {
+            return path;
+          }
+        })
+        .reduce((a, b) => {
+          return a.concat(b);
+        }, []);
+      var segments = getSchemaSegmentsFromFiles(paths);
+
+      this.sourceMap = new SourceMap(segments);
+      this.schema = this.sourceMap.getCombinedSource();
+    }
+
+    return this.schema;
+  }
+
+  getSchemaSourceMap() {
+    if (!this.sourceMap) {
+      this.getSchema();
+    }
+
+    return this.sourceMap;
   }
 
   getFormatter() {
@@ -113,6 +148,13 @@ function getSchemaFromFileDescriptor(fd) {
 
 function getSchemaFromFile(path) {
   return readFileSync(path).toString('utf8');
+}
+
+function getSchemaSegmentsFromFiles(paths) {
+  return paths.reduce((segments, path) => {
+    segments[path] = getSchemaFromFile(path);
+    return segments;
+  }, {});
 }
 
 function toUpperCamelCase(string) {

@@ -7,13 +7,39 @@ import { openSync, readFileSync } from 'fs';
 
 describe('Configuration', () => {
   describe('getSchema', () => {
-    it('raises when more than one file is specified', () => {
-      // TODO
+    it('concatenates multiple files when given a glob', () => {
+      const schemaPath = `${__dirname}/fixtures/schema/**/*.graphql`;
+      const configuration = new Configuration({ schemaPaths: [schemaPath] });
+
+      const expectedSchema = `type Comment {
+  body: String!
+  author: User!
+}
+
+type Query {
+  something: String!
+}
+
+schema {
+  query: Query
+}
+
+type User {
+  username: String!
+  email: String!
+}
+
+extend type Query {
+  viewer: User!
+}
+`;
+
+      assert.equal(configuration.getSchema(), expectedSchema);
     });
 
     it('reads schema from file when provided', () => {
       const fixturePath = `${__dirname}/fixtures/schema.graphql`;
-      const configuration = new Configuration({ schemaFileName: fixturePath });
+      const configuration = new Configuration({ schemaPaths: [fixturePath] });
       assert.equal(
         configuration.getSchema(),
         readFileSync(fixturePath).toString('utf8')

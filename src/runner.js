@@ -1,14 +1,14 @@
 import { validateSchemaDefinition } from './validator.js';
 import { rules } from './index.js';
 import { version } from '../package.json';
-import commander from 'commander';
+import { Command } from 'commander';
 import { Configuration } from './configuration.js';
 import figures from 'figures';
 import chalk from 'chalk';
 
 export function run(stdout, stdin, stderr, argv) {
-  commander
-    .usage('[options] [schema.graphql]')
+  const commander = new Command()
+    .usage('[options] [schema.graphql ...]')
     .option(
       '-r, --rules <rules>',
       'only the rules specified will be used to validate the schema. Example: fields-have-descriptions,types-have-descriptions'
@@ -57,12 +57,32 @@ export function run(stdout, stdin, stderr, argv) {
   const schema = configuration.getSchema();
   const formatter = configuration.getFormatter();
   const rules = configuration.getRules();
+  const schemaSourceMap = configuration.getSchemaSourceMap();
 
   const errors = validateSchemaDefinition(schema, rules);
 
-  stdout.write(formatter(errors));
+  const groupedErrors = groupErrorsBySchemaFilePath(errors, schemaSourceMap);
+
+  stdout.write(formatter(groupedErrors));
 
   return errors.length > 0 ? 1 : 0;
+}
+
+function groupErrorsBySchemaFilePath(errors, schemaSourceMap) {
+  return errors.reduce((groupedErrors, error) => {
+    const path = schemaSourceMap.getOriginalPathForLine(
+      error.locations[0].line
+    );
+
+    const offsetForPath = schemaSourceMap.getOffsetForPath(path);
+    error.locations[0].line =
+      error.locations[0].line - offsetForPath.startLine + 1;
+
+    groupedErrors[path] = groupedErrors[path] || [];
+    groupedErrors[path].push(error);
+
+    return groupedErrors;
+  }, {});
 }
 
 function getOptionsFromCommander(commander) {
@@ -89,7 +109,7 @@ function getOptionsFromCommander(commander) {
   }
 
   if (commander.args && commander.args.length) {
-    options.schemaFileName = commander.args[0];
+    options.schemaPaths = commander.args;
   }
 
   return options;

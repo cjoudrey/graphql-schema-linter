@@ -38,6 +38,7 @@
     "commander": "^2.11.0",
     "cosmiconfig": "davidtheclark/cosmiconfig#3.0",
     "figures": "^2.0.0",
+    "glob": "^7.1.2",
     "graphql": "^0.10.1",
     "graphql-config": "^1.0.0"
   },
