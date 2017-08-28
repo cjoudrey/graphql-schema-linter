@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.14 (August 27th, 2017)
+
+- Do not require descriptions on type extension definitions. [#41](https://github.com/cjoudrey/graphql-schema-linter/pull/41)
+
 ## 0.0.13 (August 27th, 2017)
 
 - Add support for schemas that are split amongst multiple files. [#39](https://github.com/cjoudrey/graphql-schema-linter/pull/39)
