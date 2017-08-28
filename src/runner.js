@@ -3,6 +3,7 @@ import { rules } from './index.js';
 import { version } from '../package.json';
 import { Command } from 'commander';
 import { Configuration } from './configuration.js';
+import { GraphQLError } from 'graphql/error';
 import figures from 'figures';
 import chalk from 'chalk';
 
@@ -59,7 +60,23 @@ export function run(stdout, stdin, stderr, argv) {
   const rules = configuration.getRules();
   const schemaSourceMap = configuration.getSchemaSourceMap();
 
-  const errors = validateSchemaDefinition(schema, rules);
+  var errors;
+
+  try {
+    errors = validateSchemaDefinition(schema, rules);
+  } catch (e) {
+    if (e instanceof GraphQLError) {
+      stderr.write(
+        chalk.red(
+          `${figures.cross} An error occurred while parsing the GraphQL schema:\n\n`
+        )
+      );
+      stderr.write(String(e));
+      return 2;
+    }
+
+    throw e;
+  }
 
   const groupedErrors = groupErrorsBySchemaFilePath(errors, schemaSourceMap);
 
