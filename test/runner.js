@@ -37,6 +37,32 @@ describe('Runner', () => {
       assert.equal(2, exitCode);
     });
 
+    it('returns exit code 1 when there are errors', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--rules',
+        'fields-have-descriptions',
+        fixturePath,
+      ];
+
+      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      assert.equal(1, exitCode);
+    });
+
+    it('returns exit code 0 when there are errors', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--rules',
+        'fields-have-descriptions',
+        `${__dirname}/fixtures/valid.graphql`,
+      ];
+
+      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      assert.equal(0, exitCode);
+    });
+
     it('validates a single schema file and outputs in json', () => {
       const argv = [
         'node',

@@ -1,0 +1,5 @@
+# Query
+type Query {
+  # a
+  a: String!
+}
