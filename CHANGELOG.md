@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.13 (August 27th, 2017)
+
+- Add support for schemas that are split amongst multiple files. [#39](https://github.com/cjoudrey/graphql-schema-linter/pull/39)
+- Add what `file` an error occurred in to `JSONFormatter` output. [#39](https://github.com/cjoudrey/graphql-schema-linter/pull/39)
+
 ## 0.0.12 (August 16th, 2017)
 
 - Add `enum-values-all-caps` rule. [#30](https://github.com/cjoudrey/graphql-schema-linter/pull/30) (Thanks @goldcaddy77)
