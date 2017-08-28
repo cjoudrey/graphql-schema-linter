@@ -57,4 +57,31 @@ describe('TypesHaveDescriptions rule', () => {
     );
     assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
+
+  it('ignores type extensions', () => {
+    const ast = parse(`
+      # The query root
+      type Query {
+        a: String
+      }
+
+      extend type Query {
+        b: String
+      }
+
+      # Interface
+      interface Vehicle {
+        make: String!
+      }
+
+      extend type Vehicle {
+        something: String!
+      }
+    `);
+
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesHaveDescriptions]);
+
+    assert.equal(errors.length, 0);
+  });
 });

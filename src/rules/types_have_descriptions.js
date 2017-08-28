@@ -3,6 +3,10 @@ import { GraphQLError } from 'graphql/error';
 
 export function TypesHaveDescriptions(context) {
   return {
+    TypeExtensionDefinition(node) {
+      return false;
+    },
+
     InterfaceTypeDefinition(node) {
       if (getDescription(node)) {
         return;
