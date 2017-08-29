@@ -53,9 +53,12 @@ Options:
     output usage information
 ```
 
-## Config
+## Configuration file
 
-In addition to being able to specify rules on the command line, config can also be placed in the following locations:
+In addition to being able to configure `graphql-schema-linter` via command line options, it can also be configured via
+one of the following configuration files.
+
+For now, only `rules` can be configured in a configuration file, but more options may be added in the future.
 
 ### In `package.json`
 
