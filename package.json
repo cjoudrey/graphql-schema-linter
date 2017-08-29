@@ -1,7 +1,8 @@
 {
   "name": "graphql-schema-linter",
   "version": "0.0.15",
-  "description": "Command line tool and package to validate GraphQL schemas against a set of rules.",
+  "description":
+    "Command line tool and package to validate GraphQL schemas against a set of rules.",
   "author": "Christian Joudrey",
   "main": "lib/index.js",
   "scripts": {
@@ -26,7 +27,7 @@
     "husky": "^0.14.3",
     "lint-staged": "^4.0.3",
     "mocha": "^3.4.2",
-    "prettier": "^1.5.3"
+    "prettier": "^1.6.0"
   },
   "babel": {
     "presets": ["es2015", "stage-0"]
@@ -46,7 +47,10 @@
     "graphql-schema-linter": "lib/cli.js"
   },
   "lint-staged": {
-    "*.js": ["prettier --single-quote --trailing-comma es5 --write", "git add"],
-    "*.json": ["prettier --write", "git add"]
+    "*.{js,json}": ["prettier --write", "git add"]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }
