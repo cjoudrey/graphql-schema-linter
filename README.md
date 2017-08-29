@@ -53,7 +53,37 @@ Options:
     output usage information
 ```
 
+<<<<<<< HEAD
 ## Configuration file
+=======
+### Usage with pre-commit Hooks
+
+Using [lint-staged](https://github.com/okonet/lint-staged) and [husky](https://github.com/typicode/husky), you can lint
+your staged GraphQL schema file before you commmit.  First, install these packages:
+
+```bash
+yarn add --dev lint-staged husky
+```
+
+Then add a `precommit` script and a `lint-staged` key to your `package.json` like so:
+
+```json
+{
+  "scripts": {
+    "precommit": "graphql-schema-linter"
+  },
+  "lint-staged": {
+    "*.graphql": ["graphql-schema-linter **/*.graphql"]
+  }
+}
+```
+
+The above configuration assumes that you have either one `schema.graphql` file or multiple files that should be linted
+concatenated together.  If you have both client and server schema in the same project, you'll likely need to put
+multiple entries in the `lint-staged` object above - one for client and one for server.
+
+## Config
+>>>>>>> chore(lint-staged): update readme with lint-staged instructions
 
 In addition to being able to configure `graphql-schema-linter` via command line options, it can also be configured via
 one of the following configuration files.
