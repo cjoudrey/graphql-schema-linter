@@ -8,6 +8,12 @@
 
 ### Bug fixes
 
+## 0.0.16 (August 29th, 2017)
+
+### Bug fixes
+
+- Fix issue that prevented `graphql-schema-linter` from running on `lts/*` version of node. [#46](https://github.com/cjoudrey/graphql-schema-linter/pull/46) (Thanks @goldcaddy77)
+
 ## 0.0.15 (August 28th, 2017)
 
 ### Bug fixes
