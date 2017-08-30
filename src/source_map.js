@@ -29,11 +29,11 @@ export class SourceMap {
   }
 
   getCombinedSource() {
-    return Object.values(this.sourceFiles).join('\n');
+    return getObjectValues(this.sourceFiles).join('\n');
   }
 
   getOriginalPathForLine(lineNumber) {
-    const offsets = Object.values(this.offsets);
+    const offsets = getObjectValues(this.offsets);
 
     for (var i = 0; i < offsets.length; i++) {
       if (
@@ -48,4 +48,10 @@ export class SourceMap {
   getOffsetForPath(path) {
     return this.offsets[path];
   }
+}
+
+function getObjectValues(arr) {
+  return Object.keys(arr).map(function(key) {
+    return arr[key];
+  });
 }
