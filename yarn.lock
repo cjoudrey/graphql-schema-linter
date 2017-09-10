@@ -1014,9 +1014,9 @@ cosmiconfig@^1.1.0:
     pinkie-promise "^2.0.0"
     require-from-string "^1.1.0"
 
-cosmiconfig@davidtheclark/cosmiconfig#3.0:
+cosmiconfig@davidtheclark/cosmiconfig#6eb3cc85d3a435e6b9e252b341e601960312f410:
   version "2.2.2"
-  resolved "https://codeload.github.com/davidtheclark/cosmiconfig/tar.gz/63195a3836522f9ffaa6b5c3d99159609b569b44"
+  resolved "https://codeload.github.com/davidtheclark/cosmiconfig/tar.gz/6eb3cc85d3a435e6b9e252b341e601960312f410"
   dependencies:
     is-directory "^0.3.1"
     is-promise "^2.1.0"
