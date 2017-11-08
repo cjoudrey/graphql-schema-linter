@@ -70,7 +70,7 @@ Then add a `precommit` script and a `lint-staged` key to your `package.json` lik
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.graphql": ["graphql-schema-linter **/*.graphql"]
+    "*.graphql": ["graphql-schema-linter"]
   }
 }
 ```
@@ -85,8 +85,8 @@ multiple entries in the `lint-staged` object above - one for client and one for 
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "client/*.graphql": ["graphql-schema-linter client/**/*.graphql"],
-    "server/*.graphql": ["graphql-schema-linter server/**/*.graphql"],
+    "client/*.graphql": ["graphql-schema-linter"],
+    "server/*.graphql": ["graphql-schema-linter"],
   }
 }
 ```
