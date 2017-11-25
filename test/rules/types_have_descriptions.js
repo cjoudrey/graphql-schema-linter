@@ -30,7 +30,7 @@ describe('TypesHaveDescriptions rule', () => {
       errors[0].message,
       'The scalar type `DateTime` is missing a description.'
     );
-    assert.deepEqual(errors[0].locations, [{ line: 2, column: 7 }]);
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches object types that have no description', () => {

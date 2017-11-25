@@ -22,6 +22,10 @@ export function TypesHaveDescriptions(context) {
       return false;
     },
 
+    ScalarTypeDefinition(node) {
+      validateTypeHasDescription(context, node, 'scalar');
+    },
+
     InterfaceTypeDefinition(node) {
       validateTypeHasDescription(context, node, 'interface');
     },
