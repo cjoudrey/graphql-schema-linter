@@ -7,6 +7,36 @@ import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { TypesHaveDescriptions } from '../../src/rules/types_have_descriptions';
 
 describe('TypesHaveDescriptions rule', () => {
+  it('catches enum types that have no description', () => {
+    const ast = parse(`
+      # Query
+      type QueryRoot {
+        a: String
+      }
+
+      enum STATUS {
+        DRAFT
+        PUBLISHED
+        HIDDEN
+      }
+
+      schema {
+        query: QueryRoot
+      }
+    `);
+
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesHaveDescriptions]);
+
+    assert.equal(errors.length, 1);
+
+    assert.equal(
+      errors[0].message,
+      'The enum type `STATUS` is missing a description.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
+  });
+
   it('catches scalar types that have no description', () => {
     const ast = parse(`
       # Query

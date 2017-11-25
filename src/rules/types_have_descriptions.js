@@ -26,20 +26,24 @@ export function TypesHaveDescriptions(context) {
       validateTypeHasDescription(context, node, 'scalar');
     },
 
-    InterfaceTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'interface');
+    ObjectTypeDefinition(node) {
+      validateTypeHasDescription(context, node, 'object');
     },
 
-    InputObjectTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'input object');
+    InterfaceTypeDefinition(node) {
+      validateTypeHasDescription(context, node, 'interface');
     },
 
     UnionTypeDefinition(node) {
       validateTypeHasDescription(context, node, 'union');
     },
 
-    ObjectTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'object');
+    EnumTypeDefinition(node) {
+      validateTypeHasDescription(context, node, 'enum');
+    },
+
+    InputObjectTypeDefinition(node) {
+      validateTypeHasDescription(context, node, 'input object');
     },
   };
 }
