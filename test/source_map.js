@@ -10,6 +10,9 @@ const sourceFiles = {
   username: String!
   email: String!
 }`,
+
+  'schema.graphql': 'schema { query: Query }',
+  'comment.graphql': 'type Comment { user: User! body: String! }',
 };
 
 describe('SourceMap', () => {
@@ -25,7 +28,9 @@ describe('SourceMap', () => {
 type User {
   username: String!
   email: String!
-}`
+}
+schema { query: Query }
+type Comment { user: User! body: String! }`
       );
     });
   });
@@ -41,6 +46,8 @@ type User {
       assert.equal('user.graphql', sourceMap.getOriginalPathForLine(5));
       assert.equal('user.graphql', sourceMap.getOriginalPathForLine(6));
       assert.equal('user.graphql', sourceMap.getOriginalPathForLine(7));
+      assert.equal('schema.graphql', sourceMap.getOriginalPathForLine(8));
+      assert.equal('comment.graphql', sourceMap.getOriginalPathForLine(9));
     });
   });
 });
