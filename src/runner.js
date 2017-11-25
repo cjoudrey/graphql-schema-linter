@@ -60,23 +60,7 @@ export function run(stdout, stdin, stderr, argv) {
   const rules = configuration.getRules();
   const schemaSourceMap = configuration.getSchemaSourceMap();
 
-  var errors;
-
-  try {
-    errors = validateSchemaDefinition(schema, rules);
-  } catch (e) {
-    if (e instanceof GraphQLError) {
-      stderr.write(
-        chalk.red(
-          `${figures.cross} An error occurred while parsing the GraphQL schema:\n\n`
-        )
-      );
-      stderr.write(String(e));
-      return 2;
-    }
-
-    throw e;
-  }
+  const errors = validateSchemaDefinition(schema, rules);
 
   const groupedErrors = groupErrorsBySchemaFilePath(errors, schemaSourceMap);
 

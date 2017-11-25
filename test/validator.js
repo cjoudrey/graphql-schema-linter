@@ -21,6 +21,17 @@ describe('validateSchemaDefinition', () => {
 
     assert.deepEqual(errorLineNumbers.sort(), errorLineNumbers);
   });
+
+  it('catches and returns GraphQL syntax errors', () => {
+    const schemaPath = `${__dirname}/fixtures/invalid.graphql`;
+    const configuration = new Configuration({ schemaPaths: [schemaPath] });
+
+    const schemaDefinition = configuration.getSchema();
+
+    const errors = validateSchemaDefinition(schemaDefinition, []);
+
+    assert.equal(1, errors.length);
+  });
 });
 
 function DummyValidator(context) {
