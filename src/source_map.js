@@ -11,7 +11,8 @@ export class SourceMap {
 
     return paths.reduce((offsets, path) => {
       const currentSegment = this.sourceFiles[path];
-      const amountLines = currentSegment.match(/\r?\n/g).length;
+      const currentSegmentLines = currentSegment.match(/\r?\n/g);
+      const amountLines = currentSegmentLines ? currentSegmentLines.length : 0;
 
       const startLine = currentOffset;
       const endLine = currentOffset + amountLines;
