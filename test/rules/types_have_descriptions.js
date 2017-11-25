@@ -30,6 +30,34 @@ describe('TypesHaveDescriptions rule', () => {
     assert.deepEqual(errors[0].locations, [{ line: 2, column: 7 }]);
   });
 
+  it('catches input types that have no description', () => {
+    const ast = parse(`
+      # Query
+      type QueryRoot {
+        a: String
+      }
+
+      input AddStar {
+        id: ID!
+      }
+
+      schema {
+        query: QueryRoot
+      }
+    `);
+
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesHaveDescriptions]);
+
+    assert.equal(errors.length, 1);
+
+    assert.equal(
+      errors[0].message,
+      'The input type `AddStar` is missing a description.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
+  });
+
   it('catches interface types that have no description', () => {
     const ast = parse(`
       # The query root
