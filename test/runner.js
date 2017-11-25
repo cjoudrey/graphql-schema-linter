@@ -26,15 +26,21 @@ describe('Runner', () => {
   const mockStdin = { fd: openSync(fixturePath, 'r') };
 
   describe('run', () => {
-    it('returns exit code 2 when schema is invalid', () => {
+    it('returns exit code 1 when schema has a syntax error', () => {
       const argv = [
         'node',
         'lib/cli.js',
+        '--format',
+        'json',
         `${__dirname}/fixtures/invalid.graphql`,
       ];
 
       const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
-      assert.equal(2, exitCode);
+      assert.equal(1, exitCode);
+
+      var errors = JSON.parse(stdout)['errors'];
+      assert(errors);
+      assert.equal(1, errors.length);
     });
 
     it('returns exit code 1 when there are errors', () => {
