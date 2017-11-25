@@ -152,7 +152,7 @@ This rule will validate that interface types and object types have capitalized n
 
 ### `types-have-descriptions`
 
-This will will validate that interface types and object types have descriptions.
+This will will validate that interface types, object types, union types, scalar types, enum types and input types have descriptions.
 
 ## Output formatters
 

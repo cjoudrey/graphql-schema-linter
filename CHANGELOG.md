@@ -8,6 +8,20 @@
 
 ### Bug fixes
 
+## 0.0.19 (November 25th, 2017)
+
+### New features
+
+- The `types-have-descriptions` rule now validates that `union` types have a description. [#56](https://github.com/cjoudrey/graphql-schema-linter/pull/56)
+- The `types-have-descriptions` rule now validates that `input` types have a description. [#57](https://github.com/cjoudrey/graphql-schema-linter/pull/57)
+- The `types-have-descriptions` rule now validates that `scalar` types have a description. [#60](https://github.com/cjoudrey/graphql-schema-linter/pull/60)
+- The `types-have-descriptions` rule now validates that `enum` types have a description. [#61](https://github.com/cjoudrey/graphql-schema-linter/pull/61)
+- GraphQL syntax errors will now be reported like other errors instead of crashing. [#59](https://github.com/cjoudrey/graphql-schema-linter/pull/59)
+
+### Bug fixes
+
+- Fix a crash that occured when a `.graphql` file had no line breaks. [#58](https://github.com/cjoudrey/graphql-schema-linter/pull/58)
+
 ## 0.0.18 (October 11th, 2017)
 
 - Remove dependency on `git`. [#50](https://github.com/cjoudrey/graphql-schema-linter/pull/50) (Thanks @Caerbannog)
