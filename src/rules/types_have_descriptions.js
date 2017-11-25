@@ -22,6 +22,21 @@ export function TypesHaveDescriptions(context) {
       );
     },
 
+    InputObjectTypeDefinition(node) {
+      if (getDescription(node)) {
+        return;
+      }
+
+      const interfaceTypeName = node.name.value;
+
+      context.reportError(
+        new GraphQLError(
+          `The input type \`${interfaceTypeName}\` is missing a description.`,
+          [node]
+        )
+      );
+    },
+
     UnionTypeDefinition(node) {
       if (getDescription(node)) {
         return;
