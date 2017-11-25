@@ -22,6 +22,21 @@ export function TypesHaveDescriptions(context) {
       );
     },
 
+    UnionTypeDefinition(node) {
+      if (getDescription(node)) {
+        return;
+      }
+
+      const unionTypeName = node.name.value;
+
+      context.reportError(
+        new GraphQLError(
+          `The union type \`${unionTypeName}\` is missing a description.`,
+          [node]
+        )
+      );
+    },
+
     ObjectTypeDefinition(node) {
       if (getDescription(node)) {
         return;

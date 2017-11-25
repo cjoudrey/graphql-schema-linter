@@ -58,6 +58,42 @@ describe('TypesHaveDescriptions rule', () => {
     assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
+  it('catches union types that have no description', () => {
+    const ast = parse(`
+      # The query root
+      type QueryRoot {
+        a: String
+      }
+
+      # A
+      type A {
+        a: String
+      }
+
+      # B
+      type B {
+        b: String
+      }
+
+      union AB = A | B
+
+      schema {
+        query: QueryRoot
+      }
+    `);
+
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesHaveDescriptions]);
+
+    assert.equal(errors.length, 1);
+
+    assert.equal(
+      errors[0].message,
+      'The union type `AB` is missing a description.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 17, column: 7 }]);
+  });
+
   it('ignores type extensions', () => {
     const ast = parse(`
       # The query root
