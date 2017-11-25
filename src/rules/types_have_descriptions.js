@@ -1,6 +1,21 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { GraphQLError } from 'graphql/error';
 
+function validateTypeHasDescription(context, node, typeKind) {
+  if (getDescription(node)) {
+    return;
+  }
+
+  const interfaceTypeName = node.name.value;
+
+  context.reportError(
+    new GraphQLError(
+      `The ${typeKind} type \`${interfaceTypeName}\` is missing a description.`,
+      [node]
+    )
+  );
+}
+
 export function TypesHaveDescriptions(context) {
   return {
     TypeExtensionDefinition(node) {
@@ -8,63 +23,19 @@ export function TypesHaveDescriptions(context) {
     },
 
     InterfaceTypeDefinition(node) {
-      if (getDescription(node)) {
-        return;
-      }
-
-      const interfaceTypeName = node.name.value;
-
-      context.reportError(
-        new GraphQLError(
-          `The interface type \`${interfaceTypeName}\` is missing a description.`,
-          [node]
-        )
-      );
+      validateTypeHasDescription(context, node, 'interface');
     },
 
     InputObjectTypeDefinition(node) {
-      if (getDescription(node)) {
-        return;
-      }
-
-      const interfaceTypeName = node.name.value;
-
-      context.reportError(
-        new GraphQLError(
-          `The input type \`${interfaceTypeName}\` is missing a description.`,
-          [node]
-        )
-      );
+      validateTypeHasDescription(context, node, 'input object');
     },
 
     UnionTypeDefinition(node) {
-      if (getDescription(node)) {
-        return;
-      }
-
-      const unionTypeName = node.name.value;
-
-      context.reportError(
-        new GraphQLError(
-          `The union type \`${unionTypeName}\` is missing a description.`,
-          [node]
-        )
-      );
+      validateTypeHasDescription(context, node, 'union');
     },
 
     ObjectTypeDefinition(node) {
-      if (getDescription(node)) {
-        return;
-      }
-
-      const objectTypeName = node.name.value;
-
-      context.reportError(
-        new GraphQLError(
-          `The object type \`${objectTypeName}\` is missing a description.`,
-          [node]
-        )
-      );
+      validateTypeHasDescription(context, node, 'object');
     },
   };
 }

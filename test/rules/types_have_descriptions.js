@@ -7,6 +7,32 @@ import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { TypesHaveDescriptions } from '../../src/rules/types_have_descriptions';
 
 describe('TypesHaveDescriptions rule', () => {
+  it('catches scalar types that have no description', () => {
+    const ast = parse(`
+      # Query
+      type QueryRoot {
+        a: String
+      }
+
+      scalar DateTime
+
+      schema {
+        query: QueryRoot
+      }
+    `);
+
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesHaveDescriptions]);
+
+    assert.equal(errors.length, 1);
+
+    assert.equal(
+      errors[0].message,
+      'The scalar type `DateTime` is missing a description.'
+    );
+    assert.deepEqual(errors[0].locations, [{ line: 2, column: 7 }]);
+  });
+
   it('catches object types that have no description', () => {
     const ast = parse(`
       type QueryRoot {
@@ -53,7 +79,7 @@ describe('TypesHaveDescriptions rule', () => {
 
     assert.equal(
       errors[0].message,
-      'The input type `AddStar` is missing a description.'
+      'The input object type `AddStar` is missing a description.'
     );
     assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
