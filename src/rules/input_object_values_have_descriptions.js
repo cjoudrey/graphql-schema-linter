@@ -1,5 +1,5 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
-import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../validation_error';
 
 export function InputObjectValuesHaveDescriptions(context) {
   return {
@@ -18,7 +18,8 @@ export function InputObjectValuesHaveDescriptions(context) {
       const inputObjectName = parentNode.name.value;
 
       context.reportError(
-        new GraphQLError(
+        new ValidationError(
+          'input-object-values-have-descriptions',
           `The input value \`${inputObjectName}.${inputValueName}\` is missing a description.`,
           [node]
         )

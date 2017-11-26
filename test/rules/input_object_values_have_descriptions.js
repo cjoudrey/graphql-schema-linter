@@ -26,6 +26,7 @@ describe('InputObjectValuesHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'input-object-values-have-descriptions');
     assert.equal(
       errors[0].message,
       'The input value `User.username` is missing a description.'
