@@ -138,6 +138,10 @@ This rule will validate that all deprecations have a reason.
 
 This rule will validate that all enum values are capitalized.
 
+### `enum-values-have-descriptions`
+
+This rule will validate that all enum values have a description.
+
 ### `enum-values-sorted-alphabetically`
 
 This rule will validate that all enum values are sorted alphabetically.
