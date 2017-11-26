@@ -8,6 +8,13 @@
 
 ### Bug fixes
 
+## 0.0.20 (November 26th, 2017)
+
+### New features
+
+- Add `input-object-values-have-descriptions` rule. [#65](https://github.com/cjoudrey/graphql-schema-linter/pull/65)
+- Add `enum-values-have-descriptions` rule. [#66](https://github.com/cjoudrey/graphql-schema-linter/pull/66)
+
 ## 0.0.19 (November 25th, 2017)
 
 ### New features
