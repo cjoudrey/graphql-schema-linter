@@ -17,6 +17,7 @@ require('./rules/enum_values_sorted_alphabetically');
 require('./rules/enum_values_all_caps');
 require('./rules/types_are_capitalized');
 require('./rules/defined_types_are_used');
+require('./rules/input_object_values_have_descriptions');
 require('./config/rc_file/test');
 require('./config/package_json/test');
 require('./config/js_file/test');

@@ -144,7 +144,11 @@ This rule will validate that all enum values are sorted alphabetically.
 
 ### `fields-have-descriptions`
 
-This rule will validate that all fields have a description.
+This rule will validate that object type fields and interface type fields have a description.
+
+### `input-object-values-have-descriptions`
+
+This rule will validate that input object values have a description.
 
 ### `types-are-capitalized`
 
