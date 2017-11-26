@@ -2,5 +2,11 @@ language: node_js
 node_js:
   - "node"
   - "lts/*"
+before_script:
+  - yarn prepare
+script:
+  - yarn test
+  - node lib/cli.js --version
+  - node lib/cli.js test/fixtures/valid.graphql
 notifications:
   email: false
