@@ -6,7 +6,11 @@
 
 ### New features
 
+## 0.0.21 (November 26th, 2017)
+
 ### Bug fixes
+
+- Fix a crash when running `graphql-schema-linter`. [#68](https://github.com/cjoudrey/graphql-schema-linter/issues/68)
 
 ## 0.0.20 (November 26th, 2017)
 
