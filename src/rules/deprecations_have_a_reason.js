@@ -1,5 +1,5 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
-import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../validation_error';
 
 export function DeprecationsHaveAReason(context) {
   return {
@@ -18,7 +18,8 @@ export function DeprecationsHaveAReason(context) {
       const parentName = ancestors[ancestors.length - 1].name.value;
 
       context.reportError(
-        new GraphQLError(
+        new ValidationError(
+          'deprecations-have-a-reason',
           `The field \`${parentName}.${fieldName}\` is deprecated but has no deprecation reason.`,
           [deprecatedDirective]
         )
@@ -40,7 +41,8 @@ export function DeprecationsHaveAReason(context) {
       const parentName = ancestors[ancestors.length - 1].name.value;
 
       context.reportError(
-        new GraphQLError(
+        new ValidationError(
+          'deprecations-have-a-reason',
           `The enum value \`${parentName}.${enumValueName}\` is deprecated but has no deprecation reason.`,
           [deprecatedDirective]
         )
