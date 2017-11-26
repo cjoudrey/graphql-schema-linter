@@ -1,4 +1,4 @@
-import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../validation_error';
 
 export function DefinedTypesAreUsed(context) {
   var ignoredTypes = ['Query', 'Mutatation', 'Subscription'];
@@ -28,7 +28,8 @@ export function DefinedTypesAreUsed(context) {
         definedTypes.forEach(node => {
           if (!referencedTypes.has(node.name.value)) {
             context.reportError(
-              new GraphQLError(
+              new ValidationError(
+                'defined-types-are-used',
                 `The type \`${node.name.value}\` is defined in the ` +
                   `schema but not used anywhere.`,
                 [node]

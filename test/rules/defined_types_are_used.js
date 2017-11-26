@@ -23,6 +23,7 @@ describe('DefinedTypesAreUsed rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'defined-types-are-used');
     assert.equal(
       errors[0].message,
       'The type `A` is defined in the schema but not used anywhere.'
@@ -46,6 +47,7 @@ describe('DefinedTypesAreUsed rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'defined-types-are-used');
     assert.equal(
       errors[0].message,
       'The type `A` is defined in the schema but not used anywhere.'
@@ -67,6 +69,7 @@ describe('DefinedTypesAreUsed rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'defined-types-are-used');
     assert.equal(
       errors[0].message,
       'The type `A` is defined in the schema but not used anywhere.'
@@ -90,6 +93,7 @@ describe('DefinedTypesAreUsed rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'defined-types-are-used');
     assert.equal(
       errors[0].message,
       'The type `A` is defined in the schema but not used anywhere.'
@@ -111,6 +115,7 @@ describe('DefinedTypesAreUsed rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'defined-types-are-used');
     assert.equal(
       errors[0].message,
       'The type `A` is defined in the schema but not used anywhere.'
