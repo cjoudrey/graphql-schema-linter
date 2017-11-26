@@ -4,8 +4,8 @@ import { TypesHaveDescriptions } from './types_have_descriptions.js';
 import { TypesAreCapitalized } from './types_are_capitalized.js';
 import { EnumValuesSortedAlphabetically } from './enum_values_sorted_alphabetically';
 import { EnumValuesAllCaps } from './enum_values_all_caps';
-import { InputObjectValuesHaveDescriptions } from '../../src/rules/input_object_values_have_descriptions';
-import { EnumValuesHaveDescriptions } from '../../src/rules/enum_values_have_descriptions';
+import { InputObjectValuesHaveDescriptions } from './input_object_values_have_descriptions';
+import { EnumValuesHaveDescriptions } from './enum_values_have_descriptions';
 
 module.exports = [
   EnumValuesSortedAlphabetically,
