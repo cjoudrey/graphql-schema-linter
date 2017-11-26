@@ -1,5 +1,5 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
-import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../validation_error';
 
 export function EnumValuesHaveDescriptions(context) {
   return {
@@ -12,7 +12,8 @@ export function EnumValuesHaveDescriptions(context) {
       const parentName = ancestors[ancestors.length - 1].name.value;
 
       context.reportError(
-        new GraphQLError(
+        new ValidationError(
+          'enum-values-have-descriptions',
           `The enum value \`${parentName}.${enumValue}\` is missing a description.`,
           [node]
         )
