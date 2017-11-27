@@ -23,7 +23,7 @@ function generateErrorsForFile(file, errors) {
     return {
       location: chalk.dim(`${location.line}:${location.column * 4}`),
       message: error.message,
-      // TODO: Add rule name
+      rule: chalk.dim(` ${error.ruleName}`),
     };
   });
 
