@@ -27,12 +27,14 @@ describe('FieldsHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 2);
 
+    assert.equal(errors[0].ruleName, 'fields-have-descriptions');
     assert.equal(
       errors[0].message,
       'The field `QueryRoot.withoutDescription` is missing a description.'
     );
     assert.deepEqual(errors[0].locations, [{ line: 3, column: 9 }]);
 
+    assert.equal(errors[1].ruleName, 'fields-have-descriptions');
     assert.equal(
       errors[1].message,
       'The field `QueryRoot.withoutDescriptionAgain` is missing a description.'
