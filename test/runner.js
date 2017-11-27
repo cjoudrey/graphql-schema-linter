@@ -171,6 +171,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/schema.graphql`,
         errors[0].location.file
       );
+      assert.equal(errors[0].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `User.username` is missing a description.',
@@ -181,6 +182,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/user.graphql`,
         errors[1].location.file
       );
+      assert.equal(errors[1].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `User.email` is missing a description.',
@@ -191,6 +193,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/user.graphql`,
         errors[2].location.file
       );
+      assert.equal(errors[2].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `Query.viewer` is missing a description.',
@@ -201,6 +204,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/user.graphql`,
         errors[3].location.file
       );
+      assert.equal(errors[3].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `Comment.body` is missing a description.',
@@ -211,6 +215,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/comment.graphql`,
         errors[4].location.file
       );
+      assert.equal(errors[4].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `Comment.author` is missing a description.',
@@ -221,6 +226,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/comment.graphql`,
         errors[5].location.file
       );
+      assert.equal(errors[5].rule, 'fields-have-descriptions');
     });
   });
 });
