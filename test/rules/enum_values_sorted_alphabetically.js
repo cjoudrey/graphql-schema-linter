@@ -19,6 +19,7 @@ describe('EnumValuesSortedAlphabetically rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'enum-values-sorted-alphabetically');
     assert.equal(
       errors[0].message,
       'The enum `Stage` should be sorted alphabetically.'
