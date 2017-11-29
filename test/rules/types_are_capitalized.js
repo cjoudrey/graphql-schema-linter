@@ -60,4 +60,28 @@ describe('TypesAreCapitalized rule', () => {
     );
     assert.deepEqual(errors[0].locations, [{ line: 6, column: 17 }]);
   });
+
+  it('ignores types that are part of the introspection system (aka __)', () => {
+    const ast = parse(`
+      type QueryRoot {
+        a: String
+      }
+
+      schema {
+        query: QueryRoot
+      }
+
+      type __EnumValue {
+        deprecationReason: String
+        description: String
+        isDeprecated: Boolean!
+        name: String!
+      }
+    `);
+
+    const schema = buildASTSchema(ast);
+    const errors = validate(schema, ast, [TypesAreCapitalized]);
+
+    assert.equal(errors.length, 0);
+  });
 });
