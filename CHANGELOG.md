@@ -6,6 +6,12 @@
 
 ### New features
 
+## 0.0.22 (November 27th, 2017)
+
+### New features
+
+- Enable [`defined-types-are-used`](https://github.com/cjoudrey/graphql-schema-linter#defined-types-are-used) rule. [#73](https://github.com/cjoudrey/graphql-schema-linter/pull/73) (Thanks @bwillis)
+
 ## 0.0.21 (November 26th, 2017)
 
 ### Bug fixes
