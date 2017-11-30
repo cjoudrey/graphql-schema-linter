@@ -3,7 +3,6 @@ import { rules } from './index.js';
 import { version } from '../package.json';
 import { Command } from 'commander';
 import { Configuration } from './configuration.js';
-import { GraphQLError } from 'graphql/error';
 import figures from 'figures';
 import chalk from 'chalk';
 

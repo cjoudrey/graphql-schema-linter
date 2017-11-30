@@ -30,6 +30,7 @@ describe('TypesHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'types-have-descriptions');
     assert.equal(
       errors[0].message,
       'The enum type `STATUS` is missing a description.'
@@ -56,6 +57,7 @@ describe('TypesHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'types-have-descriptions');
     assert.equal(
       errors[0].message,
       'The scalar type `DateTime` is missing a description.'
@@ -79,6 +81,7 @@ describe('TypesHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'types-have-descriptions');
     assert.equal(
       errors[0].message,
       'The object type `QueryRoot` is missing a description.'
@@ -107,6 +110,7 @@ describe('TypesHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'types-have-descriptions');
     assert.equal(
       errors[0].message,
       'The input object type `AddStar` is missing a description.'
@@ -135,6 +139,7 @@ describe('TypesHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'types-have-descriptions');
     assert.equal(
       errors[0].message,
       'The interface type `A` is missing a description.'
@@ -171,6 +176,7 @@ describe('TypesHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'types-have-descriptions');
     assert.equal(
       errors[0].message,
       'The union type `AB` is missing a description.'

@@ -27,7 +27,8 @@
     "husky": "^0.14.3",
     "lint-staged": "^4.0.3",
     "mocha": "^3.4.2",
-    "prettier": "^1.6.0"
+    "prettier": "^1.6.0",
+    "strip-ansi": "^4.0.0"
   },
   "babel": {
     "presets": ["es2015", "stage-0"]

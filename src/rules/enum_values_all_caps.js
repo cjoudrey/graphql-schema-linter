@@ -1,4 +1,4 @@
-import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../validation_error';
 
 export function EnumValuesAllCaps(context) {
   return {
@@ -8,7 +8,8 @@ export function EnumValuesAllCaps(context) {
 
       if (enumValueName !== enumValueName.toUpperCase()) {
         context.reportError(
-          new GraphQLError(
+          new ValidationError(
+            'enum-values-all-caps',
             `The enum value \`${parentName}.${enumValueName}\` should be uppercase.`,
             [node]
           )

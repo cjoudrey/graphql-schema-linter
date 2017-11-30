@@ -1,4 +1,4 @@
-import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../validation_error';
 
 export function EnumValuesSortedAlphabetically(context) {
   return {
@@ -15,7 +15,8 @@ export function EnumValuesSortedAlphabetically(context) {
 
       if (!arraysEqual(enumValues, enumValues.slice().sort())) {
         context.reportError(
-          new GraphQLError(
+          new ValidationError(
+            'enum-values-sorted-alphabetically',
             'The enum `' +
               node.name.value +
               '` should be sorted alphabetically.',

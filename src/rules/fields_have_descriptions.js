@@ -1,5 +1,5 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
-import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../validation_error';
 
 export function FieldsHaveDescriptions(context) {
   return {
@@ -12,7 +12,8 @@ export function FieldsHaveDescriptions(context) {
       const parentName = ancestors[ancestors.length - 1].name.value;
 
       context.reportError(
-        new GraphQLError(
+        new ValidationError(
+          'fields-have-descriptions',
           `The field \`${parentName}.${fieldName}\` is missing a description.`,
           [node]
         )

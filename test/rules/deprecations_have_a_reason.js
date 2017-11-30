@@ -29,6 +29,7 @@ describe('DeprecationsHaveAReason rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'deprecations-have-a-reason');
     assert.equal(
       errors[0].message,
       'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.'
@@ -58,6 +59,7 @@ describe('DeprecationsHaveAReason rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'deprecations-have-a-reason');
     assert.equal(
       errors[0].message,
       'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.'
@@ -87,6 +89,7 @@ describe('DeprecationsHaveAReason rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'deprecations-have-a-reason');
     assert.equal(
       errors[0].message,
       'The enum value `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.'

@@ -1,6 +1,7 @@
 import assert from 'assert';
 import { run } from '../src/runner.js';
 import { openSync } from 'fs';
+const stripAnsi = require('strip-ansi');
 
 describe('Runner', () => {
   var stdout;
@@ -69,6 +70,46 @@ describe('Runner', () => {
       assert.equal(0, exitCode);
     });
 
+    it('validates a single schema file and outputs in text', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'text',
+        '--rules',
+        'fields-have-descriptions',
+        fixturePath,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      const expected =
+        `${fixturePath}\n` +
+        '2:12 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
+        '\n' +
+        '✖ 1 error detected\n';
+
+      assert.equal(expected, stripAnsi(stdout));
+    });
+
+    it('validates schema passed in via stdin and outputs in json', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'json',
+        '--rules',
+        'fields-have-descriptions',
+        '--stdin',
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      var errors = JSON.parse(stdout)['errors'];
+      assert(errors);
+      assert.equal(1, errors.length);
+    });
+
     it('validates a single schema file and outputs in json', () => {
       const argv = [
         'node',
@@ -83,8 +124,16 @@ describe('Runner', () => {
       run(mockStdout, mockStdin, mockStderr, argv);
 
       var errors = JSON.parse(stdout)['errors'];
-      assert(errors);
-      assert.equal(1, errors.length);
+      assert.deepEqual(
+        [
+          {
+            message: 'The field `Query.a` is missing a description.',
+            location: { column: 3, line: 2, file: fixturePath },
+            rule: 'fields-have-descriptions',
+          },
+        ],
+        errors
+      );
     });
 
     it('validates schema passed in via stdin and outputs in json', () => {
@@ -171,6 +220,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/schema.graphql`,
         errors[0].location.file
       );
+      assert.equal(errors[0].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `User.username` is missing a description.',
@@ -181,6 +231,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/user.graphql`,
         errors[1].location.file
       );
+      assert.equal(errors[1].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `User.email` is missing a description.',
@@ -191,6 +242,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/user.graphql`,
         errors[2].location.file
       );
+      assert.equal(errors[2].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `Query.viewer` is missing a description.',
@@ -201,6 +253,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/user.graphql`,
         errors[3].location.file
       );
+      assert.equal(errors[3].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `Comment.body` is missing a description.',
@@ -211,6 +264,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/comment.graphql`,
         errors[4].location.file
       );
+      assert.equal(errors[4].rule, 'fields-have-descriptions');
 
       assert.equal(
         'The field `Comment.author` is missing a description.',
@@ -221,6 +275,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/comment.graphql`,
         errors[5].location.file
       );
+      assert.equal(errors[5].rule, 'fields-have-descriptions');
     });
   });
 });

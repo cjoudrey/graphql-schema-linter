@@ -27,6 +27,7 @@ describe('TypesAreCapitalized rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'types-are-capitalized');
     assert.equal(
       errors[0].message,
       'The object type `a` should start with a capital letter.'
@@ -54,6 +55,7 @@ describe('TypesAreCapitalized rule', () => {
 
     assert.equal(errors.length, 1);
 
+    assert.equal(errors[0].ruleName, 'types-are-capitalized');
     assert.equal(
       errors[0].message,
       'The interface type `a` should start with a capital letter.'

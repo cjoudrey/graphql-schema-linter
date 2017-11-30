@@ -16,6 +16,7 @@ describe('EnumValuesAllCaps rule', () => {
 
     assert.equal(errors.length, 2);
 
+    assert.equal(errors[0].ruleName, 'enum-values-all-caps');
     assert.equal(
       errors[0].message,
       'The enum value `Stage.aaa` should be uppercase.'

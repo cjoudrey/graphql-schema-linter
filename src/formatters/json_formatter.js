@@ -14,6 +14,7 @@ export default function JSONFormatter(errorsGroupedByFile) {
             column: error.locations[0].column,
             file: file,
           },
+          rule: error.ruleName,
         };
       })
     );

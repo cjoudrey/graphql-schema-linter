@@ -1,5 +1,5 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
-import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../validation_error';
 
 function validateTypeHasDescription(context, node, typeKind) {
   if (getDescription(node)) {
@@ -9,7 +9,8 @@ function validateTypeHasDescription(context, node, typeKind) {
   const interfaceTypeName = node.name.value;
 
   context.reportError(
-    new GraphQLError(
+    new ValidationError(
+      'types-have-descriptions',
       `The ${typeKind} type \`${interfaceTypeName}\` is missing a description.`,
       [node]
     )

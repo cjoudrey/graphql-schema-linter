@@ -32,12 +32,14 @@ describe('EnumValuesHaveDescriptions rule', () => {
 
     assert.equal(errors.length, 2);
 
+    assert.equal(errors[0].ruleName, 'enum-values-have-descriptions');
     assert.equal(
       errors[0].message,
       'The enum value `Status.DRAFT` is missing a description.'
     );
     assert.deepEqual(errors[0].locations, [{ line: 11, column: 9 }]);
 
+    assert.equal(errors[1].ruleName, 'enum-values-have-descriptions');
     assert.equal(
       errors[1].message,
       'The enum value `Status.PUBLISHED` is missing a description.'
