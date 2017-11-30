@@ -6,6 +6,12 @@
 
 ### New features
 
+## 0.0.23 (November 28th, 2017)
+
+### New features
+
+- Errors now include the name of the rule that caused the error. [#71](https://github.com/cjoudrey/graphql-schema-linter/pull/71)
+
 ## 0.0.22 (November 27th, 2017)
 
 ### New features
