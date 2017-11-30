@@ -173,8 +173,8 @@ The following formatters are currently available: `text`, `json`.
 Sample output:
 
 ```
-5:1 The object type `QueryRoot` is missing a description.
-6:3 The field `QueryRoot.a` is missing a description.
+5:1 The object type `QueryRoot` is missing a description.  types-have-descriptions
+6:3 The field `QueryRoot.a` is missing a description.      fields-have-descriptions
 
 2 errors detected
 ```
@@ -194,7 +194,8 @@ Sample output:
         "line": 5,
         "column": 1,
         "file": "schema.graphql"
-      }
+      },
+      "rule": "types-have-descriptions"
     },
     {
       "message": "The field `QueryRoot.a` is missing a description.",
@@ -202,7 +203,8 @@ Sample output:
         "line": 6,
         "column": 3,
         "file": "schema.graphql"
-      }
+      },
+      "rule": "fields-have-descriptions"
     }
   ]
 }
