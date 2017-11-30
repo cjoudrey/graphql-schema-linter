@@ -2,7 +2,7 @@
 
 This package provides a command line tool to validate GraphQL schema definitions against a set of rules.
 
-![](https://raw.githubusercontent.com/cjoudrey/graphql-schema-linter/master/screenshot-v0.0.14.png)
+![](https://raw.githubusercontent.com/cjoudrey/graphql-schema-linter/master/screenshot-v0.0.23.png)
 
 If you're looking to lint your GraphQL queries, check out this ESLint plugin: [apollographql/eslint-plugin-graphql](https://github.com/apollographql/eslint-plugin-graphql).
 
