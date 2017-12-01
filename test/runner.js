@@ -85,7 +85,7 @@ describe('Runner', () => {
 
       const expected =
         `${fixturePath}\n` +
-        '2:12 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
+        '2:3 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
         '\n' +
         '✖ 1 error detected\n';
 

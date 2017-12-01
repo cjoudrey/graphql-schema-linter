@@ -21,7 +21,7 @@ function generateErrorsForFile(file, errors) {
     const location = error.locations[0];
 
     return {
-      location: chalk.dim(`${location.line}:${location.column * 4}`),
+      location: chalk.dim(`${location.line}:${location.column}`),
       message: error.message,
       rule: chalk.dim(` ${error.ruleName}`),
     };
