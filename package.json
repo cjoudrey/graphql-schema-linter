@@ -39,6 +39,7 @@
     "columnify": "^1.5.4",
     "commander": "^2.11.0",
     "cosmiconfig": "^3.1.0",
+    "escape-html": "^1.0.3",
     "figures": "^2.0.0",
     "glob": "^7.1.2",
     "graphql": "^0.10.1",

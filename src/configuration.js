@@ -8,12 +8,13 @@ import defaultRules from './rules/index.js';
 import { SourceMap } from './source_map.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
+import JUnitFormatter from './formatters/junit_formatter.js';
 
 export class Configuration {
   /*
     options:
       - configDirectory: path to begin searching for config files
-      - format: (required) `text` | `json`
+      - format: (required) `text` | `json` | `junit`
       - rules: [string array] whitelist rules
       - schemaPaths: [string array] file(s) to read schema from
       - stdin: [boolean] pass schema via stdin?
@@ -75,6 +76,8 @@ export class Configuration {
         return JSONFormatter;
       case 'text':
         return TextFormatter;
+      case 'junit':
+        return JUnitFormatter;
 
       // TODO raise when invalid formatter
     }

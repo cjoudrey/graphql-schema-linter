@@ -15,7 +15,7 @@ export function run(stdout, stdin, stderr, argv) {
     )
     .option(
       '-f, --format <format>',
-      'choose the output format of the report. Possible values: json, text'
+      'choose the output format of the report. Possible values: json, text, junit'
     )
     .option(
       '-s, --stdin',
