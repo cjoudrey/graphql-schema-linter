@@ -6,6 +6,12 @@
 
 ### New features
 
+## 0.0.24 (November 30th, 2017)
+
+### Bug fixes
+
+- Fixed an issue where `--text` formatter was not returning the right `column` for errors. [#74](https://github.com/cjoudrey/graphql-schema-linter/pull/74)
+
 ## 0.0.23 (November 28th, 2017)
 
 ### New features
