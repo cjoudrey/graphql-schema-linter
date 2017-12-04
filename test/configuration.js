@@ -197,5 +197,16 @@ extend type Query {
       assert.equal(issues[0].field, 'rules');
       assert.equal(issues[0].type, 'warning');
     });
+
+    it('warns and errors when multiple issues arise configured', () => {
+      const configuration = new Configuration({
+        except: ['NoRuleOfMine', 'FieldsHaveDescriptions'],
+        format: 'xml',
+      });
+
+      const issues = configuration.validate();
+
+      assert.equal(issues.length, 2);
+    });
   });
 });

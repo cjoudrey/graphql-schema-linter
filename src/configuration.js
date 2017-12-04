@@ -127,7 +127,8 @@ export class Configuration {
         field: 'format',
         type: 'error',
       });
-    } else if (misConfiguredRuleNames.length > 0) {
+    }
+    if (misConfiguredRuleNames.length > 0) {
       issues.push({
         message: `The following rule(s) are invalid: ${misConfiguredRuleNames.join(
           ', '
