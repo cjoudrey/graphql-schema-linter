@@ -296,7 +296,7 @@ describe('Runner', () => {
       assert.equal(1, exitCode);
     });
 
-    it('warns but conitunes if a rule is unknown', () => {
+    it('warns but continues if a rule is unknown', () => {
       const argv = [
         'node',
         'lib/cli.js',
