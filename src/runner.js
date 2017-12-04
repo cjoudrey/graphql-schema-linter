@@ -56,22 +56,19 @@ export function run(stdout, stdin, stderr, argv) {
 
   const issues = configuration.validate();
 
-  if (issues.length > 0) {
-    issues.map(issue => {
-      var prefix;
-      if (issue.type == 'error') {
-        prefix = `${chalk.red(figures.cross)} Error`;
-      } else {
-        prefix = `${chalk.yellow(figures.warning)} Warning`;
-      }
-      stderr.write(
-        `${prefix} on ${chalk.bold(issue.field)}: ${issue.message}\n\n`
-      );
-    });
-
-    if (issues.some(issue => issue.type == 'error')) {
-      return 1;
+  issues.map(issue => {
+    var prefix;
+    if (issue.type == 'error') {
+      prefix = `${chalk.red(figures.cross)} Error`;
+    } else {
+      prefix = `${chalk.yellow(figures.warning)} Warning`;
     }
+    stderr.write(
+      `${prefix} on ${chalk.bold(issue.field)}: ${issue.message}\n\n`
+    );
+  });
+
+  if (issues.some(issue => issue.type == 'error')) {
     return 2;
   }
 
