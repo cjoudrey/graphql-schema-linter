@@ -293,7 +293,7 @@ describe('Runner', () => {
 
       const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
       assert(stderr.indexOf("The output format 'xml' is invalid") >= 0);
-      assert.equal(1, exitCode);
+      assert.equal(2, exitCode);
     });
 
     it('warns but continues if a rule is unknown', () => {

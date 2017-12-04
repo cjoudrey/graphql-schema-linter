@@ -72,6 +72,7 @@ export function run(stdout, stdin, stderr, argv) {
     if (issues.some(issue => issue.type == 'error')) {
       return 1;
     }
+    return 2;
   }
 
   const schema = configuration.getSchema();
