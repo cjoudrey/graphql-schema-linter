@@ -85,7 +85,7 @@ multiple entries in the `lint-staged` object above - one for client and one for 
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "client/*.graphql": ["graphql-schema-linter"],
+    "client/*.graphql": ["..."],
     "server/*.graphql": ["graphql-schema-linter"],
   }
 }
