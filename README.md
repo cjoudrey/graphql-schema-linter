@@ -220,4 +220,7 @@ If the process exits with `0` it means all rules passed.
 If the process exits with `1` it means one or many rules failed. Information about these failures can be obtained by
 reading the `stdout` and using the appropriate output formatter.
 
-If the process exits with `2` it means an uncaught error happen. This most likely means you found a bug.
+If the process exits with `2` it means an invalid configuration was provided. Information about this can be obtained by
+reading the `stderr`.
+
+If the process exits with `3` it means an uncaught error happened. This most likely means you found a bug.

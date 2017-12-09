@@ -12,7 +12,7 @@ process.on('uncaughtException', err => {
   );
   console.error('');
   console.error(err.stack);
-  process.exit(2);
+  process.exit(3);
 });
 
 const exitCode = run(

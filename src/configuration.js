@@ -128,6 +128,7 @@ export class Configuration {
         type: 'error',
       });
     }
+
     if (misConfiguredRuleNames.length > 0) {
       issues.push({
         message: `The following rule(s) are invalid: ${misConfiguredRuleNames.join(

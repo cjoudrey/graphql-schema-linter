@@ -6,6 +6,12 @@
 
 ### New features
 
+## 0.0.25 (December 8th, 2017)
+
+### Bug fixes
+
+- Validate configuration options and report when they are invalid. [#76](https://github.com/cjoudrey/graphql-schema-linter/pull/76) (Thanks @bwillis)
+
 ## 0.0.24 (November 30th, 2017)
 
 ### Bug fixes
