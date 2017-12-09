@@ -167,4 +167,46 @@ extend type Query {
       );
     });
   });
+
+  describe('validate', () => {
+    it('errors when an invalid format is configured', () => {
+      const configuration = new Configuration({
+        format: 'xml',
+      });
+
+      const issues = configuration.validate();
+
+      assert.equal(issues.length, 1);
+      assert.equal(issues[0].message, "The output format 'xml' is invalid");
+      assert.equal(issues[0].field, 'format');
+      assert.equal(issues[0].type, 'error');
+    });
+
+    it('warns when an invalid rule is configured', () => {
+      const configuration = new Configuration({
+        except: ['NoRuleOfMine', 'FieldsHaveDescriptions'],
+      });
+
+      const issues = configuration.validate();
+
+      assert.equal(issues.length, 1);
+      assert.equal(
+        issues[0].message,
+        'The following rule(s) are invalid: NoRuleOfMine'
+      );
+      assert.equal(issues[0].field, 'rules');
+      assert.equal(issues[0].type, 'warning');
+    });
+
+    it('warns and errors when multiple issues arise configured', () => {
+      const configuration = new Configuration({
+        except: ['NoRuleOfMine', 'FieldsHaveDescriptions'],
+        format: 'xml',
+      });
+
+      const issues = configuration.validate();
+
+      assert.equal(issues.length, 2);
+    });
+  });
 });

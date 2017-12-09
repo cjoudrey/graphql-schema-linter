@@ -277,5 +277,41 @@ describe('Runner', () => {
       );
       assert.equal(errors[5].rule, 'fields-have-descriptions');
     });
+
+    it('fails and exits if the output format is unknown', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'xml',
+        '--rules',
+        'fields-have-descriptions',
+        `${__dirname}/fixtures/valid.graphql`,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      assert(stderr.indexOf("The output format 'xml' is invalid") >= 0);
+      assert.equal(2, exitCode);
+    });
+
+    it('warns but continues if a rule is unknown', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--rules',
+        'no-rule-of-mine,fields-have-descriptions',
+        `${__dirname}/fixtures/valid.graphql`,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      assert(
+        stderr.indexOf('The following rule(s) are invalid: NoRuleOfMine') >= 0
+      );
+      assert.equal(0, exitCode);
+    });
   });
 });

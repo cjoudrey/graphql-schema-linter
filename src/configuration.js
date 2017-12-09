@@ -75,15 +75,10 @@ export class Configuration {
         return JSONFormatter;
       case 'text':
         return TextFormatter;
-
-      // TODO raise when invalid formatter
     }
   }
 
   getRules() {
-    // TODO validate that all specified rules actually exist. This way we can
-    //      prevent people from making typos.
-
     var rules = defaultRules;
     var specifiedRules;
 
@@ -111,6 +106,39 @@ export class Configuration {
     }
 
     return rules;
+  }
+
+  validate() {
+    const issues = [];
+
+    const defaultRuleNames = defaultRules.map(rule => rule.name);
+    var misConfiguredRuleNames = []
+      .concat(
+        this.options.only || [],
+        this.options.except || [],
+        this.options.rules || []
+      )
+      .map(toUpperCamelCase)
+      .filter(name => defaultRuleNames.indexOf(name) == -1);
+
+    if (this.getFormatter() == null) {
+      issues.push({
+        message: `The output format '${this.options.format}' is invalid`,
+        field: 'format',
+        type: 'error',
+      });
+    }
+    if (misConfiguredRuleNames.length > 0) {
+      issues.push({
+        message: `The following rule(s) are invalid: ${misConfiguredRuleNames.join(
+          ', '
+        )}`,
+        field: 'rules',
+        type: 'warning',
+      });
+    }
+
+    return issues;
   }
 }
 

@@ -54,6 +54,24 @@ export function run(stdout, stdin, stderr, argv) {
     stdin.fd
   );
 
+  const issues = configuration.validate();
+
+  issues.map(issue => {
+    var prefix;
+    if (issue.type == 'error') {
+      prefix = `${chalk.red(figures.cross)} Error`;
+    } else {
+      prefix = `${chalk.yellow(figures.warning)} Warning`;
+    }
+    stderr.write(
+      `${prefix} on ${chalk.bold(issue.field)}: ${issue.message}\n\n`
+    );
+  });
+
+  if (issues.some(issue => issue.type == 'error')) {
+    return 2;
+  }
+
   const schema = configuration.getSchema();
   const formatter = configuration.getFormatter();
   const rules = configuration.getRules();
