@@ -1,10 +1,9 @@
 const cosmiconfig = require('cosmiconfig');
-import { readSync, readFileSync } from 'fs';
+import { readSync, readFileSync, readdirSync } from 'fs';
 import getGraphQLProjectConfig from 'graphql-config';
 import path from 'path';
 import { sync as globSync, hasMagic as globHasMagic } from 'glob';
 
-import defaultRules from './rules/index.js';
 import { SourceMap } from './source_map.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
@@ -28,6 +27,8 @@ export class Configuration {
     this.stdinFd = stdinFd;
     this.schema = null;
     this.sourceMap = null;
+    this.defaultRules = [];
+    this.defaultRulesDir = path.join(__dirname, 'rules');
   }
 
   getSchema() {
@@ -83,7 +84,7 @@ export class Configuration {
   }
 
   getRules() {
-    var rules = defaultRules;
+    var rules = this.getDefaultRules();
     var specifiedRules;
 
     if (this.options.rules && this.options.rules.length > 0) {
@@ -96,7 +97,7 @@ export class Configuration {
     // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.only && this.options.only.length > 0) {
       specifiedRules = this.options.only.map(toUpperCamelCase);
-      rules = defaultRules.filter(rule => {
+      rules = this.getDefaultRules().filter(rule => {
         return specifiedRules.indexOf(rule.name) >= 0;
       });
     }
@@ -104,7 +105,7 @@ export class Configuration {
     // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.except && this.options.except.length > 0) {
       specifiedRules = this.options.except.map(toUpperCamelCase);
-      rules = defaultRules.filter(rule => {
+      rules = this.getDefaultRules().filter(rule => {
         return specifiedRules.indexOf(rule.name) == -1;
       });
     }
@@ -112,10 +113,27 @@ export class Configuration {
     return rules;
   }
 
+  getDefaultRules() {
+    if (this.defaultRules.length > 0) {
+      return this.defaultRules;
+    }
+
+    readdirSync(this.defaultRulesDir).forEach(file => {
+      if (path.extname(file) !== '.js') {
+        return;
+      }
+      var rule = require(path.join(this.defaultRulesDir, file));
+
+      this.defaultRules = this.defaultRules.concat(Object.values(rule));
+    });
+
+    return this.defaultRules;
+  }
+
   validate() {
     const issues = [];
 
-    const defaultRuleNames = defaultRules.map(rule => rule.name);
+    const defaultRuleNames = this.getDefaultRules().map(rule => rule.name);
     var misConfiguredRuleNames = []
       .concat(
         this.options.only || [],

@@ -1,5 +1,4 @@
 import assert from 'assert';
-import defaultRules from '../src/rules/index.js';
 import { Configuration } from '../src/configuration.js';
 import JSONFormatter from '../src/formatters/json_formatter.js';
 import TextFormatter from '../src/formatters/text_formatter.js';
@@ -102,7 +101,7 @@ extend type Query {
 
     it('returns default rules when --only and --except are not specified', () => {
       const configuration = new Configuration();
-      assert.equal(configuration.getRules(), defaultRules);
+      assert.equal(configuration.getRules(), configuration.getDefaultRules());
     });
 
     it('omits rules that are not specified in --only', () => {
@@ -115,13 +114,13 @@ extend type Query {
       assert.equal(rules.length, 2);
       assert.equal(
         rules[0],
-        defaultRules.find(rule => {
+        configuration.getDefaultRules().find(rule => {
           return rule.name == 'FieldsHaveDescriptions';
         })
       );
       assert.equal(
         rules[1],
-        defaultRules.find(rule => {
+        configuration.getDefaultRules().find(rule => {
           return rule.name == 'TypesHaveDescriptions';
         })
       );
@@ -134,7 +133,7 @@ extend type Query {
 
       const rules = configuration.getRules();
 
-      assert.equal(rules.length, defaultRules.length - 2);
+      assert.equal(rules.length, configuration.getDefaultRules().length - 2);
       assert.equal(
         0,
         rules.filter(rule => {
@@ -156,13 +155,13 @@ extend type Query {
       assert.equal(rules.length, 2);
       assert.equal(
         rules[0],
-        defaultRules.find(rule => {
+        configuration.getDefaultRules().find(rule => {
           return rule.name == 'FieldsHaveDescriptions';
         })
       );
       assert.equal(
         rules[1],
-        defaultRules.find(rule => {
+        configuration.getDefaultRules().find(rule => {
           return rule.name == 'TypesHaveDescriptions';
         })
       );
@@ -175,7 +174,7 @@ extend type Query {
 
       const rules = configuration.getRules();
 
-      assert.equal(rules.length, defaultRules.length - 2);
+      assert.equal(rules.length, configuration.getDefaultRules().length - 2);
       assert.equal(
         0,
         rules.filter(rule => {

@@ -1,5 +1,4 @@
 import { validateSchemaDefinition } from './validator.js';
-import { rules } from './index.js';
 import { version } from '../package.json';
 import { Command } from 'commander';
 import { Configuration } from './configuration.js';
