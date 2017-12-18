@@ -189,6 +189,7 @@ function loadOptionsFromConfig(configDirectory) {
   if (cosmic) {
     return {
       rules: cosmic.config.rules,
+      customRulePaths: cosmic.config.customRulePaths || [],
     };
   } else {
     return {};

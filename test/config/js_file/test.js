@@ -10,11 +10,14 @@ describe('Config', () => {
 
       const rules = configuration.getRules();
 
-      assert.equal(rules.length, 1);
+      assert.equal(rules.length, 2);
       assert.equal(
-        1,
+        2,
         rules.filter(rule => {
-          return rule.name == 'EnumValuesSortedAlphabetically';
+          return (
+            rule.name == 'EnumValuesSortedAlphabetically' ||
+            rule.name == 'EnumNameCannotContainEnum'
+          );
         }).length
       );
     });
