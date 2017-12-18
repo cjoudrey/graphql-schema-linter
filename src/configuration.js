@@ -18,7 +18,7 @@ export class Configuration {
       - stdin: [boolean] pass schema via stdin?
   */
   constructor(options = {}, stdinFd = null) {
-    const defaultOptions = { format: 'text', customRulesPaths: [] };
+    const defaultOptions = { format: 'text', customRulePaths: [] };
     const configOptions = loadOptionsFromConfig(options.configDirectory);
 
     // TODO Get configs from .graphqlconfig file
@@ -28,7 +28,7 @@ export class Configuration {
     this.schema = null;
     this.sourceMap = null;
     this.rules = null;
-    this.rulePaths = this.options.customRulesPaths.concat(
+    this.rulePaths = this.options.customRulePaths.concat(
       path.join(__dirname, 'rules')
     );
   }

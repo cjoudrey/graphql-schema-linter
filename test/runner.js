@@ -98,7 +98,7 @@ describe('Runner', () => {
         'lib/cli.js',
         '--format',
         'text',
-        '--custom-rules-paths',
+        '--custom-rule-paths',
         `${__dirname}/fixtures/custom_rules`,
         `${__dirname}/fixtures/animal.graphql`,
       ];

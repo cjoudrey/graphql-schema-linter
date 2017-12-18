@@ -25,7 +25,7 @@ export function run(stdout, stdin, stderr, argv) {
       'path to begin searching for config files.'
     )
     .option(
-      '-p, --custom-rules-paths <path>',
+      '-p, --custom-rule-paths <path>',
       'path to additional custom rules to be loaded.'
     )
     // DEPRECATED - This code should be removed in v1.0.0.
@@ -129,8 +129,8 @@ function getOptionsFromCommander(commander) {
     options.rules = commander.rules.split(',');
   }
 
-  if (commander.customRulesPaths) {
-    options.customRulesPaths = commander.customRulesPaths.split(',');
+  if (commander.customRulePaths) {
+    options.customRulePaths = commander.customRulePaths.split(',');
   }
 
   if (commander.args && commander.args.length) {

@@ -188,7 +188,7 @@ extend type Query {
 
     it('adds custom rules that are specified in --custom-rules-path', () => {
       const configuration = new Configuration({
-        customRulesPaths: [`${__dirname}/fixtures/custom_rules`],
+        customRulePaths: [`${__dirname}/fixtures/custom_rules`],
       });
 
       const rules = configuration.getRules();
