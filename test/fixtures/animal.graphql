@@ -1,0 +1,21 @@
+# Base query
+type Query {
+  # Animal Viewing
+  viewer: Animal!
+}
+
+# Animal
+type Animal {
+  # name
+  name: String!
+  # type
+  types: [AnimalTypes]
+}
+
+# Animal type enum
+enum AnimalTypes {
+  # meow
+  CAT_ENUM
+  # woof
+  DOG_ENUM
+}

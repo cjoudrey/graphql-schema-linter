@@ -24,6 +24,10 @@ export function run(stdout, stdin, stderr, argv) {
       '-c, --config-directory <path>',
       'path to begin searching for config files.'
     )
+    .option(
+      '-p, --custom-rules-paths <path>',
+      'path to additional custom rules to be loaded.'
+    )
     // DEPRECATED - This code should be removed in v1.0.0.
     .option(
       '-o, --only <rules>',
@@ -123,6 +127,10 @@ function getOptionsFromCommander(commander) {
 
   if (commander.rules) {
     options.rules = commander.rules.split(',');
+  }
+
+  if (commander.customRulesPaths) {
+    options.customRulesPaths = commander.customRulesPaths.split(',');
   }
 
   if (commander.args && commander.args.length) {
