@@ -99,9 +99,9 @@ extend type Query {
       // TODO
     });
 
-    it('returns default rules when --only and --except are not specified', () => {
+    it('returns all rules when --only and --except are not specified', () => {
       const configuration = new Configuration();
-      assert.equal(configuration.getRules(), configuration.getDefaultRules());
+      assert.equal(configuration.getRules(), configuration.getAllRules());
     });
 
     it('omits rules that are not specified in --only', () => {
@@ -114,13 +114,13 @@ extend type Query {
       assert.equal(rules.length, 2);
       assert.equal(
         rules[0],
-        configuration.getDefaultRules().find(rule => {
+        configuration.getAllRules().find(rule => {
           return rule.name == 'FieldsHaveDescriptions';
         })
       );
       assert.equal(
         rules[1],
-        configuration.getDefaultRules().find(rule => {
+        configuration.getAllRules().find(rule => {
           return rule.name == 'TypesHaveDescriptions';
         })
       );
@@ -133,7 +133,7 @@ extend type Query {
 
       const rules = configuration.getRules();
 
-      assert.equal(rules.length, configuration.getDefaultRules().length - 2);
+      assert.equal(rules.length, configuration.getAllRules().length - 2);
       assert.equal(
         0,
         rules.filter(rule => {
@@ -155,13 +155,13 @@ extend type Query {
       assert.equal(rules.length, 2);
       assert.equal(
         rules[0],
-        configuration.getDefaultRules().find(rule => {
+        configuration.getAllRules().find(rule => {
           return rule.name == 'FieldsHaveDescriptions';
         })
       );
       assert.equal(
         rules[1],
-        configuration.getDefaultRules().find(rule => {
+        configuration.getAllRules().find(rule => {
           return rule.name == 'TypesHaveDescriptions';
         })
       );
@@ -174,7 +174,7 @@ extend type Query {
 
       const rules = configuration.getRules();
 
-      assert.equal(rules.length, configuration.getDefaultRules().length - 2);
+      assert.equal(rules.length, configuration.getAllRules().length - 2);
       assert.equal(
         0,
         rules.filter(rule => {
@@ -182,6 +182,21 @@ extend type Query {
             rule.name == 'FieldsHaveDescriptions' ||
             rule.name == 'TypesHaveDescriptions'
           );
+        }).length
+      );
+    });
+
+    it('adds custom rules that are specified in --custom-rules-path', () => {
+      const configuration = new Configuration({
+        customRulesPaths: [`${__dirname}/fixtures/custom_rules`],
+      });
+
+      const rules = configuration.getRules();
+
+      assert.equal(
+        1,
+        rules.filter(rule => {
+          return rule.name == 'EnumNameCannotContainEnum';
         }).length
       );
     });

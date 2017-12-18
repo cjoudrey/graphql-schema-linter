@@ -18,7 +18,7 @@ export class Configuration {
       - stdin: [boolean] pass schema via stdin?
   */
   constructor(options = {}, stdinFd = null) {
-    const defaultOptions = { format: 'text' };
+    const defaultOptions = { format: 'text', customRulesPaths: [] };
     const configOptions = loadOptionsFromConfig(options.configDirectory);
 
     // TODO Get configs from .graphqlconfig file
@@ -27,8 +27,10 @@ export class Configuration {
     this.stdinFd = stdinFd;
     this.schema = null;
     this.sourceMap = null;
-    this.defaultRules = [];
-    this.defaultRulesDir = path.join(__dirname, 'rules');
+    this.rules = null;
+    this.rulePaths = this.options.customRulesPaths.concat(
+      path.join(__dirname, 'rules')
+    );
   }
 
   getSchema() {
@@ -84,12 +86,12 @@ export class Configuration {
   }
 
   getRules() {
-    var rules = this.getDefaultRules();
+    var rules = this.getAllRules();
     var specifiedRules;
 
     if (this.options.rules && this.options.rules.length > 0) {
       specifiedRules = this.options.rules.map(toUpperCamelCase);
-      rules = rules.filter(rule => {
+      rules = this.getAllRules().filter(rule => {
         return specifiedRules.indexOf(rule.name) >= 0;
       });
     }
@@ -97,7 +99,7 @@ export class Configuration {
     // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.only && this.options.only.length > 0) {
       specifiedRules = this.options.only.map(toUpperCamelCase);
-      rules = this.getDefaultRules().filter(rule => {
+      rules = this.getAllRules().filter(rule => {
         return specifiedRules.indexOf(rule.name) >= 0;
       });
     }
@@ -105,7 +107,7 @@ export class Configuration {
     // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.except && this.options.except.length > 0) {
       specifiedRules = this.options.except.map(toUpperCamelCase);
-      rules = this.getDefaultRules().filter(rule => {
+      rules = this.getAllRules().filter(rule => {
         return specifiedRules.indexOf(rule.name) == -1;
       });
     }
@@ -113,27 +115,38 @@ export class Configuration {
     return rules;
   }
 
-  getDefaultRules() {
-    if (this.defaultRules.length > 0) {
-      return this.defaultRules;
+  getAllRules() {
+    if (this.rules !== null) {
+      return this.rules;
     }
 
-    readdirSync(this.defaultRulesDir).forEach(file => {
+    this.rules = [];
+    this.rulePaths.map(rulePath => {
+      this.rules = this.rules.concat(this.loadRules(rulePath));
+    });
+
+    return this.rules;
+  }
+
+  loadRules(dir) {
+    var rules = [];
+
+    readdirSync(dir).forEach(file => {
       if (path.extname(file) !== '.js') {
         return;
       }
-      var rule = require(path.join(this.defaultRulesDir, file));
+      var rule = require(path.join(dir, file));
 
-      this.defaultRules = this.defaultRules.concat(Object.values(rule));
+      rules = rules.concat(Object.values(rule));
     });
 
-    return this.defaultRules;
+    return rules;
   }
 
   validate() {
     const issues = [];
 
-    const defaultRuleNames = this.getDefaultRules().map(rule => rule.name);
+    const ruleNames = this.getAllRules().map(rule => rule.name);
     var misConfiguredRuleNames = []
       .concat(
         this.options.only || [],
@@ -141,7 +154,7 @@ export class Configuration {
         this.options.rules || []
       )
       .map(toUpperCamelCase)
-      .filter(name => defaultRuleNames.indexOf(name) == -1);
+      .filter(name => ruleNames.indexOf(name) == -1);
 
     if (this.getFormatter() == null) {
       issues.push({
