@@ -6,6 +6,7 @@ import { TypesAreCapitalized } from './types_are_capitalized.js';
 import { EnumValuesSortedAlphabetically } from './enum_values_sorted_alphabetically';
 import { EnumValuesAllCaps } from './enum_values_all_caps';
 import { InputObjectValuesHaveDescriptions } from './input_object_values_have_descriptions';
+import { InputObjectValuesAreCamelCased } from './input_object_values_are_camelcased';
 import { EnumValuesHaveDescriptions } from './enum_values_have_descriptions';
 import { DefinedTypesAreUsed } from './defined_types_are_used.js';
 
@@ -18,6 +19,7 @@ module.exports = [
   TypesHaveDescriptions,
   TypesAreCapitalized,
   InputObjectValuesHaveDescriptions,
+  InputObjectValuesAreCamelCased,
   EnumValuesHaveDescriptions,
   DefinedTypesAreUsed,
 ];

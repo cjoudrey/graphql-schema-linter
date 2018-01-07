@@ -19,6 +19,7 @@ require('./rules/enum_values_all_caps');
 require('./rules/types_are_capitalized');
 require('./rules/defined_types_are_used');
 require('./rules/input_object_values_have_descriptions');
+require('./rules/input_object_values_are_camelcased');
 require('./rules/enum_values_have_descriptions');
 require('./formatters/json_formatter');
 require('./formatters/text_formatter');
