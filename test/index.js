@@ -11,6 +11,7 @@ require('./runner');
 require('./source_map');
 require('./validator');
 require('./rules/fields_have_descriptions');
+require('./rules/fields_are.camelcased');
 require('./rules/types_have_descriptions');
 require('./rules/deprecations_have_a_reason');
 require('./rules/enum_values_sorted_alphabetically');

@@ -1,3 +1,4 @@
+import { FieldsAreCamelCased } from './fields_are_camelcased.js';
 import { FieldsHaveDescriptions } from './fields_have_descriptions.js';
 import { DeprecationsHaveAReason } from './deprecations_have_a_reason.js';
 import { TypesHaveDescriptions } from './types_have_descriptions.js';
@@ -11,6 +12,7 @@ import { DefinedTypesAreUsed } from './defined_types_are_used.js';
 module.exports = [
   EnumValuesSortedAlphabetically,
   EnumValuesAllCaps,
+  FieldsAreCamelCased,
   FieldsHaveDescriptions,
   DeprecationsHaveAReason,
   TypesHaveDescriptions,
