@@ -3,7 +3,7 @@ import { parse } from 'graphql';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 
-import { FieldsAreCamelCased } from '../../src/rules/fields_are_camelcased';
+import { FieldsAreCamelCased } from '../../src/rules/fields_are_camel_cased';
 
 describe('FieldsAreCamelCased rule', () => {
   it('catches fields that have are not camelcased', () => {
@@ -25,14 +25,14 @@ describe('FieldsAreCamelCased rule', () => {
 
     assert.equal(errors.length, 2);
 
-    assert.equal(errors[0].ruleName, 'fields-are-camelcased');
+    assert.equal(errors[0].ruleName, 'fields-are-camel-cased');
     assert.equal(
       errors[0].message,
       'The field `Query.invalid_name` is not camel cased.'
     );
     assert.deepEqual(errors[0].locations, [{ line: 4, column: 9 }]);
 
-    assert.equal(errors[1].ruleName, 'fields-are-camelcased');
+    assert.equal(errors[1].ruleName, 'fields-are-camel-cased');
     assert.equal(
       errors[1].message,
       'The field `Query.ThisIsInvalid` is not camel cased.'

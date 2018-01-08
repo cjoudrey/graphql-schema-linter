@@ -13,7 +13,7 @@ export function InputObjectValuesAreCamelCased(context) {
         const inputObjectName = parentNode.name.value;
         context.reportError(
           new ValidationError(
-            'input-object-values-are-camelcased',
+            'input-object-values-are-camel-cased',
             `The input value \`${inputObjectName}.${inputValueName}\` is not camel cased.`,
             [node]
           )

@@ -3,7 +3,7 @@ import { parse } from 'graphql';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 
-import { InputObjectValuesAreCamelCased } from '../../src/rules/input_object_values_are_camelcased';
+import { InputObjectValuesAreCamelCased } from '../../src/rules/input_object_values_are_camel_cased';
 
 describe('InputObjectValuesAreCamelCased rule', () => {
   it('catches input object type values that are not camel cased', () => {
@@ -24,7 +24,7 @@ describe('InputObjectValuesAreCamelCased rule', () => {
 
     assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].ruleName, 'input-object-values-are-camelcased');
+    assert.equal(errors[0].ruleName, 'input-object-values-are-camel-cased');
     assert.equal(
       errors[0].message,
       'The input value `User.user_name` is not camel cased.'
@@ -44,7 +44,7 @@ describe('InputObjectValuesAreCamelCased rule', () => {
 
     assert.equal(errors.length, 1);
 
-    assert.equal(errors[0].ruleName, 'input-object-values-are-camelcased');
+    assert.equal(errors[0].ruleName, 'input-object-values-are-camel-cased');
     assert.equal(
       errors[0].message,
       'The input value `hello.argument_without_description` is not camel cased.'

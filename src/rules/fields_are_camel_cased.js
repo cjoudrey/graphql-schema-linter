@@ -10,7 +10,7 @@ export function FieldsAreCamelCased(context) {
         const parentName = ancestors[ancestors.length - 1].name.value;
         context.reportError(
           new ValidationError(
-            'fields-are-camelcased',
+            'fields-are-camel-cased',
             `The field \`${parentName}.${fieldName}\` is not camel cased.`,
             [node]
           )
