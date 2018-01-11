@@ -1,11 +1,10 @@
 import { parse } from 'graphql';
-import { visit, visitInParallel } from 'graphql/language/visitor';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { GraphQLError } from 'graphql/error';
 
 export function validateSchemaDefinition(schemaDefinition, rules) {
-  var ast;
+  let ast;
   try {
     ast = parse(schemaDefinition);
   } catch (e) {

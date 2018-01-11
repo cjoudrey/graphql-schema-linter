@@ -1,6 +1,5 @@
 import assert from 'assert';
 import { parse } from 'graphql';
-import { visit, visitInParallel } from 'graphql/language/visitor';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 
