@@ -2,7 +2,7 @@
 
 This package provides a command line tool to validate GraphQL schema definitions against a set of rules.
 
-![](https://raw.githubusercontent.com/cjoudrey/graphql-schema-linter/master/screenshot-v0.0.24.png)
+![Screenshot](https://raw.githubusercontent.com/cjoudrey/graphql-schema-linter/master/screenshot-v0.0.24.png)
 
 If you're looking to lint your GraphQL queries, check out this ESLint plugin: [apollographql/eslint-plugin-graphql](https://github.com/apollographql/eslint-plugin-graphql).
 
@@ -146,9 +146,17 @@ This rule will validate that all enum values have a description.
 
 This rule will validate that all enum values are sorted alphabetically.
 
+### `fields-are-camel-cased`
+
+This rule will validate that object type field and interface type field names are camel cased.
+
 ### `fields-have-descriptions`
 
 This rule will validate that object type fields and interface type fields have a description.
+
+### `input-object-values-are-camel-cased`
+
+This rule will validate that input object value names are camel cased.
 
 ### `input-object-values-have-descriptions`
 

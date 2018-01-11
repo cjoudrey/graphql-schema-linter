@@ -6,6 +6,11 @@
 
 ### New features
 
+## 0.0.26 (January 10th, 2017)
+
+- Add `fields-are-camel-cased` rule. [#81](https://github.com/cjoudrey/graphql-schema-linter/pull/81) (Thanks @ruiaraujo)
+- Add `input-object-values-are-camel-cased` rule. [#81](https://github.com/cjoudrey/graphql-schema-linter/pull/81) (Thanks @ruiaraujo)
+
 ## 0.0.25 (December 8th, 2017)
 
 ### Bug fixes
