@@ -11,19 +11,27 @@ describe('FieldsAreCamelCased rule', () => {
       type Query {
         # Invalid
         invalid_name: String
-      
+
         # Valid
         thisIsValid: String
-        
+
         # Invalid
         ThisIsInvalid: String
+      }
+
+      interface Something {
+        # Invalid
+        invalid_name: String
+
+        # Valid
+        thisIsValid: String
       }
     `);
 
     const schema = buildASTSchema(ast);
     const errors = validate(schema, ast, [FieldsAreCamelCased]);
 
-    assert.equal(errors.length, 2);
+    assert.equal(errors.length, 3);
 
     assert.equal(errors[0].ruleName, 'fields-are-camel-cased');
     assert.equal(
@@ -38,5 +46,12 @@ describe('FieldsAreCamelCased rule', () => {
       'The field `Query.ThisIsInvalid` is not camel cased.'
     );
     assert.deepEqual(errors[1].locations, [{ line: 10, column: 9 }]);
+
+    assert.equal(errors[2].ruleName, 'fields-are-camel-cased');
+    assert.equal(
+      errors[2].message,
+      'The field `Something.invalid_name` is not camel cased.'
+    );
+    assert.deepEqual(errors[2].locations, [{ line: 15, column: 9 }]);
   });
 });
