@@ -51,7 +51,11 @@ export class Configuration {
         })
         .reduce((a, b) => {
           return a.concat(b);
-        }, []);
+        }, [])
+        // Resolve paths to absolute paths so that including the same file
+        // multiple times is not treated as different files
+        .map(p => path.resolve(p));
+
       var segments = getSchemaSegmentsFromFiles(paths);
 
       this.sourceMap = new SourceMap(segments);
