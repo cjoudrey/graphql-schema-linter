@@ -99,7 +99,7 @@ describe('Runner', () => {
         '--format',
         'text',
         '--custom-rule-paths',
-        `${__dirname}/fixtures/custom_rules`,
+        `${__dirname}/fixtures/custom_rules/*`,
         `${__dirname}/fixtures/animal.graphql`,
       ];
 

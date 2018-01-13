@@ -1,5 +1,5 @@
 const cosmiconfig = require('cosmiconfig');
-import { readSync, readFileSync, readdirSync } from 'fs';
+import { readSync, readFileSync } from 'fs';
 import getGraphQLProjectConfig from 'graphql-config';
 import path from 'path';
 import { sync as globSync, hasMagic as globHasMagic } from 'glob';
@@ -29,7 +29,7 @@ export class Configuration {
     this.sourceMap = null;
     this.rules = null;
     this.rulePaths = this.options.customRulePaths.concat(
-      path.join(__dirname, 'rules')
+      path.join(__dirname, 'rules/*.js')
     );
   }
 
@@ -44,22 +44,8 @@ export class Configuration {
       this.schema = getSchemaFromFileDescriptor(this.stdinFd);
       this.sourceMap = new SourceMap({ stdin: this.schema });
     } else if (this.options.schemaPaths) {
-      var paths = this.options.schemaPaths
-        .map(path => {
-          if (globHasMagic(path)) {
-            return globSync(path);
-          } else {
-            return path;
-          }
-        })
-        .reduce((a, b) => {
-          return a.concat(b);
-        }, [])
-        // Resolve paths to absolute paths so that including the same file
-        // multiple times is not treated as different files
-        .map(p => path.resolve(p));
-
-      var segments = getSchemaSegmentsFromFiles(paths);
+      var expandedPaths = expandPaths(this.options.schemaPaths);
+      var segments = getSchemaSegmentsFromFiles(expandedPaths);
 
       this.sourceMap = new SourceMap(segments);
       this.schema = this.sourceMap.getCombinedSource();
@@ -120,27 +106,17 @@ export class Configuration {
       return this.rules;
     }
 
+    var expandedPaths = expandPaths(this.rulePaths);
     this.rules = [];
-    this.rulePaths.map(rulePath => {
-      this.rules = this.rules.concat(this.loadRules(rulePath));
+    expandedPaths.map(rulePath => {
+      var rule = Object.values(require(rulePath));
+
+      if (rule) {
+        this.rules = this.rules.concat(rule);
+      }
     });
 
     return this.rules;
-  }
-
-  loadRules(dir) {
-    var rules = [];
-
-    readdirSync(dir).forEach(file => {
-      if (path.extname(file) !== '.js') {
-        return;
-      }
-      var rule = require(path.join(dir, file));
-
-      rules = rules.concat(Object.values(rule));
-    });
-
-    return rules;
   }
 
   validate() {
@@ -220,6 +196,25 @@ function getSchemaSegmentsFromFiles(paths) {
     segments[path] = getSchemaFromFile(path);
     return segments;
   }, {});
+}
+
+function expandPaths(pathOrPattern) {
+  return (
+    pathOrPattern
+      .map(path => {
+        if (globHasMagic(path)) {
+          return globSync(path);
+        } else {
+          return path;
+        }
+      })
+      .reduce((a, b) => {
+        return a.concat(b);
+      }, [])
+      // Resolve paths to absolute paths so that including the same file
+      // multiple times is not treated as different files
+      .map(p => path.resolve(p))
+  );
 }
 
 function toUpperCamelCase(string) {

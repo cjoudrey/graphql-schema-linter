@@ -188,7 +188,27 @@ extend type Query {
 
     it('adds custom rules that are specified in --custom-rules-path', () => {
       const configuration = new Configuration({
-        customRulePaths: [`${__dirname}/fixtures/custom_rules`],
+        customRulePaths: [`${__dirname}/fixtures/custom_rules/*.js`],
+      });
+
+      const rules = configuration.getRules();
+
+      assert.equal(
+        2,
+        rules.filter(rule => {
+          return (
+            rule.name == 'EnumNameCannotContainEnum' ||
+            rule.name == 'TypeNameCannotContainType'
+          );
+        }).length
+      );
+    });
+
+    it('adds a custom rules that is specified in --custom-rules-path', () => {
+      const configuration = new Configuration({
+        customRulePaths: [
+          `${__dirname}/fixtures/custom_rules/type_name_cannot_contain_type.js`,
+        ],
       });
 
       const rules = configuration.getRules();
@@ -196,7 +216,7 @@ extend type Query {
       assert.equal(
         1,
         rules.filter(rule => {
-          return rule.name == 'EnumNameCannotContainEnum';
+          return rule.name == 'TypeNameCannotContainType';
         }).length
       );
     });
