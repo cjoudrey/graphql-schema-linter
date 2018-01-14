@@ -70,13 +70,15 @@ Then add a `precommit` script and a `lint-staged` key to your `package.json` lik
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.graphql": ["graphql-schema-linter"]
+    "*.graphql": ["graphql-schema-linter path/to/*.graphql"]
   }
 }
 ```
 
-The above configuration assumes that you have either one `schema.graphql` file or multiple files that should be linted
-concatenated together.  If you have both client and server schema in the same project, you'll likely need to put
+The above configuration assumes that you have either one `schema.graphql` file or multiple `.graphql` files that should
+be concatenated together and linted as a whole.
+
+If you have both client and server schema in the same project, you'll likely need to put
 multiple entries in the `lint-staged` object above - one for client and one for server.  Something like:
 
 ```json
@@ -85,8 +87,8 @@ multiple entries in the `lint-staged` object above - one for client and one for 
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "client/*.graphql": ["..."],
-    "server/*.graphql": ["graphql-schema-linter"],
+    "client/*.graphql": ["graphql-schema-linter client/*.graphql"],
+    "server/*.graphql": ["graphql-schema-linter server/*.graphql"]
   }
 }
 ```
