@@ -6,7 +6,15 @@
 
 ### New features
 
+## 0.0.27 (January 14th, 2017)
+
+### Bug fixes
+
+- Fix crash when duplicate paths are passed to the linter. [#82](https://github.com/cjoudrey/graphql-schema-linter/pull/82) (Thanks @boopathi)
+
 ## 0.0.26 (January 10th, 2017)
+
+### New features
 
 - Add `fields-are-camel-cased` rule. [#81](https://github.com/cjoudrey/graphql-schema-linter/pull/81) (Thanks @ruiaraujo)
 - Add `input-object-values-are-camel-cased` rule. [#81](https://github.com/cjoudrey/graphql-schema-linter/pull/81) (Thanks @ruiaraujo)
