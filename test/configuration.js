@@ -4,6 +4,7 @@ import { Configuration } from '../src/configuration.js';
 import JSONFormatter from '../src/formatters/json_formatter.js';
 import TextFormatter from '../src/formatters/text_formatter.js';
 import { openSync, readFileSync } from 'fs';
+import { relative as pathRelative } from 'path';
 
 describe('Configuration', () => {
   describe('getSchema', () => {
@@ -52,6 +53,25 @@ extend type Query {
       const fd = openSync(fixturePath, 'r');
 
       const configuration = new Configuration({ args: [], stdin: true }, fd);
+      assert.equal(
+        configuration.getSchema(),
+        readFileSync(fixturePath).toString('utf8')
+      );
+    });
+
+    it('normalizes schema files paths', () => {
+      const fixturePath = `${__dirname}/fixtures/schema.graphql`;
+      const duplicatePath = pathRelative(
+        process.cwd(),
+        `${__dirname}/fixtures/schema.graphql`
+      );
+
+      assert.notEqual(fixturePath, duplicatePath);
+
+      const configuration = new Configuration({
+        schemaPaths: [fixturePath, duplicatePath],
+      });
+
       assert.equal(
         configuration.getSchema(),
         readFileSync(fixturePath).toString('utf8')
