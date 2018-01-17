@@ -44,6 +44,14 @@ Options:
 
     schema definition will be read from STDIN instead of specified file
 
+  -c, --config-direction <path>
+
+    path to begin searching for config files
+
+  -p, --custom-rule-paths <paths>
+
+    path to additional custom rules to be loaded. Example: rules/*.js
+
   --version
 
     output the version number

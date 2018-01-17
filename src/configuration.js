@@ -15,6 +15,7 @@ export class Configuration {
       - format: (required) `text` | `json`
       - rules: [string array] whitelist rules
       - schemaPaths: [string array] file(s) to read schema from
+      - customRulePaths: [string array] path to additional custom rules to be loaded
       - stdin: [boolean] pass schema via stdin?
   */
   constructor(options = {}, stdinFd = null) {

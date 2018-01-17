@@ -25,8 +25,8 @@ export function run(stdout, stdin, stderr, argv) {
       'path to begin searching for config files.'
     )
     .option(
-      '-p, --custom-rule-paths <path>',
-      'path to additional custom rules to be loaded.'
+      '-p, --custom-rule-paths <paths>',
+      'path to additional custom rules to be loaded. Example: rules/*.js'
     )
     // DEPRECATED - This code should be removed in v1.0.0.
     .option(
