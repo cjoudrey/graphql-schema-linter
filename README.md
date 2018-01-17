@@ -242,3 +242,19 @@ If the process exits with `2` it means an invalid configuration was provided. In
 reading the `stderr`.
 
 If the process exits with `3` it means an uncaught error happened. This most likely means you found a bug.
+
+## Customizing rules
+
+`graphql-schema-linter` comes with a set of rules, but it's possible that it doesn't exactly match your expectations.
+
+The `--rules <rules>` allows you pick and choose what rules you want to use to validate your schema.
+
+In some cases, you may want to write your own rules. `graphql-schema-linter` leverages [GraphQL.js' visitor.js](https://github.com/graphql/graphql-js/blob/6f151233defaaed93fe8a9b38fa809f22e0f5928/src/language/visitor.js#L138)
+in order to validate a schema.
+
+You may define custom rules by following the usage of [visitor.js]() and saving your newly created rule as a `.js` file.
+
+You can then instruct `graphql-schema-linter` to include this rule using the `--custom-rule-paths <paths>` option flag.
+
+For sample rules, see the [`src/rules`](https://github.com/cjoudrey/graphql-schema-linter/tree/bae18260108ba8aa09ee7305773fad274195dab9/src/rules) folder of this repository or
+GraphQL.js' [`src/validation/rules`](https://github.com/graphql/graphql-js/tree/6f151233defaaed93fe8a9b38fa809f22e0f5928/src/validation/rules) folder.
