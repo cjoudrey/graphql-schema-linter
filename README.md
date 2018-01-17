@@ -252,7 +252,7 @@ The `--rules <rules>` allows you pick and choose what rules you want to use to v
 In some cases, you may want to write your own rules. `graphql-schema-linter` leverages [GraphQL.js' visitor.js](https://github.com/graphql/graphql-js/blob/6f151233defaaed93fe8a9b38fa809f22e0f5928/src/language/visitor.js#L138)
 in order to validate a schema.
 
-You may define custom rules by following the usage of [visitor.js]() and saving your newly created rule as a `.js` file.
+You may define custom rules by following the usage of [visitor.js](https://github.com/graphql/graphql-js/blob/6f151233defaaed93fe8a9b38fa809f22e0f5928/src/language/visitor.js#L138) and saving your newly created rule as a `.js` file.
 
 You can then instruct `graphql-schema-linter` to include this rule using the `--custom-rule-paths <paths>` option flag.
 
