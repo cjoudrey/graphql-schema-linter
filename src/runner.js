@@ -1,5 +1,4 @@
 import { validateSchemaDefinition } from './validator.js';
-import { rules } from './index.js';
 import { version } from '../package.json';
 import { Command } from 'commander';
 import { Configuration } from './configuration.js';
@@ -24,6 +23,10 @@ export function run(stdout, stdin, stderr, argv) {
     .option(
       '-c, --config-directory <path>',
       'path to begin searching for config files.'
+    )
+    .option(
+      '-p, --custom-rule-paths <path>',
+      'path to additional custom rules to be loaded.'
     )
     // DEPRECATED - This code should be removed in v1.0.0.
     .option(
@@ -124,6 +127,10 @@ function getOptionsFromCommander(commander) {
 
   if (commander.rules) {
     options.rules = commander.rules.split(',');
+  }
+
+  if (commander.customRulePaths) {
+    options.customRulePaths = commander.customRulePaths.split(',');
   }
 
   if (commander.args && commander.args.length) {

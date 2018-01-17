@@ -92,6 +92,29 @@ describe('Runner', () => {
       assert.equal(expected, stripAnsi(stdout));
     });
 
+    it('validates a single schema file by a custom rule and outputs in text', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'text',
+        '--custom-rule-paths',
+        `${__dirname}/fixtures/custom_rules/*`,
+        `${__dirname}/fixtures/animal.graphql`,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      const expected =
+        `${__dirname}/fixtures/animal.graphql\n` +
+        "18:3 The enum value `AnimalTypes.CAT_ENUM` cannot include the word 'enum'.  enum-name-cannot-contain-enum\n" +
+        "20:3 The enum value `AnimalTypes.DOG_ENUM` cannot include the word 'enum'.  enum-name-cannot-contain-enum\n" +
+        '\n' +
+        '✖ 2 errors detected\n';
+
+      assert.equal(expected, stripAnsi(stdout));
+    });
+
     it('validates schema passed in via stdin and outputs in json', () => {
       const argv = [
         'node',

@@ -4,7 +4,6 @@ import getGraphQLProjectConfig from 'graphql-config';
 import path from 'path';
 import { sync as globSync, hasMagic as globHasMagic } from 'glob';
 
-import defaultRules from './rules/index.js';
 import { SourceMap } from './source_map.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
@@ -19,7 +18,7 @@ export class Configuration {
       - stdin: [boolean] pass schema via stdin?
   */
   constructor(options = {}, stdinFd = null) {
-    const defaultOptions = { format: 'text' };
+    const defaultOptions = { format: 'text', customRulePaths: [] };
     const configOptions = loadOptionsFromConfig(options.configDirectory);
 
     // TODO Get configs from .graphqlconfig file
@@ -28,6 +27,10 @@ export class Configuration {
     this.stdinFd = stdinFd;
     this.schema = null;
     this.sourceMap = null;
+    this.rules = null;
+    this.rulePaths = this.options.customRulePaths.concat(
+      path.join(__dirname, 'rules/*.js')
+    );
   }
 
   getSchema() {
@@ -41,22 +44,8 @@ export class Configuration {
       this.schema = getSchemaFromFileDescriptor(this.stdinFd);
       this.sourceMap = new SourceMap({ stdin: this.schema });
     } else if (this.options.schemaPaths) {
-      var paths = this.options.schemaPaths
-        .map(path => {
-          if (globHasMagic(path)) {
-            return globSync(path);
-          } else {
-            return path;
-          }
-        })
-        .reduce((a, b) => {
-          return a.concat(b);
-        }, [])
-        // Resolve paths to absolute paths so that including the same file
-        // multiple times is not treated as different files
-        .map(p => path.resolve(p));
-
-      var segments = getSchemaSegmentsFromFiles(paths);
+      var expandedPaths = expandPaths(this.options.schemaPaths);
+      var segments = getSchemaSegmentsFromFiles(expandedPaths);
 
       this.sourceMap = new SourceMap(segments);
       this.schema = this.sourceMap.getCombinedSource();
@@ -83,12 +72,12 @@ export class Configuration {
   }
 
   getRules() {
-    var rules = defaultRules;
+    var rules = this.getAllRules();
     var specifiedRules;
 
     if (this.options.rules && this.options.rules.length > 0) {
       specifiedRules = this.options.rules.map(toUpperCamelCase);
-      rules = rules.filter(rule => {
+      rules = this.getAllRules().filter(rule => {
         return specifiedRules.indexOf(rule.name) >= 0;
       });
     }
@@ -96,7 +85,7 @@ export class Configuration {
     // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.only && this.options.only.length > 0) {
       specifiedRules = this.options.only.map(toUpperCamelCase);
-      rules = defaultRules.filter(rule => {
+      rules = this.getAllRules().filter(rule => {
         return specifiedRules.indexOf(rule.name) >= 0;
       });
     }
@@ -104,7 +93,7 @@ export class Configuration {
     // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.except && this.options.except.length > 0) {
       specifiedRules = this.options.except.map(toUpperCamelCase);
-      rules = defaultRules.filter(rule => {
+      rules = this.getAllRules().filter(rule => {
         return specifiedRules.indexOf(rule.name) == -1;
       });
     }
@@ -112,10 +101,28 @@ export class Configuration {
     return rules;
   }
 
+  getAllRules() {
+    if (this.rules !== null) {
+      return this.rules;
+    }
+
+    var expandedPaths = expandPaths(this.rulePaths);
+    this.rules = [];
+    expandedPaths.map(rulePath => {
+      var rule = Object.values(require(rulePath));
+
+      if (rule) {
+        this.rules = this.rules.concat(rule);
+      }
+    });
+
+    return this.rules;
+  }
+
   validate() {
     const issues = [];
 
-    const defaultRuleNames = defaultRules.map(rule => rule.name);
+    const ruleNames = this.getAllRules().map(rule => rule.name);
     var misConfiguredRuleNames = []
       .concat(
         this.options.only || [],
@@ -123,7 +130,7 @@ export class Configuration {
         this.options.rules || []
       )
       .map(toUpperCamelCase)
-      .filter(name => defaultRuleNames.indexOf(name) == -1);
+      .filter(name => ruleNames.indexOf(name) == -1);
 
     if (this.getFormatter() == null) {
       issues.push({
@@ -158,6 +165,7 @@ function loadOptionsFromConfig(configDirectory) {
   if (cosmic) {
     return {
       rules: cosmic.config.rules,
+      customRulePaths: cosmic.config.customRulePaths || [],
     };
   } else {
     return {};
@@ -188,6 +196,25 @@ function getSchemaSegmentsFromFiles(paths) {
     segments[path] = getSchemaFromFile(path);
     return segments;
   }, {});
+}
+
+function expandPaths(pathOrPattern) {
+  return (
+    pathOrPattern
+      .map(path => {
+        if (globHasMagic(path)) {
+          return globSync(path);
+        } else {
+          return path;
+        }
+      })
+      .reduce((a, b) => {
+        return a.concat(b);
+      }, [])
+      // Resolve paths to absolute paths so that including the same file
+      // multiple times is not treated as different files
+      .map(p => path.resolve(p))
+  );
 }
 
 function toUpperCamelCase(string) {
