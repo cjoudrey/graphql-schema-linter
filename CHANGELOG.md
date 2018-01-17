@@ -6,6 +6,12 @@
 
 ### New features
 
+## 0.0.28 (January 16th, 2017)
+
+### New features
+
+- Add support for custom rules. [#79](https://github.com/cjoudrey/graphql-schema-linter/pull/79) (Thanks @bwillis)
+
 ## 0.0.27 (January 14th, 2017)
 
 ### Bug fixes
