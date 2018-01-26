@@ -1,14 +1,11 @@
-import assert from 'assert';
-import { parse } from 'graphql';
-import { visit, visitInParallel } from 'graphql/language/visitor';
-import { validate } from 'graphql/validation';
-import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
-
 import { DefinedTypesAreUsed } from '../../src/rules/defined_types_are_used';
+import { expectFailsRule, expectPassesRule } from '../assertions';
 
 describe('DefinedTypesAreUsed rule', () => {
   it('catches object types that are defined but not used', () => {
-    const ast = parse(`
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a: String
       }
@@ -16,23 +13,21 @@ describe('DefinedTypesAreUsed rule', () => {
       type A {
         a: String
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'defined-types-are-used');
-    assert.equal(
-      errors[0].message,
-      'The type `A` is defined in the schema but not used anywhere.'
+    `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 6, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
   });
 
   it('catches interface types that are defined but not used', () => {
-    const ast = parse(`
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a: String
       }
@@ -40,45 +35,41 @@ describe('DefinedTypesAreUsed rule', () => {
       interface A {
         a: String
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'defined-types-are-used');
-    assert.equal(
-      errors[0].message,
-      'The type `A` is defined in the schema but not used anywhere.'
+    `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 6, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
   });
 
   it('catches scalar types that are defined but not used', () => {
-    const ast = parse(`
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a: String
       }
 
       scalar A
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'defined-types-are-used');
-    assert.equal(
-      errors[0].message,
-      'The type `A` is defined in the schema but not used anywhere.'
+    `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 6, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
   });
 
   it('catches input types that are defined but not used', () => {
-    const ast = parse(`
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a: String
       }
@@ -86,45 +77,41 @@ describe('DefinedTypesAreUsed rule', () => {
       input A {
         a: String
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'defined-types-are-used');
-    assert.equal(
-      errors[0].message,
-      'The type `A` is defined in the schema but not used anywhere.'
+    `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 6, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
   });
 
   it('catches union types that are defined but not used', () => {
-    const ast = parse(`
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a: String
       }
 
       union A = Query
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'defined-types-are-used');
-    assert.equal(
-      errors[0].message,
-      'The type `A` is defined in the schema but not used anywhere.'
+    `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 6, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 6, column: 7 }]);
   });
 
   it('ignores types that are a member of a union', () => {
-    const ast = parse(`
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a: B
       }
@@ -134,16 +121,14 @@ describe('DefinedTypesAreUsed rule', () => {
       }
 
       union B = A | Query
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 0);
+    `
+    );
   });
 
   it('ignores types that implement an interface that is used', () => {
-    const ast = parse(`
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a: Node
       }
@@ -156,16 +141,14 @@ describe('DefinedTypesAreUsed rule', () => {
         id: ID!
         a: A
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 0);
+    `
+    );
   });
 
   it('ignores types that are used in field definitions', () => {
-    const ast = parse(`
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a: A
       }
@@ -173,16 +156,14 @@ describe('DefinedTypesAreUsed rule', () => {
       type A {
         id: ID!
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 0);
+    `
+    );
   });
 
   it('ignores scalar and input types that are used in arguments', () => {
-    const ast = parse(`
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
       type Query {
         a(date: Date): String
         b(b: B): String
@@ -193,11 +174,7 @@ describe('DefinedTypesAreUsed rule', () => {
       input B {
         b: String
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [DefinedTypesAreUsed]);
-
-    assert.equal(errors.length, 0);
+    `
+    );
   });
 });
