@@ -4,8 +4,16 @@ import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { kebabCase } from 'lodash';
 
+const DefaultSchema = `
+  # Query root
+  type Query {
+    # Field
+    a: String
+  }
+`;
+
 export function expectFailsRule(rule, schemaSDL, expectedErrors = []) {
-  const ast = parse(schemaSDL);
+  const ast = parse(`${schemaSDL}${DefaultSchema}`);
   const schema = buildASTSchema(ast);
   const errors = validate(schema, ast, [rule]);
 
@@ -23,7 +31,7 @@ export function expectFailsRule(rule, schemaSDL, expectedErrors = []) {
 }
 
 export function expectPassesRule(rule, schemaSDL, expectedErrors = []) {
-  const ast = parse(schemaSDL);
+  const ast = parse(`${schemaSDL}${DefaultSchema}`);
   const schema = buildASTSchema(ast);
   const errors = validate(schema, ast, [rule]);
 

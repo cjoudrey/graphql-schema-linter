@@ -6,10 +6,6 @@ describe('InputObjectValuesAreCamelCased rule', () => {
     expectFailsRule(
       InputObjectValuesAreCamelCased,
       `
-      type Query {
-        hello: String
-      }
-
       input User {
         user_name: String
 
@@ -19,7 +15,7 @@ describe('InputObjectValuesAreCamelCased rule', () => {
       [
         {
           message: 'The input value `User.user_name` is not camel cased.',
-          locations: [{ line: 7, column: 9 }],
+          locations: [{ line: 3, column: 9 }],
         },
       ]
     );
@@ -29,7 +25,7 @@ describe('InputObjectValuesAreCamelCased rule', () => {
     expectFailsRule(
       InputObjectValuesAreCamelCased,
       `
-      type Query {
+      type A {
         hello(argument_without_description: String): String
       }
     `,

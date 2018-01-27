@@ -6,7 +6,7 @@ describe('FieldsAreCamelCased rule', () => {
     expectFailsRule(
       FieldsAreCamelCased,
       `
-      type Query {
+      type A {
         # Invalid
         invalid_name: String
 
@@ -27,11 +27,11 @@ describe('FieldsAreCamelCased rule', () => {
     `,
       [
         {
-          message: 'The field `Query.invalid_name` is not camel cased.',
+          message: 'The field `A.invalid_name` is not camel cased.',
           locations: [{ line: 4, column: 9 }],
         },
         {
-          message: 'The field `Query.ThisIsInvalid` is not camel cased.',
+          message: 'The field `A.ThisIsInvalid` is not camel cased.',
           locations: [{ line: 10, column: 9 }],
         },
         {

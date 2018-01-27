@@ -6,10 +6,6 @@ describe('DefinedTypesAreUsed rule', () => {
     expectFailsRule(
       DefinedTypesAreUsed,
       `
-      type Query {
-        a: String
-      }
-
       type A {
         a: String
       }
@@ -18,7 +14,7 @@ describe('DefinedTypesAreUsed rule', () => {
         {
           message:
             'The type `A` is defined in the schema but not used anywhere.',
-          locations: [{ line: 6, column: 7 }],
+          locations: [{ line: 2, column: 7 }],
         },
       ]
     );
@@ -28,10 +24,6 @@ describe('DefinedTypesAreUsed rule', () => {
     expectFailsRule(
       DefinedTypesAreUsed,
       `
-      type Query {
-        a: String
-      }
-
       interface A {
         a: String
       }
@@ -40,7 +32,7 @@ describe('DefinedTypesAreUsed rule', () => {
         {
           message:
             'The type `A` is defined in the schema but not used anywhere.',
-          locations: [{ line: 6, column: 7 }],
+          locations: [{ line: 2, column: 7 }],
         },
       ]
     );
@@ -50,17 +42,13 @@ describe('DefinedTypesAreUsed rule', () => {
     expectFailsRule(
       DefinedTypesAreUsed,
       `
-      type Query {
-        a: String
-      }
-
       scalar A
     `,
       [
         {
           message:
             'The type `A` is defined in the schema but not used anywhere.',
-          locations: [{ line: 6, column: 7 }],
+          locations: [{ line: 2, column: 7 }],
         },
       ]
     );
@@ -70,10 +58,6 @@ describe('DefinedTypesAreUsed rule', () => {
     expectFailsRule(
       DefinedTypesAreUsed,
       `
-      type Query {
-        a: String
-      }
-
       input A {
         a: String
       }
@@ -82,7 +66,7 @@ describe('DefinedTypesAreUsed rule', () => {
         {
           message:
             'The type `A` is defined in the schema but not used anywhere.',
-          locations: [{ line: 6, column: 7 }],
+          locations: [{ line: 2, column: 7 }],
         },
       ]
     );
@@ -92,17 +76,13 @@ describe('DefinedTypesAreUsed rule', () => {
     expectFailsRule(
       DefinedTypesAreUsed,
       `
-      type Query {
-        a: String
-      }
-
       union A = Query
     `,
       [
         {
           message:
             'The type `A` is defined in the schema but not used anywhere.',
-          locations: [{ line: 6, column: 7 }],
+          locations: [{ line: 2, column: 7 }],
         },
       ]
     );
@@ -112,8 +92,8 @@ describe('DefinedTypesAreUsed rule', () => {
     expectPassesRule(
       DefinedTypesAreUsed,
       `
-      type Query {
-        a: B
+      extend type Query {
+        b: B
       }
 
       type A {
@@ -129,7 +109,7 @@ describe('DefinedTypesAreUsed rule', () => {
     expectPassesRule(
       DefinedTypesAreUsed,
       `
-      type Query {
+      extend type Query {
         a: Node
       }
 
@@ -149,11 +129,11 @@ describe('DefinedTypesAreUsed rule', () => {
     expectPassesRule(
       DefinedTypesAreUsed,
       `
-      type Query {
-        a: A
+      extend type Query {
+        B: B
       }
 
-      type A {
+      type B {
         id: ID!
       }
     `
@@ -164,15 +144,15 @@ describe('DefinedTypesAreUsed rule', () => {
     expectPassesRule(
       DefinedTypesAreUsed,
       `
-      type Query {
-        a(date: Date): String
-        b(b: B): String
+      extend type Query {
+        b(date: Date): String
+        c(c: C): String
       }
 
       scalar Date
 
-      input B {
-        b: String
+      input C {
+        c: String
       }
     `
     );

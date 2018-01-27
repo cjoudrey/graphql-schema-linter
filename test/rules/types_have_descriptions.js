@@ -6,19 +6,15 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # Query
-      type QueryRoot {
-        a: String
+      # A
+      enum A {
+        A
       }
 
       enum STATUS {
         DRAFT
         PUBLISHED
         HIDDEN
-      }
-
-      schema {
-        query: QueryRoot
       }
     `,
       [
@@ -34,21 +30,15 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # Query
-      type QueryRoot {
-        a: String
-      }
+      # A
+      scalar A
 
       scalar DateTime
-
-      schema {
-        query: QueryRoot
-      }
     `,
       [
         {
           message: 'The scalar type `DateTime` is missing a description.',
-          locations: [{ line: 7, column: 7 }],
+          locations: [{ line: 5, column: 7 }],
         },
       ]
     );
@@ -58,17 +48,18 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      type QueryRoot {
+      type A {
         a: String
       }
 
-      schema {
-        query: QueryRoot
+      # B
+      type B {
+        b: String
       }
     `,
       [
         {
-          message: 'The object type `QueryRoot` is missing a description.',
+          message: 'The object type `A` is missing a description.',
           locations: [{ line: 2, column: 7 }],
         },
       ]
@@ -79,23 +70,19 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # Query
-      type QueryRoot {
-        a: String
-      }
-
       input AddStar {
         id: ID!
       }
 
-      schema {
-        query: QueryRoot
+      # RemoveStar
+      input RemoveStar {
+        id: ID!
       }
     `,
       [
         {
           message: 'The input object type `AddStar` is missing a description.',
-          locations: [{ line: 7, column: 7 }],
+          locations: [{ line: 2, column: 7 }],
         },
       ]
     );
@@ -105,17 +92,13 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # The query root
-      type QueryRoot {
-        a: String
+      # B
+      interface B {
+        B: String
       }
 
       interface A {
         a: String
-      }
-
-      schema {
-        query: QueryRoot
       }
     `,
       [
@@ -131,11 +114,6 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # The query root
-      type QueryRoot {
-        a: String
-      }
-
       # A
       type A {
         a: String
@@ -148,14 +126,13 @@ describe('TypesHaveDescriptions rule', () => {
 
       union AB = A | B
 
-      schema {
-        query: QueryRoot
-      }
+      # BA
+      union BA = B | A
     `,
       [
         {
           message: 'The union type `AB` is missing a description.',
-          locations: [{ line: 17, column: 7 }],
+          locations: [{ line: 12, column: 7 }],
         },
       ]
     );
@@ -165,11 +142,6 @@ describe('TypesHaveDescriptions rule', () => {
     expectPassesRule(
       TypesHaveDescriptions,
       `
-      # The query root
-      type Query {
-        a: String
-      }
-
       extend type Query {
         b: String
       }

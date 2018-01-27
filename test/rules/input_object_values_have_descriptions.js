@@ -11,10 +11,6 @@ describe('InputObjectValuesHaveDescriptions rule', () => {
     expectFailsRule(
       InputObjectValuesHaveDescriptions,
       `
-      type Query {
-        hello: String
-      }
-
       input User {
         username: String
 
@@ -25,7 +21,7 @@ describe('InputObjectValuesHaveDescriptions rule', () => {
       [
         {
           message: 'The input value `User.username` is missing a description.',
-          locations: [{ line: 7, column: 9 }],
+          locations: [{ line: 3, column: 9 }],
         },
       ]
     );
@@ -35,7 +31,7 @@ describe('InputObjectValuesHaveDescriptions rule', () => {
     expectPassesRule(
       InputObjectValuesHaveDescriptions,
       `
-      type Query {
+      type A {
         hello(argumentWithoutDescription: String): String
       }
     `

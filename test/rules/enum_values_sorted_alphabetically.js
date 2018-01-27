@@ -6,10 +6,6 @@ describe('EnumValuesSortedAlphabetically rule', () => {
     expectFailsRule(
       EnumValuesSortedAlphabetically,
       `
-      type Query {
-        a: String
-      }
-
       enum Stage {
         ZZZ
         AAA
@@ -18,7 +14,7 @@ describe('EnumValuesSortedAlphabetically rule', () => {
       [
         {
           message: 'The enum `Stage` should be sorted alphabetically.',
-          locations: [{ line: 6, column: 7 }],
+          locations: [{ line: 2, column: 7 }],
         },
       ]
     );
@@ -28,10 +24,6 @@ describe('EnumValuesSortedAlphabetically rule', () => {
     expectPassesRule(
       EnumValuesSortedAlphabetically,
       `
-      type Query {
-        a: String
-      }
-
       enum Stage {
         AAA
         ZZZ

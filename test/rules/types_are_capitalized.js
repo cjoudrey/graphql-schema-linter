@@ -6,22 +6,14 @@ describe('TypesAreCapitalized rule', () => {
     expectFailsRule(
       TypesAreCapitalized,
       `
-      type QueryRoot {
-        a: String
-      }
-
       type a {
         a: String
-      }
-
-      schema {
-        query: QueryRoot
       }
     `,
       [
         {
           message: 'The object type `a` should start with a capital letter.',
-          locations: [{ line: 6, column: 12 }],
+          locations: [{ line: 2, column: 12 }],
         },
       ]
     );
@@ -31,22 +23,14 @@ describe('TypesAreCapitalized rule', () => {
     expectFailsRule(
       TypesAreCapitalized,
       `
-      type QueryRoot {
-        a: String
-      }
-
       interface a {
         a: String
-      }
-
-      schema {
-        query: QueryRoot
       }
     `,
       [
         {
           message: 'The interface type `a` should start with a capital letter.',
-          locations: [{ line: 6, column: 17 }],
+          locations: [{ line: 2, column: 17 }],
         },
       ]
     );

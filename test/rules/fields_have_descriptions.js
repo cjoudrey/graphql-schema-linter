@@ -6,27 +6,22 @@ describe('FieldsHaveDescriptions rule', () => {
     expectFailsRule(
       FieldsHaveDescriptions,
       `
-      type QueryRoot {
+      type A {
         withoutDescription: String
         withoutDescriptionAgain: String!
 
         # Description
         withDescription: String
       }
-
-      schema {
-        query: QueryRoot
-      }
     `,
       [
         {
-          message:
-            'The field `QueryRoot.withoutDescription` is missing a description.',
+          message: 'The field `A.withoutDescription` is missing a description.',
           locations: [{ line: 3, column: 9 }],
         },
         {
           message:
-            'The field `QueryRoot.withoutDescriptionAgain` is missing a description.',
+            'The field `A.withoutDescriptionAgain` is missing a description.',
           locations: [{ line: 4, column: 9 }],
         },
       ]

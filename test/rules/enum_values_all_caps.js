@@ -6,10 +6,6 @@ describe('EnumValuesAllCaps rule', () => {
     expectFailsRule(
       EnumValuesAllCaps,
       `
-      type Query {
-        a: String
-      }
-
       enum Stage {
         aaa
         bbb_bbb
@@ -18,11 +14,11 @@ describe('EnumValuesAllCaps rule', () => {
       [
         {
           message: 'The enum value `Stage.aaa` should be uppercase.',
-          locations: [{ line: 7, column: 9 }],
+          locations: [{ line: 3, column: 9 }],
         },
         {
           message: 'The enum value `Stage.bbb_bbb` should be uppercase.',
-          locations: [{ line: 8, column: 9 }],
+          locations: [{ line: 4, column: 9 }],
         },
       ]
     );
@@ -32,10 +28,6 @@ describe('EnumValuesAllCaps rule', () => {
     expectPassesRule(
       EnumValuesAllCaps,
       `
-      type Query {
-        a: String
-      }
-
       enum Stage {
         FOO
         FOO_BAR

@@ -6,25 +6,17 @@ describe('DeprecationsHaveAReason rule', () => {
     expectFailsRule(
       DeprecationsHaveAReason,
       `
-      type QueryRoot {
-        a: String
-      }
-
       type A {
         deprecatedWithoutReason: String @deprecated
         deprecatedWithReason: String @deprecated(reason: "Reason")
         notDeprecated: String
-      }
-
-      schema {
-        query: QueryRoot
       }
     `,
       [
         {
           message:
             'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.',
-          locations: [{ line: 7, column: 41 }],
+          locations: [{ line: 3, column: 41 }],
         },
       ]
     );
@@ -34,25 +26,17 @@ describe('DeprecationsHaveAReason rule', () => {
     expectFailsRule(
       DeprecationsHaveAReason,
       `
-      type QueryRoot {
-        a: String
-      }
-
       interface A {
         deprecatedWithoutReason: String @deprecated
         deprecatedWithReason: String @deprecated(reason: "Reason")
         notDeprecated: String
-      }
-
-      schema {
-        query: QueryRoot
       }
     `,
       [
         {
           message:
             'The field `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.',
-          locations: [{ line: 7, column: 41 }],
+          locations: [{ line: 3, column: 41 }],
         },
       ]
     );
@@ -62,18 +46,10 @@ describe('DeprecationsHaveAReason rule', () => {
     expectFailsRule(
       DeprecationsHaveAReason,
       `
-      type QueryRoot {
-        a: String
-      }
-
       enum A {
         deprecatedWithoutReason @deprecated
         deprecatedWithReason @deprecated(reason: "Reason")
         notDeprecated
-      }
-
-      schema {
-        query: QueryRoot
       }
     `,
       [
@@ -81,7 +57,7 @@ describe('DeprecationsHaveAReason rule', () => {
           message:
             'The enum value `A.deprecatedWithoutReason` is deprecated but has no deprecation reason.',
 
-          locations: [{ line: 7, column: 33 }],
+          locations: [{ line: 3, column: 33 }],
         },
       ]
     );
