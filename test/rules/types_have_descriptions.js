@@ -1,14 +1,11 @@
-import assert from 'assert';
-import { parse } from 'graphql';
-import { visit, visitInParallel } from 'graphql/language/visitor';
-import { validate } from 'graphql/validation';
-import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
-
 import { TypesHaveDescriptions } from '../../src/rules/types_have_descriptions';
+import { expectFailsRule, expectPassesRule } from '../assertions';
 
 describe('TypesHaveDescriptions rule', () => {
   it('catches enum types that have no description', () => {
-    const ast = parse(`
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
       # Query
       type QueryRoot {
         a: String
@@ -23,23 +20,20 @@ describe('TypesHaveDescriptions rule', () => {
       schema {
         query: QueryRoot
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The enum type `STATUS` is missing a description.'
+    `,
+      [
+        {
+          message: 'The enum type `STATUS` is missing a description.',
+          locations: [{ line: 7, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches scalar types that have no description', () => {
-    const ast = parse(`
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
       # Query
       type QueryRoot {
         a: String
@@ -50,23 +44,20 @@ describe('TypesHaveDescriptions rule', () => {
       schema {
         query: QueryRoot
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The scalar type `DateTime` is missing a description.'
+    `,
+      [
+        {
+          message: 'The scalar type `DateTime` is missing a description.',
+          locations: [{ line: 7, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches object types that have no description', () => {
-    const ast = parse(`
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
       type QueryRoot {
         a: String
       }
@@ -74,23 +65,20 @@ describe('TypesHaveDescriptions rule', () => {
       schema {
         query: QueryRoot
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The object type `QueryRoot` is missing a description.'
+    `,
+      [
+        {
+          message: 'The object type `QueryRoot` is missing a description.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 2, column: 7 }]);
   });
 
   it('catches input types that have no description', () => {
-    const ast = parse(`
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
       # Query
       type QueryRoot {
         a: String
@@ -103,23 +91,20 @@ describe('TypesHaveDescriptions rule', () => {
       schema {
         query: QueryRoot
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The input object type `AddStar` is missing a description.'
+    `,
+      [
+        {
+          message: 'The input object type `AddStar` is missing a description.',
+          locations: [{ line: 7, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches interface types that have no description', () => {
-    const ast = parse(`
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
       # The query root
       type QueryRoot {
         a: String
@@ -132,23 +117,20 @@ describe('TypesHaveDescriptions rule', () => {
       schema {
         query: QueryRoot
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The interface type `A` is missing a description.'
+    `,
+      [
+        {
+          message: 'The interface type `A` is missing a description.',
+          locations: [{ line: 7, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches union types that have no description', () => {
-    const ast = parse(`
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
       # The query root
       type QueryRoot {
         a: String
@@ -169,23 +151,20 @@ describe('TypesHaveDescriptions rule', () => {
       schema {
         query: QueryRoot
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The union type `AB` is missing a description.'
+    `,
+      [
+        {
+          message: 'The union type `AB` is missing a description.',
+          locations: [{ line: 17, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 17, column: 7 }]);
   });
 
   it('ignores type extensions', () => {
-    const ast = parse(`
+    expectPassesRule(
+      TypesHaveDescriptions,
+      `
       # The query root
       type Query {
         a: String
@@ -203,11 +182,7 @@ describe('TypesHaveDescriptions rule', () => {
       extend type Vehicle {
         something: String!
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 0);
+    `
+    );
   });
 });
