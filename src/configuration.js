@@ -1,6 +1,5 @@
 const cosmiconfig = require('cosmiconfig');
 import { readSync, readFileSync } from 'fs';
-import getGraphQLProjectConfig from 'graphql-config';
 import path from 'path';
 import { sync as globSync, hasMagic as globHasMagic } from 'glob';
 
@@ -39,15 +38,15 @@ export class Configuration {
       return this.schema;
     }
 
-    var schema;
-
     if (this.options.stdin) {
       this.schema = getSchemaFromFileDescriptor(this.stdinFd);
       this.sourceMap = new SourceMap({ stdin: this.schema });
     } else if (this.options.schemaPaths) {
-      var expandedPaths = expandPaths(this.options.schemaPaths);
-      var segments = getSchemaSegmentsFromFiles(expandedPaths);
-
+      const expandedPaths = expandPaths(this.options.schemaPaths);
+      const segments = getSchemaSegmentsFromFiles(expandedPaths);
+      if (Object.keys(segments).length === 0) {
+        return null;
+      }
       this.sourceMap = new SourceMap(segments);
       this.schema = this.sourceMap.getCombinedSource();
     }
@@ -73,9 +72,8 @@ export class Configuration {
   }
 
   getRules() {
-    var rules = this.getAllRules();
-    var specifiedRules;
-
+    let rules = this.getAllRules();
+    let specifiedRules;
     if (this.options.rules && this.options.rules.length > 0) {
       specifiedRules = this.options.rules.map(toUpperCamelCase);
       rules = this.getAllRules().filter(rule => {
@@ -107,10 +105,10 @@ export class Configuration {
       return this.rules;
     }
 
-    var expandedPaths = expandPaths(this.rulePaths);
+    let expandedPaths = expandPaths(this.rulePaths);
     this.rules = [];
     expandedPaths.map(rulePath => {
-      var rule = Object.values(require(rulePath));
+      let rule = Object.values(require(rulePath));
 
       if (rule) {
         this.rules = this.rules.concat(rule);
@@ -124,7 +122,7 @@ export class Configuration {
     const issues = [];
 
     const ruleNames = this.getAllRules().map(rule => rule.name);
-    var misConfiguredRuleNames = []
+    let misConfiguredRuleNames = []
       .concat(
         this.options.only || [],
         this.options.except || [],
@@ -174,11 +172,11 @@ function loadOptionsFromConfig(configDirectory) {
 }
 
 function getSchemaFromFileDescriptor(fd) {
-  var b = new Buffer(1024);
-  var data = '';
+  let b = new Buffer(1024);
+  let data = '';
 
   while (true) {
-    var n = readSync(fd, b, 0, b.length);
+    let n = readSync(fd, b, 0, b.length);
     if (!n) {
       break;
     }
@@ -189,12 +187,20 @@ function getSchemaFromFileDescriptor(fd) {
 }
 
 function getSchemaFromFile(path) {
-  return readFileSync(path).toString('utf8');
+  try {
+    return readFileSync(path).toString('utf8');
+  } catch (e) {
+    console.error(e.message);
+  }
+  return null;
 }
 
 function getSchemaSegmentsFromFiles(paths) {
   return paths.reduce((segments, path) => {
-    segments[path] = getSchemaFromFile(path);
+    let schema = getSchemaFromFile(path);
+    if (schema) {
+      segments[path] = schema;
+    }
     return segments;
   }, {});
 }

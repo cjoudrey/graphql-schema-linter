@@ -76,6 +76,10 @@ export function run(stdout, stdin, stderr, argv) {
   }
 
   const schema = configuration.getSchema();
+  if (schema == null) {
+    console.error('No valid schema input.');
+    return 2;
+  }
   const formatter = configuration.getFormatter();
   const rules = configuration.getRules();
   const schemaSourceMap = configuration.getSchemaSourceMap();
