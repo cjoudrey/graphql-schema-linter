@@ -19,23 +19,6 @@ describe('RelayConnectionsHaveFields  rule', () => {
       ]
     );
   });
-  it('catches interface types that have missing fields', () => {
-    expectFailsRule(
-      RelayConnectionsHaveFields,
-      `
-      interface BadConnection {
-        a: String
-      }
-    `,
-      [
-        {
-          message:
-            'Connection `BadConnection` is missing the following fields: pageInfo, edges.',
-          locations: [{ line: 2, column: 7 }],
-        },
-      ]
-    );
-  });
 
   it('accepts object types with the correct fields.', () => {
     expectPassesRule(
@@ -49,14 +32,12 @@ describe('RelayConnectionsHaveFields  rule', () => {
     `
     );
   });
-  it('accepts interface types with the correct fields.', () => {
+  it('ignores interface types that have missing fields', () => {
     expectPassesRule(
       RelayConnectionsHaveFields,
       `
-      
-      interface BetterConnection {
-        pageInfo: String
-        edges: Int
+      interface BadConnection {
+        a: String
       }
     `
     );
