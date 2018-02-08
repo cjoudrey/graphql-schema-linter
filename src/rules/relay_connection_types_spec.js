@@ -1,7 +1,7 @@
 import { ValidationError } from '../validation_error';
 const MANDATORY_FIELDS = ['pageInfo', 'edges'];
 
-export function RelayConnectionsHaveFields(context) {
+export function RelayConnectionTypesSpec(context) {
   return {
     ObjectTypeDefinition(node) {
       const typeName = node.name.value;
@@ -16,7 +16,7 @@ export function RelayConnectionsHaveFields(context) {
       if (missingFields.length) {
         context.reportError(
           new ValidationError(
-            'relay-connections-have-fields',
+            'relay-connection-types-spec',
             `Connection \`${typeName}\` is missing the following field${missingFields.length >
             1
               ? 's'
