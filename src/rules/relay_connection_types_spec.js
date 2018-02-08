@@ -2,7 +2,25 @@ import { ValidationError } from '../validation_error';
 const MANDATORY_FIELDS = ['pageInfo', 'edges'];
 
 export function RelayConnectionTypesSpec(context) {
+  var ensureNameDoesNotEndWithConnection = node => {
+    if (node.name.value.match(/Connection$/)) {
+      context.reportError(
+        new ValidationError(
+          'relay-connection-types-spec',
+          `Types that end in \`Connection\` must be an object type as per the relay spec. \`${node
+            .name.value}\` is not an object type.`,
+          [node]
+        )
+      );
+    }
+  };
+
   return {
+    ScalarTypeDefinition: ensureNameDoesNotEndWithConnection,
+    InterfaceTypeDefinition: ensureNameDoesNotEndWithConnection,
+    UnionTypeDefinition: ensureNameDoesNotEndWithConnection,
+    EnumTypeDefinition: ensureNameDoesNotEndWithConnection,
+    InputObjectTypeDefinition: ensureNameDoesNotEndWithConnection,
     ObjectTypeDefinition(node) {
       const typeName = node.name.value;
       if (!typeName.endsWith('Connection')) {

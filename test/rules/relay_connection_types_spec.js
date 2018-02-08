@@ -31,14 +31,119 @@ describe('RelayConnectionTypesSpec  rule', () => {
     `
     );
   });
-  it('ignores interface types that have missing fields', () => {
+
+  it('ignores types that are not objects', () => {
     expectPassesRule(
       RelayConnectionTypesSpec,
       `
-      interface BadConnection {
+      scalar A
+
+      interface B {
         a: String
       }
+
+      union C = F
+
+      enum D {
+        SOMETHING
+      }
+
+      input E {
+        a: String!
+      }
+
+      type F {
+        a: String!
+      }
     `
+    );
+  });
+
+  it('catches types that end in Connection but that are not objects', () => {
+    expectFailsRule(
+      RelayConnectionTypesSpec,
+      `
+      scalar AConnection
+
+      interface BConnection {
+        a: String!
+      }
+
+      type F {
+        a: String!
+      }
+      union CConnection = F
+
+      enum DConnection {
+        SOMETHING
+      }
+
+      input EConnection {
+        a: String!
+      }
+      `,
+      [
+        {
+          locations: [
+            {
+              column: 7,
+              line: 2,
+            },
+          ],
+          message:
+            'Types that end in `Connection` must be an object type as per the relay spec. `AConnection` is not an object type.',
+          path: [undefined],
+          ruleName: 'relay-connection-types-spec',
+        },
+        {
+          locations: [
+            {
+              column: 7,
+              line: 4,
+            },
+          ],
+          message:
+            'Types that end in `Connection` must be an object type as per the relay spec. `BConnection` is not an object type.',
+          path: [undefined],
+          ruleName: 'relay-connection-types-spec',
+        },
+        {
+          locations: [
+            {
+              column: 7,
+              line: 11,
+            },
+          ],
+          message:
+            'Types that end in `Connection` must be an object type as per the relay spec. `CConnection` is not an object type.',
+          path: [undefined],
+          ruleName: 'relay-connection-types-spec',
+        },
+        {
+          locations: [
+            {
+              column: 7,
+              line: 13,
+            },
+          ],
+          message:
+            'Types that end in `Connection` must be an object type as per the relay spec. `DConnection` is not an object type.',
+          path: [undefined],
+          ruleName: 'relay-connection-types-spec',
+        },
+        {
+          locations: [
+            {
+              column: 7,
+              line: 17,
+            },
+          ],
+          message:
+            'Types that end in `Connection` must be an object type as per the relay spec. `EConnection` is not an object type.',
+          path: [undefined],
+          ruleName: 'relay-connection-types-spec',
+        },
+      ]
     );
   });
 });
