@@ -110,7 +110,8 @@ export class Configuration {
     var expandedPaths = expandPaths(this.rulePaths);
     this.rules = [];
     expandedPaths.map(rulePath => {
-      var rule = Object.values(require(rulePath));
+      var ruleMap = require(rulePath);
+      var rule = Object.keys(ruleMap).map(k => ruleMap[k]);
 
       if (rule) {
         this.rules = this.rules.concat(rule);
