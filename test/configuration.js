@@ -16,7 +16,6 @@ describe('Configuration', () => {
   author: User!
 }
 
-
 type Query {
   something: String!
 }
