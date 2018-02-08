@@ -1,10 +1,10 @@
-import { RelayConnectionsHaveFields } from '../../src/rules/relay_connections_have_fields';
+import { RelayConnectionTypesSpec } from '../../src/rules/relay_connection_types_spec';
 import { expectFailsRule, expectPassesRule } from '../assertions';
 
-describe('RelayConnectionsHaveFields  rule', () => {
+describe('RelayConnectionTypesSpec  rule', () => {
   it('catches object types that have missing fields', () => {
     expectFailsRule(
-      RelayConnectionsHaveFields,
+      RelayConnectionTypesSpec,
       `
       type BadConnection {
         a: String
@@ -22,9 +22,8 @@ describe('RelayConnectionsHaveFields  rule', () => {
 
   it('accepts object types with the correct fields.', () => {
     expectPassesRule(
-      RelayConnectionsHaveFields,
+      RelayConnectionTypesSpec,
       `
-      
       type BetterConnection {
         pageInfo: String
         edges: Int
@@ -34,7 +33,7 @@ describe('RelayConnectionsHaveFields  rule', () => {
   });
   it('ignores interface types that have missing fields', () => {
     expectPassesRule(
-      RelayConnectionsHaveFields,
+      RelayConnectionTypesSpec,
       `
       interface BadConnection {
         a: String
