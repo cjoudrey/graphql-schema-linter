@@ -24,11 +24,76 @@ describe('RelayConnectionTypesSpec  rule', () => {
     expectPassesRule(
       RelayConnectionTypesSpec,
       `
+      type PageInfo {
+        a: String
+      }
+
+      type Edge {
+        a: String
+      }
+
       type BetterConnection {
-        pageInfo: String
-        edges: Int
+        pageInfo: PageInfo!
+        edges: [Edge]
       }
     `
+    );
+  });
+
+  it('catches edges fields that are not lists of edges', () => {
+    expectFailsRule(
+      RelayConnectionTypesSpec,
+      `
+      type PageInfo {
+        a: String
+      }
+
+      type Edge {
+        a: String
+      }
+
+      type BadConnection {
+        pageInfo: PageInfo!
+        edges: String
+      }
+
+      type AnotherBadConnection {
+        pageInfo: String
+        edges: [Edge]
+      }
+
+      type YetAnotherBadConnection {
+        pageInfo: String!
+        edges: [Edge]
+      }
+    `,
+      [
+        {
+          message:
+            'The `BadConnection.edges` field must return a list of edges not `String`.',
+          locations: [{ line: 10, column: 7 }],
+        },
+        {
+          message:
+            'The `AnotherBadConnection.pageInfo` field must return a non-null `PageInfo` object not `String`',
+          locations: [
+            {
+              column: 7,
+              line: 15,
+            },
+          ],
+        },
+        {
+          message:
+            'The `YetAnotherBadConnection.pageInfo` field must return a non-null `PageInfo` object not `String!`',
+          locations: [
+            {
+              column: 7,
+              line: 20,
+            },
+          ],
+        },
+      ]
     );
   });
 

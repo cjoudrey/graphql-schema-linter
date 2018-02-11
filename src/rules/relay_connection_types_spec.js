@@ -1,4 +1,6 @@
 import { ValidationError } from '../validation_error';
+import { print } from 'graphql/language/printer';
+
 const MANDATORY_FIELDS = ['pageInfo', 'edges'];
 
 export function RelayConnectionTypesSpec(context) {
@@ -39,6 +41,37 @@ export function RelayConnectionTypesSpec(context) {
             1
               ? 's'
               : ''}: ${missingFields.join(', ')}.`,
+            [node]
+          )
+        );
+        return;
+      }
+
+      const edgesField = node.fields.find(field => field.name.value == 'edges');
+      const edgesFieldType = edgesField.type;
+
+      if (edgesFieldType.kind != 'ListType') {
+        context.reportError(
+          new ValidationError(
+            'relay-connection-types-spec',
+            `The \`${typeName}.edges\` field must return a list of edges not \`${print(
+              edgesFieldType
+            )}\`.`,
+            [node]
+          )
+        );
+      }
+
+      const pageInfoField = node.fields.find(
+        field => field.name.value == 'pageInfo'
+      );
+      const printedPageInfoFieldType = print(pageInfoField.type);
+
+      if (printedPageInfoFieldType != 'PageInfo!') {
+        context.reportError(
+          new ValidationError(
+            'relay-connection-types-spec',
+            `The \`${typeName}.pageInfo\` field must return a non-null \`PageInfo\` object not \`${printedPageInfoFieldType}\``,
             [node]
           )
         );

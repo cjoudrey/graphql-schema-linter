@@ -35,5 +35,8 @@ export function expectPassesRule(rule, schemaSDL, expectedErrors = []) {
   const schema = buildASTSchema(ast);
   const errors = validate(schema, ast, [rule]);
 
-  assert(errors.length == 0, "Expected rule to pass but didn't");
+  assert(
+    errors.length == 0,
+    `Expected rule to pass but didn't got these errors:\n\n${errors.join('\n')}`
+  );
 }
