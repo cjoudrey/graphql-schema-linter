@@ -20,6 +20,33 @@ describe('DefinedTypesAreUsed rule', () => {
     );
   });
 
+  it('catches object types that are extended but not used', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+      type A {
+        a: String
+      }
+
+      extend type A {
+        b: String
+      }
+    `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 7 }],
+        },
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 6, column: 14 }],
+        },
+      ]
+    );
+  });
+
   it('catches interface types that are defined but not used', () => {
     expectFailsRule(
       DefinedTypesAreUsed,
