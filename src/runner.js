@@ -84,8 +84,7 @@ export function run(stdout, stdin, stderr, argv) {
   const rules = configuration.getRules();
   const schemaSourceMap = configuration.getSchemaSourceMap();
 
-  const errors = validateSchemaDefinition(schema, rules);
-
+  const errors = validateSchemaDefinition(schema, rules, configuration);
   const groupedErrors = groupErrorsBySchemaFilePath(errors, schemaSourceMap);
 
   stdout.write(formatter(groupedErrors));

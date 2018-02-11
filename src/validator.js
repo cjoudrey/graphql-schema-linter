@@ -3,7 +3,11 @@ import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { GraphQLError } from 'graphql/error';
 
-export function validateSchemaDefinition(schemaDefinition, rules) {
+export function validateSchemaDefinition(
+  schemaDefinition,
+  rules,
+  configuration
+) {
   let ast;
   try {
     ast = parse(schemaDefinition);
@@ -15,7 +19,12 @@ export function validateSchemaDefinition(schemaDefinition, rules) {
     }
   }
   const schema = buildASTSchema(ast);
-  const errors = validate(schema, ast, rules);
+
+  const rulesWithConfiguration = rules.map(rule => {
+    return ruleWithConfiguration(rule, configuration);
+  });
+
+  const errors = validate(schema, ast, rulesWithConfiguration);
   const sortedErrors = sortErrors(errors);
 
   return sortedErrors;
@@ -25,4 +34,14 @@ function sortErrors(errors) {
   return errors.sort((a, b) => {
     return a.locations[0].line - b.locations[0].line;
   });
+}
+
+function ruleWithConfiguration(rule, configuration) {
+  if (rule.length == 2) {
+    return function(context) {
+      return rule(configuration, context);
+    };
+  } else {
+    return rule;
+  }
 }
