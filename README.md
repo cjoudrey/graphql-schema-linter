@@ -86,8 +86,8 @@ Then add a `precommit` script and a `lint-staged` key to your `package.json` lik
 The above configuration assumes that you have either one `schema.graphql` file or multiple `.graphql` files that should
 be concatenated together and linted as a whole.
 
-If you have both client and server schema in the same project, you'll likely need to put
-multiple entries in the `lint-staged` object above - one for client and one for server.  Something like:
+If your project has `.graphql` query files and `.graphql` schema files, you'll likely need multiple entries in the
+`lint-staged` object - one for queries and one for schema. For example:
 
 ```json
 {
@@ -95,8 +95,38 @@ multiple entries in the `lint-staged` object above - one for client and one for 
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "client/*.graphql": ["graphql-schema-linter client/*.graphql"],
+    "client/*.graphql": ["eslint . --ext .js --ext .gql --ext .graphql"],
     "server/*.graphql": ["graphql-schema-linter server/*.graphql"]
+  }
+}
+```
+
+If you have multiple schemas in the same folder, your `lint-staged` configuration will need to be more specific, otherwise
+`graphql-schema-linter` will assume they are all parts of one schema. For example:
+
+**Correct:**
+
+```json
+{
+  "scripts": {
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "server/schema.public.graphql": ["graphql-schema-linter"],
+    "server/schema.private.graphql": ["graphql-schema-linter"]
+  }
+}
+```
+
+**Incorrect (if you have multiple schemas):**
+
+```json
+{
+  "scripts": {
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "server/*.graphql": ["graphql-schema-linter"]
   }
 }
 ```
