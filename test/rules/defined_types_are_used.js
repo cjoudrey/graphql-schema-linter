@@ -97,7 +97,7 @@ describe('DefinedTypesAreUsed rule', () => {
       }
 
       type A {
-        a: A
+        a: String
       }
 
       union B = A | Query
@@ -119,7 +119,6 @@ describe('DefinedTypesAreUsed rule', () => {
 
       type A implements Node {
         id: ID!
-        a: A
       }
     `
     );
