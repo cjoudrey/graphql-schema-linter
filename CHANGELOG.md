@@ -6,6 +6,17 @@
 
 ### New features
 
+## 0.0.29 (February 11th, 2017)
+
+### New features
+
+- Add `relay-connection-types-spec` rule. See [README.md](https://github.com/cjoudrey/graphql-schema-linter#relay-connection-types-spec) for details. (Thanks @ruiaraujo)
+
+### Bug fixes
+
+- Add support for node v6. [#90](https://github.com/cjoudrey/graphql-schema-linter/pull/90) (Thanks @bwillis)
+- Fix crash when no schema is provided to the linter. [#88](https://github.com/cjoudrey/graphql-schema-linter/pull/88) (Thanks @ruiaraujo)
+
 ## 0.0.28 (January 16th, 2017)
 
 ### New features

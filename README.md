@@ -172,6 +172,16 @@ This rule will validate that input object value names are camel cased.
 
 This rule will validate that input object values have a description.
 
+### `relay-connection-types-spec`
+
+This rule will validate the schema adheres to [section 2 (Connection Types)](https://facebook.github.io/relay/graphql/connections.htm#sec-Connection-Types) of the [Relay Cursor Connections Specification]().
+
+More specifically:
+
+- Only object type names may end in `Connection`. These object types are considered connection types.
+- Connection types must have a `edges` field that returns a list type.
+- Connection types must have a `pageInfo` field that returns a non-null `PageInfo` object.
+
 ### `types-are-capitalized`
 
 This rule will validate that interface types and object types have capitalized names.
