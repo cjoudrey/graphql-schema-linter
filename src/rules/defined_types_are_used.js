@@ -1,7 +1,7 @@
 import { ValidationError } from '../validation_error';
 
 export function DefinedTypesAreUsed(context) {
-  var ignoredTypes = ['Query', 'Mutatation', 'Subscription'];
+  var ignoredTypes = ['Query', 'Mutation', 'Subscription'];
   var definedTypes = [];
   var referencedTypes = new Set();
 

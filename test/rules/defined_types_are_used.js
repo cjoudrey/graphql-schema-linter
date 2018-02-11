@@ -156,4 +156,37 @@ describe('DefinedTypesAreUsed rule', () => {
     `
     );
   });
+
+  it('ignores unreferenced Mutation object type', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+      type Mutation {
+        a: String
+      }
+    `
+    );
+  });
+
+  it('ignores unreferenced Subscription object type', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+      type Subscription {
+        a: String
+      }
+    `
+    );
+  });
+
+  it('ignores unreferenced Query object type', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+      extend type Query {
+        a: String
+      }
+    `
+    );
+  });
 });
