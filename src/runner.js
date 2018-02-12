@@ -28,6 +28,10 @@ export function run(stdout, stdin, stderr, argv) {
       '-p, --custom-rule-paths <paths>',
       'path to additional custom rules to be loaded. Example: rules/*.js'
     )
+    .option(
+      '--comment-descriptions',
+      'use old way of defining descriptions in GraphQL SDL'
+    )
     // DEPRECATED - This code should be removed in v1.0.0.
     .option(
       '-o, --only <rules>',
@@ -84,8 +88,7 @@ export function run(stdout, stdin, stderr, argv) {
   const rules = configuration.getRules();
   const schemaSourceMap = configuration.getSchemaSourceMap();
 
-  const errors = validateSchemaDefinition(schema, rules);
-
+  const errors = validateSchemaDefinition(schema, rules, configuration);
   const groupedErrors = groupErrorsBySchemaFilePath(errors, schemaSourceMap);
 
   stdout.write(formatter(groupedErrors));
@@ -135,6 +138,10 @@ function getOptionsFromCommander(commander) {
 
   if (commander.customRulePaths) {
     options.customRulePaths = commander.customRulePaths.split(',');
+  }
+
+  if (commander.commentDescriptions) {
+    options.commentDescriptions = commander.commentDescriptions;
   }
 
   if (commander.args && commander.args.length) {

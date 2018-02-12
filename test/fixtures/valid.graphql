@@ -1,5 +1,5 @@
-# Query
+"Query"
 type Query {
-  # a
+  "a"
   a: String!
 }

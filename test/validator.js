@@ -12,7 +12,11 @@ describe('validateSchemaDefinition', () => {
     const schemaDefinition = configuration.getSchema();
     const rules = [FieldsHaveDescriptions, DummyValidator];
 
-    const errors = validateSchemaDefinition(schemaDefinition, rules);
+    const errors = validateSchemaDefinition(
+      schemaDefinition,
+      rules,
+      configuration
+    );
     const errorLineNumbers = errors.map(error => {
       return error.locations[0].line;
     });
@@ -28,9 +32,39 @@ describe('validateSchemaDefinition', () => {
 
     const schemaDefinition = configuration.getSchema();
 
-    const errors = validateSchemaDefinition(schemaDefinition, []);
+    const errors = validateSchemaDefinition(
+      schemaDefinition,
+      [],
+      configuration
+    );
 
     assert.equal(1, errors.length);
+  });
+
+  it('passes configuration to rules that require it', () => {
+    const schemaPath = `${__dirname}/fixtures/valid.graphql`;
+    const configuration = new Configuration({ schemaPaths: [schemaPath] });
+
+    const schemaDefinition = configuration.getSchema();
+
+    const ruleWithConfiguration = (config, context) => {
+      assert.equal(configuration, config);
+      assert.equal('ValidationContext', context.constructor.name);
+      return {};
+    };
+
+    const ruleWithoutConfiguration = context => {
+      assert.equal('ValidationContext', context.constructor.name);
+      return {};
+    };
+
+    const errors = validateSchemaDefinition(
+      schemaDefinition,
+      [ruleWithConfiguration, ruleWithoutConfiguration],
+      configuration
+    );
+
+    assert.equal(0, errors.length);
   });
 });
 

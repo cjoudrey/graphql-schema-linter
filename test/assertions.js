@@ -3,19 +3,28 @@ import { parse } from 'graphql';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { kebabCase } from 'lodash';
+import { validateSchemaDefinition } from '../src/validator.js';
+import { Configuration } from '../src/configuration.js';
 
 const DefaultSchema = `
-  # Query root
+  "Query root"
   type Query {
-    # Field
+    "Field"
     a: String
   }
 `;
 
 export function expectFailsRule(rule, schemaSDL, expectedErrors = []) {
-  const ast = parse(`${schemaSDL}${DefaultSchema}`);
-  const schema = buildASTSchema(ast);
-  const errors = validate(schema, ast, [rule]);
+  return expectFailsRuleWithConfiguration(rule, schemaSDL, {}, expectedErrors);
+}
+
+export function expectFailsRuleWithConfiguration(
+  rule,
+  schemaSDL,
+  configurationOptions,
+  expectedErrors = []
+) {
+  const errors = validateSchemaWithRule(rule, schemaSDL, configurationOptions);
 
   assert(errors.length > 0, "Expected rule to fail but didn't");
 
@@ -30,13 +39,28 @@ export function expectFailsRule(rule, schemaSDL, expectedErrors = []) {
   );
 }
 
-export function expectPassesRule(rule, schemaSDL, expectedErrors = []) {
-  const ast = parse(`${schemaSDL}${DefaultSchema}`);
-  const schema = buildASTSchema(ast);
-  const errors = validate(schema, ast, [rule]);
+export function expectPassesRule(rule, schemaSDL) {
+  expectPassesRuleWithConfiguration(rule, schemaSDL, {});
+}
+
+export function expectPassesRuleWithConfiguration(
+  rule,
+  schemaSDL,
+  configurationOptions
+) {
+  const errors = validateSchemaWithRule(rule, schemaSDL, configurationOptions);
 
   assert(
     errors.length == 0,
     `Expected rule to pass but didn't got these errors:\n\n${errors.join('\n')}`
   );
+}
+
+function validateSchemaWithRule(rule, schemaSDL, configurationOptions) {
+  const fullSchemaSDL = `${schemaSDL}${DefaultSchema}`;
+  const rules = [rule];
+  const configuration = new Configuration(configurationOptions, null);
+  const errors = validateSchemaDefinition(fullSchemaSDL, rules, configuration);
+
+  return errors;
 }

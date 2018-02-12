@@ -1,10 +1,14 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 
-export function InputObjectValuesHaveDescriptions(context) {
+export function InputObjectValuesHaveDescriptions(configuration, context) {
   return {
     InputValueDefinition(node, key, parent, path, ancestors) {
-      if (getDescription(node)) {
+      if (
+        getDescription(node, {
+          commentDescriptions: configuration.getCommentDescriptions(),
+        })
+      ) {
         return;
       }
 

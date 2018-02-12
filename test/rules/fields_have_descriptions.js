@@ -1,5 +1,8 @@
 import { FieldsHaveDescriptions } from '../../src/rules/fields_have_descriptions';
-import { expectFailsRule } from '../assertions';
+import {
+  expectFailsRule,
+  expectPassesRuleWithConfiguration,
+} from '../assertions';
 
 describe('FieldsHaveDescriptions rule', () => {
   it('catches fields that have no description', () => {
@@ -10,7 +13,7 @@ describe('FieldsHaveDescriptions rule', () => {
         withoutDescription: String
         withoutDescriptionAgain: String!
 
-        # Description
+        "Description"
         withDescription: String
       }
     `,
@@ -25,6 +28,19 @@ describe('FieldsHaveDescriptions rule', () => {
           locations: [{ line: 4, column: 9 }],
         },
       ]
+    );
+  });
+
+  it('gets descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      FieldsHaveDescriptions,
+      `
+      type A {
+        "Description"
+        withDescription: String
+      }
+    `,
+      { commentDescriptions: true }
     );
   });
 });
