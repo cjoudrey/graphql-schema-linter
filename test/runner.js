@@ -70,6 +70,27 @@ describe('Runner', () => {
       assert.equal(0, exitCode);
     });
 
+    it('allows setting descriptions using comments in GraphQL SDL', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'text',
+        '--comment-descriptions',
+        `${__dirname}/fixtures/schema.comment-descriptions.graphql`,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      const expected =
+        `${__dirname}/fixtures/schema.comment-descriptions.graphql\n` +
+        '3:3 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
+        '\n' +
+        '✖ 1 error detected\n';
+
+      assert.equal(expected, stripAnsi(stdout));
+    });
+
     it('validates a single schema file and outputs in text', () => {
       const argv = [
         'node',
@@ -108,7 +129,7 @@ describe('Runner', () => {
       const expected =
         `${__dirname}/fixtures/animal.graphql\n` +
         "18:3 The enum value `AnimalTypes.CAT_ENUM` cannot include the word 'enum'.  enum-name-cannot-contain-enum\n" +
-        "20:3 The enum value `AnimalTypes.DOG_ENUM` cannot include the word 'enum'.  enum-name-cannot-contain-enum\n" +
+        "21:3 The enum value `AnimalTypes.DOG_ENUM` cannot include the word 'enum'.  enum-name-cannot-contain-enum\n" +
         '\n' +
         '✖ 2 errors detected\n';
 

@@ -1,21 +1,23 @@
-# Base query
+"Base query"
 type Query {
-  # Animal Viewing
+  "Animal Viewing"
   viewer: Animal!
 }
 
-# Animal
+"Animal"
 type Animal {
-  # name
+  "name"
   name: String!
-  # type
+
+  "type"
   types: [AnimalTypes]
 }
 
-# Animal type enum
+"Animal type enum"
 enum AnimalTypes {
-  # meow
+  "meow"
   CAT_ENUM
-  # woof
+
+  "woof"
   DOG_ENUM
 }

@@ -44,6 +44,10 @@ Options:
 
     schema definition will be read from STDIN instead of specified file
 
+  --comment-descriptions
+
+    use old way of defining descriptions in GraphQL SDL
+
   -c, --config-direction <path>
 
     path to begin searching for config files
