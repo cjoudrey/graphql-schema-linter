@@ -6,6 +6,14 @@
 
 ### New features
 
+## 0.0.30 (February 12th, 2017)
+
+### Bug fixes
+
+- `defined-types-are-used` should not report errors for `Mutation` as that the naming convention for a schema's mutation root. [#94](https://github.com/cjoudrey/graphql-schema-linter/pull/94)
+- `defined-types-are-used` should not report unreferenced types that implement an interface that is used. [#94](https://github.com/cjoudrey/graphql-schema-linter/pull/94)
+- Return useful error when --stdin is specified but no schema is provided. [#96](https://github.com/cjoudrey/graphql-schema-linter/pull/96)
+
 ## 0.0.29 (February 11th, 2017)
 
 ### New features
