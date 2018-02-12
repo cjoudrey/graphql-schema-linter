@@ -40,6 +40,10 @@ export class Configuration {
 
     if (this.options.stdin) {
       this.schema = getSchemaFromFileDescriptor(this.stdinFd);
+      if (this.schema == null) {
+        return null;
+      }
+
       this.sourceMap = new SourceMap({ stdin: this.schema });
     } else if (this.options.schemaPaths) {
       const expandedPaths = expandPaths(this.options.schemaPaths);
@@ -177,7 +181,20 @@ function getSchemaFromFileDescriptor(fd) {
   let data = '';
 
   while (true) {
-    let n = readSync(fd, b, 0, b.length);
+    let n;
+    try {
+      n = readSync(fd, b, 0, b.length);
+    } catch (e) {
+      if (e.code == 'EAGAIN') {
+        console.error(
+          'The --stdin option was specified, but not schema was provided via stdin.'
+        );
+      } else {
+        console.error(e.message);
+      }
+      return null;
+    }
+
     if (!n) {
       break;
     }
