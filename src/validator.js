@@ -18,7 +18,9 @@ export function validateSchemaDefinition(
       throw e;
     }
   }
-  const schema = buildASTSchema(ast);
+  const schema = buildASTSchema(ast, {
+    commentDescriptions: configuration.getCommentDescriptions(),
+  });
 
   const rulesWithConfiguration = rules.map(rule => {
     return ruleWithConfiguration(rule, configuration);
