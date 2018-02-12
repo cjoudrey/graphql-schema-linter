@@ -6,6 +6,16 @@
 
 ### New features
 
+## 0.1.0 (February 12th, 2017)
+
+### Breaking change
+
+Descriptions must now be defined as strings instead of comments [as outlined in the spec](https://github.com/facebook/graphql/pull/90).
+
+In order to provide a graceful upgrade path, users can use the `--comment-descriptions` option to use the old way of defining descriptions.
+
+More information available in [#95](https://github.com/cjoudrey/graphql-schema-linter/pull/95).
+
 ## 0.0.30 (February 12th, 2017)
 
 ### Bug fixes
