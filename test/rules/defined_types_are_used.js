@@ -38,11 +38,6 @@ describe('DefinedTypesAreUsed rule', () => {
             'The type `A` is defined in the schema but not used anywhere.',
           locations: [{ line: 2, column: 7 }],
         },
-        {
-          message:
-            'The type `A` is defined in the schema but not used anywhere.',
-          locations: [{ line: 6, column: 14 }],
-        },
       ]
     );
   });
