@@ -1,12 +1,16 @@
 import { TypesHaveDescriptions } from '../../src/rules/types_have_descriptions';
-import { expectFailsRule, expectPassesRule } from '../assertions';
+import {
+  expectFailsRule,
+  expectPassesRule,
+  expectPassesRuleWithConfiguration,
+} from '../assertions';
 
 describe('TypesHaveDescriptions rule', () => {
   it('catches enum types that have no description', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # A
+      "A"
       enum A {
         A
       }
@@ -30,7 +34,7 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # A
+      "A"
       scalar A
 
       scalar DateTime
@@ -52,7 +56,7 @@ describe('TypesHaveDescriptions rule', () => {
         a: String
       }
 
-      # B
+      "B"
       type B {
         b: String
       }
@@ -74,7 +78,7 @@ describe('TypesHaveDescriptions rule', () => {
         id: ID!
       }
 
-      # RemoveStar
+      "RemoveStar"
       input RemoveStar {
         id: ID!
       }
@@ -92,7 +96,7 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # B
+      "B"
       interface B {
         B: String
       }
@@ -114,19 +118,19 @@ describe('TypesHaveDescriptions rule', () => {
     expectFailsRule(
       TypesHaveDescriptions,
       `
-      # A
+      "A"
       type A {
         a: String
       }
 
-      # B
+      "B"
       type B {
         b: String
       }
 
       union AB = A | B
 
-      # BA
+      "BA"
       union BA = B | A
     `,
       [
@@ -146,7 +150,7 @@ describe('TypesHaveDescriptions rule', () => {
         b: String
       }
 
-      # Interface
+      "Interface"
       interface Vehicle {
         make: String!
       }
@@ -155,6 +159,40 @@ describe('TypesHaveDescriptions rule', () => {
         something: String!
       }
     `
+    );
+  });
+
+  it('gets descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      TypesHaveDescriptions,
+      `
+      # A
+      scalar A
+
+      # B
+      type B {
+        b: String
+      }
+
+      # C
+      interface C {
+        c: String
+      }
+
+      # D
+      union D = B
+
+      # E
+      enum E {
+        A
+      }
+
+      # F
+      input F {
+        f: String
+      }
+    `,
+      { commentDescriptions: true }
     );
   });
 });

@@ -1,5 +1,8 @@
 import { EnumValuesHaveDescriptions } from '../../src/rules/enum_values_have_descriptions';
-import { expectFailsRule } from '../assertions';
+import {
+  expectFailsRule,
+  expectPassesRuleWithConfiguration,
+} from '../assertions';
 
 describe('EnumValuesHaveDescriptions rule', () => {
   it('catches enum values that have no description', () => {
@@ -9,7 +12,7 @@ describe('EnumValuesHaveDescriptions rule', () => {
       enum Status {
         DRAFT
 
-        # Hidden
+        "Hidden"
         HIDDEN
 
         PUBLISHED
@@ -26,6 +29,19 @@ describe('EnumValuesHaveDescriptions rule', () => {
           locations: [{ line: 8, column: 9 }],
         },
       ]
+    );
+  });
+
+  it('get descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      EnumValuesHaveDescriptions,
+      `
+      enum Status {
+        # Hidden
+        HIDDEN
+      }
+    `,
+      { commentDescriptions: true }
     );
   });
 });
