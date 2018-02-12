@@ -20,6 +20,33 @@ describe('DefinedTypesAreUsed rule', () => {
     );
   });
 
+  it('catches object types that are extended but not used', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+      type A {
+        a: String
+      }
+
+      extend type A {
+        b: String
+      }
+    `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 7 }],
+        },
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 6, column: 14 }],
+        },
+      ]
+    );
+  });
+
   it('catches interface types that are defined but not used', () => {
     expectFailsRule(
       DefinedTypesAreUsed,
@@ -97,7 +124,7 @@ describe('DefinedTypesAreUsed rule', () => {
       }
 
       type A {
-        a: A
+        a: String
       }
 
       union B = A | Query
@@ -119,7 +146,6 @@ describe('DefinedTypesAreUsed rule', () => {
 
       type A implements Node {
         id: ID!
-        a: A
       }
     `
     );
@@ -153,6 +179,39 @@ describe('DefinedTypesAreUsed rule', () => {
 
       input C {
         c: String
+      }
+    `
+    );
+  });
+
+  it('ignores unreferenced Mutation object type', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+      type Mutation {
+        a: String
+      }
+    `
+    );
+  });
+
+  it('ignores unreferenced Subscription object type', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+      type Subscription {
+        a: String
+      }
+    `
+    );
+  });
+
+  it('ignores unreferenced Query object type', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+      extend type Query {
+        a: String
       }
     `
     );
