@@ -16,9 +16,14 @@ export class Configuration {
       - schemaPaths: [string array] file(s) to read schema from
       - customRulePaths: [string array] path to additional custom rules to be loaded
       - stdin: [boolean] pass schema via stdin?
+      - commentDescriptions: [boolean] use old way of defining descriptions in GraphQL SDL
   */
   constructor(options = {}, stdinFd = null) {
-    const defaultOptions = { format: 'text', customRulePaths: [] };
+    const defaultOptions = {
+      format: 'text',
+      customRulePaths: [],
+      commentDescriptions: false,
+    };
     const configOptions = loadOptionsFromConfig(options.configDirectory);
 
     // TODO Get configs from .graphqlconfig file
@@ -31,6 +36,10 @@ export class Configuration {
     this.rulePaths = this.options.customRulePaths.concat(
       path.join(__dirname, 'rules/*.js')
     );
+  }
+
+  getCommentDescriptions() {
+    return this.options.commentDescriptions;
   }
 
   getSchema() {
