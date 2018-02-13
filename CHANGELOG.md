@@ -6,6 +6,12 @@
 
 ### New features
 
+## 0.1.1 (February 13th, 2017)
+
+### Bug fixes
+
+- Removed dependency on `graphql-config` until it is actually used.
+
 ## 0.1.0 (February 12th, 2017)
 
 ### Breaking change
