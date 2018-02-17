@@ -2,6 +2,7 @@ import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 
 export function EnumValuesHaveDescriptions(context) {
+  var isFixable = false;
   return {
     EnumValueDefinition(node, key, parent, path, ancestors) {
       if (getDescription(node)) {

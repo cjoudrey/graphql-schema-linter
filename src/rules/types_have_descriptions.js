@@ -2,6 +2,8 @@ import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 
 function validateTypeHasDescription(context, node, typeKind) {
+  var isFixable = false;
+
   if (getDescription(node)) {
     return;
   }

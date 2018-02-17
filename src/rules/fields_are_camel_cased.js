@@ -2,6 +2,7 @@ import { ValidationError } from '../validation_error';
 import { camelCase } from 'lodash';
 
 export function FieldsAreCamelCased(context) {
+  var isFixable = true;
   return {
     FieldDefinition(node, key, parent, path, ancestors) {
       const fieldName = node.name.value;

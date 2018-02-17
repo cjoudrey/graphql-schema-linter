@@ -2,6 +2,7 @@ import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 
 export function FieldsHaveDescriptions(context) {
+  var isFixable = false;
   return {
     FieldDefinition(node, key, parent, path, ancestors) {
       if (getDescription(node)) {

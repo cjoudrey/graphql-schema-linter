@@ -1,6 +1,7 @@
 import { ValidationError } from '../validation_error';
 
 export function TypesAreCapitalized(context) {
+  var isFixable = true;
   return {
     ObjectTypeDefinition(node) {
       const typeName = node.name.value;
