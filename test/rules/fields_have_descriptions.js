@@ -1,43 +1,46 @@
-import assert from 'assert';
-import { parse } from 'graphql';
-import { validate } from 'graphql/validation';
-import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
-
 import { FieldsHaveDescriptions } from '../../src/rules/fields_have_descriptions';
+import {
+  expectFailsRule,
+  expectPassesRuleWithConfiguration,
+} from '../assertions';
 
 describe('FieldsHaveDescriptions rule', () => {
   it('catches fields that have no description', () => {
-    const ast = parse(`
-      type QueryRoot {
+    expectFailsRule(
+      FieldsHaveDescriptions,
+      `
+      type A {
         withoutDescription: String
         withoutDescriptionAgain: String!
 
-        # Description
+        "Description"
         withDescription: String
       }
+    `,
+      [
+        {
+          message: 'The field `A.withoutDescription` is missing a description.',
+          locations: [{ line: 3, column: 9 }],
+        },
+        {
+          message:
+            'The field `A.withoutDescriptionAgain` is missing a description.',
+          locations: [{ line: 4, column: 9 }],
+        },
+      ]
+    );
+  });
 
-      schema {
-        query: QueryRoot
+  it('gets descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      FieldsHaveDescriptions,
+      `
+      type A {
+        "Description"
+        withDescription: String
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [FieldsHaveDescriptions]);
-
-    assert.equal(errors.length, 2);
-
-    assert.equal(errors[0].ruleName, 'fields-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The field `QueryRoot.withoutDescription` is missing a description.'
+    `,
+      { commentDescriptions: true }
     );
-    assert.deepEqual(errors[0].locations, [{ line: 3, column: 9 }]);
-
-    assert.equal(errors[1].ruleName, 'fields-have-descriptions');
-    assert.equal(
-      errors[1].message,
-      'The field `QueryRoot.withoutDescriptionAgain` is missing a description.'
-    );
-    assert.deepEqual(errors[1].locations, [{ line: 4, column: 9 }]);
   });
 });

@@ -1,17 +1,18 @@
-import assert from 'assert';
-import { parse } from 'graphql';
-import { visit, visitInParallel } from 'graphql/language/visitor';
-import { validate } from 'graphql/validation';
-import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
-
 import { TypesHaveDescriptions } from '../../src/rules/types_have_descriptions';
+import {
+  expectFailsRule,
+  expectPassesRule,
+  expectPassesRuleWithConfiguration,
+} from '../assertions';
 
 describe('TypesHaveDescriptions rule', () => {
   it('catches enum types that have no description', () => {
-    const ast = parse(`
-      # Query
-      type QueryRoot {
-        a: String
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
+      "A"
+      enum A {
+        A
       }
 
       enum STATUS {
@@ -19,183 +20,137 @@ describe('TypesHaveDescriptions rule', () => {
         PUBLISHED
         HIDDEN
       }
-
-      schema {
-        query: QueryRoot
-      }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The enum type `STATUS` is missing a description.'
+    `,
+      [
+        {
+          message: 'The enum type `STATUS` is missing a description.',
+          locations: [{ line: 7, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches scalar types that have no description', () => {
-    const ast = parse(`
-      # Query
-      type QueryRoot {
-        a: String
-      }
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
+      "A"
+      scalar A
 
       scalar DateTime
-
-      schema {
-        query: QueryRoot
-      }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The scalar type `DateTime` is missing a description.'
+    `,
+      [
+        {
+          message: 'The scalar type `DateTime` is missing a description.',
+          locations: [{ line: 5, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches object types that have no description', () => {
-    const ast = parse(`
-      type QueryRoot {
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
+      type A {
         a: String
       }
 
-      schema {
-        query: QueryRoot
+      "B"
+      type B {
+        b: String
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The object type `QueryRoot` is missing a description.'
+    `,
+      [
+        {
+          message: 'The object type `A` is missing a description.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 2, column: 7 }]);
   });
 
   it('catches input types that have no description', () => {
-    const ast = parse(`
-      # Query
-      type QueryRoot {
-        a: String
-      }
-
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
       input AddStar {
         id: ID!
       }
 
-      schema {
-        query: QueryRoot
+      "RemoveStar"
+      input RemoveStar {
+        id: ID!
       }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The input object type `AddStar` is missing a description.'
+    `,
+      [
+        {
+          message: 'The input object type `AddStar` is missing a description.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches interface types that have no description', () => {
-    const ast = parse(`
-      # The query root
-      type QueryRoot {
-        a: String
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
+      "B"
+      interface B {
+        B: String
       }
 
       interface A {
         a: String
       }
-
-      schema {
-        query: QueryRoot
-      }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The interface type `A` is missing a description.'
+    `,
+      [
+        {
+          message: 'The interface type `A` is missing a description.',
+          locations: [{ line: 7, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 7, column: 7 }]);
   });
 
   it('catches union types that have no description', () => {
-    const ast = parse(`
-      # The query root
-      type QueryRoot {
-        a: String
-      }
-
-      # A
+    expectFailsRule(
+      TypesHaveDescriptions,
+      `
+      "A"
       type A {
         a: String
       }
 
-      # B
+      "B"
       type B {
         b: String
       }
 
       union AB = A | B
 
-      schema {
-        query: QueryRoot
-      }
-    `);
-
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
-
-    assert.equal(errors.length, 1);
-
-    assert.equal(errors[0].ruleName, 'types-have-descriptions');
-    assert.equal(
-      errors[0].message,
-      'The union type `AB` is missing a description.'
+      "BA"
+      union BA = B | A
+    `,
+      [
+        {
+          message: 'The union type `AB` is missing a description.',
+          locations: [{ line: 12, column: 7 }],
+        },
+      ]
     );
-    assert.deepEqual(errors[0].locations, [{ line: 17, column: 7 }]);
   });
 
   it('ignores type extensions', () => {
-    const ast = parse(`
-      # The query root
-      type Query {
-        a: String
-      }
-
+    expectPassesRule(
+      TypesHaveDescriptions,
+      `
       extend type Query {
         b: String
       }
 
-      # Interface
+      "Interface"
       interface Vehicle {
         make: String!
       }
@@ -203,11 +158,41 @@ describe('TypesHaveDescriptions rule', () => {
       extend type Vehicle {
         something: String!
       }
-    `);
+    `
+    );
+  });
 
-    const schema = buildASTSchema(ast);
-    const errors = validate(schema, ast, [TypesHaveDescriptions]);
+  it('gets descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      TypesHaveDescriptions,
+      `
+      # A
+      scalar A
 
-    assert.equal(errors.length, 0);
+      # B
+      type B {
+        b: String
+      }
+
+      # C
+      interface C {
+        c: String
+      }
+
+      # D
+      union D = B
+
+      # E
+      enum E {
+        A
+      }
+
+      # F
+      input F {
+        f: String
+      }
+    `,
+      { commentDescriptions: true }
+    );
   });
 });

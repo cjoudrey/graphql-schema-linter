@@ -44,6 +44,10 @@ Options:
 
     schema definition will be read from STDIN instead of specified file
 
+  --comment-descriptions
+
+    use old way of defining descriptions in GraphQL SDL
+
   -c, --config-direction <path>
 
     path to begin searching for config files
@@ -86,8 +90,8 @@ Then add a `precommit` script and a `lint-staged` key to your `package.json` lik
 The above configuration assumes that you have either one `schema.graphql` file or multiple `.graphql` files that should
 be concatenated together and linted as a whole.
 
-If you have both client and server schema in the same project, you'll likely need to put
-multiple entries in the `lint-staged` object above - one for client and one for server.  Something like:
+If your project has `.graphql` query files and `.graphql` schema files, you'll likely need multiple entries in the
+`lint-staged` object - one for queries and one for schema. For example:
 
 ```json
 {
@@ -95,8 +99,38 @@ multiple entries in the `lint-staged` object above - one for client and one for 
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "client/*.graphql": ["graphql-schema-linter client/*.graphql"],
+    "client/*.graphql": ["eslint . --ext .js --ext .gql --ext .graphql"],
     "server/*.graphql": ["graphql-schema-linter server/*.graphql"]
+  }
+}
+```
+
+If you have multiple schemas in the same folder, your `lint-staged` configuration will need to be more specific, otherwise
+`graphql-schema-linter` will assume they are all parts of one schema. For example:
+
+**Correct:**
+
+```json
+{
+  "scripts": {
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "server/schema.public.graphql": ["graphql-schema-linter"],
+    "server/schema.private.graphql": ["graphql-schema-linter"]
+  }
+}
+```
+
+**Incorrect (if you have multiple schemas):**
+
+```json
+{
+  "scripts": {
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "server/*.graphql": ["graphql-schema-linter"]
   }
 }
 ```
@@ -171,6 +205,16 @@ This rule will validate that input object value names are camel cased.
 ### `input-object-values-have-descriptions`
 
 This rule will validate that input object values have a description.
+
+### `relay-connection-types-spec`
+
+This rule will validate the schema adheres to [section 2 (Connection Types)](https://facebook.github.io/relay/graphql/connections.htm#sec-Connection-Types) of the [Relay Cursor Connections Specification]().
+
+More specifically:
+
+- Only object type names may end in `Connection`. These object types are considered connection types.
+- Connection types must have a `edges` field that returns a list type.
+- Connection types must have a `pageInfo` field that returns a non-null `PageInfo` object.
 
 ### `types-are-capitalized`
 

@@ -1,7 +1,7 @@
 import { ValidationError } from '../validation_error';
 
 export function DefinedTypesAreUsed(context) {
-  var ignoredTypes = ['Query', 'Mutatation', 'Subscription'];
+  var ignoredTypes = ['Query', 'Mutation', 'Subscription'];
   var definedTypes = [];
   var referencedTypes = new Set();
   var isFixable = false;
@@ -20,13 +20,29 @@ export function DefinedTypesAreUsed(context) {
     EnumTypeDefinition: recordDefinedType,
     InputObjectTypeDefinition: recordDefinedType,
 
-    NamedType: node => {
+    NamedType: (node, key, parent, path, ancestors) => {
       referencedTypes.add(node.name.value);
     },
 
     Document: {
       leave: node => {
         definedTypes.forEach(node => {
+          if (node.kind == 'ObjectTypeDefinition') {
+            let implementedInterfaces = node.interfaces.map(node => {
+              return node.name.value;
+            });
+
+            let anyReferencedInterfaces = implementedInterfaces.some(
+              interfaceName => {
+                return referencedTypes.has(interfaceName);
+              }
+            );
+
+            if (anyReferencedInterfaces) {
+              return;
+            }
+          }
+
           if (!referencedTypes.has(node.name.value)) {
             context.reportError(
               new ValidationError(

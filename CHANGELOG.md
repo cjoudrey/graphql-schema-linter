@@ -6,6 +6,41 @@
 
 ### New features
 
+## 0.1.1 (February 13th, 2017)
+
+### Bug fixes
+
+- Removed dependency on `graphql-config` until it is actually used.
+
+## 0.1.0 (February 12th, 2017)
+
+### Breaking change
+
+Descriptions must now be defined as strings instead of comments [as outlined in the spec](https://github.com/facebook/graphql/pull/90).
+
+In order to provide a graceful upgrade path, users can use the `--comment-descriptions` option to use the old way of defining descriptions.
+
+More information available in [#95](https://github.com/cjoudrey/graphql-schema-linter/pull/95).
+
+## 0.0.30 (February 12th, 2017)
+
+### Bug fixes
+
+- `defined-types-are-used` should not report errors for `Mutation` as that the naming convention for a schema's mutation root. [#94](https://github.com/cjoudrey/graphql-schema-linter/pull/94)
+- `defined-types-are-used` should not report unreferenced types that implement an interface that is used. [#94](https://github.com/cjoudrey/graphql-schema-linter/pull/94)
+- Return useful error when --stdin is specified but no schema is provided. [#96](https://github.com/cjoudrey/graphql-schema-linter/pull/96)
+
+## 0.0.29 (February 11th, 2017)
+
+### New features
+
+- Add `relay-connection-types-spec` rule. See [README.md](https://github.com/cjoudrey/graphql-schema-linter#relay-connection-types-spec) for details. (Thanks @ruiaraujo)
+
+### Bug fixes
+
+- Add support for node v6. [#90](https://github.com/cjoudrey/graphql-schema-linter/pull/90) (Thanks @bwillis)
+- Fix crash when no schema is provided to the linter. [#88](https://github.com/cjoudrey/graphql-schema-linter/pull/88) (Thanks @ruiaraujo)
+
 ## 0.0.28 (January 16th, 2017)
 
 ### New features

@@ -1,10 +1,13 @@
 import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 
-function validateTypeHasDescription(context, node, typeKind) {
+function validateTypeHasDescription(configuration, context, node, typeKind) {
   var isFixable = false;
-
-  if (getDescription(node)) {
+  if (
+    getDescription(node, {
+      commentDescriptions: configuration.getCommentDescriptions(),
+    })
+  ) {
     return;
   }
 
@@ -19,34 +22,34 @@ function validateTypeHasDescription(context, node, typeKind) {
   );
 }
 
-export function TypesHaveDescriptions(context) {
+export function TypesHaveDescriptions(configuration, context) {
   return {
     TypeExtensionDefinition(node) {
       return false;
     },
 
     ScalarTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'scalar');
+      validateTypeHasDescription(configuration, context, node, 'scalar');
     },
 
     ObjectTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'object');
+      validateTypeHasDescription(configuration, context, node, 'object');
     },
 
     InterfaceTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'interface');
+      validateTypeHasDescription(configuration, context, node, 'interface');
     },
 
     UnionTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'union');
+      validateTypeHasDescription(configuration, context, node, 'union');
     },
 
     EnumTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'enum');
+      validateTypeHasDescription(configuration, context, node, 'enum');
     },
 
     InputObjectTypeDefinition(node) {
-      validateTypeHasDescription(context, node, 'input object');
+      validateTypeHasDescription(configuration, context, node, 'input object');
     },
   };
 }
