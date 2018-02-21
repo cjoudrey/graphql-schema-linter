@@ -213,7 +213,7 @@ describe('Runner', () => {
 
       var errors = JSON.parse(stdout)['errors'];
       assert(errors);
-      assert.equal(6, errors.length);
+      assert.equal(10, errors.length);
     });
 
     it('validates a schema composed of multiple files (args) and outputs in json', () => {
@@ -232,7 +232,7 @@ describe('Runner', () => {
 
       var errors = JSON.parse(stdout)['errors'];
       assert(errors);
-      assert.equal(4, errors.length);
+      assert.equal(8, errors.length);
     });
 
     it('preserves original line numbers when schema is composed of multiple files', () => {
@@ -253,7 +253,7 @@ describe('Runner', () => {
       var errors = JSON.parse(stdout)['errors'];
       assert(errors);
 
-      assert.equal(6, errors.length);
+      assert.equal(10, errors.length);
 
       assert.equal(
         'The field `Query.something` is missing a description.',
@@ -267,7 +267,7 @@ describe('Runner', () => {
       assert.equal(errors[0].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `User.username` is missing a description.',
+        'The field `Node.id` is missing a description.',
         errors[1].message
       );
       assert.equal(2, errors[1].location.line);
@@ -278,10 +278,10 @@ describe('Runner', () => {
       assert.equal(errors[1].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `User.email` is missing a description.',
+        'The field `Entity.id` is missing a description.',
         errors[2].message
       );
-      assert.equal(3, errors[2].location.line);
+      assert.equal(6, errors[2].location.line);
       assert.equal(
         `${__dirname}/fixtures/schema/user.graphql`,
         errors[2].location.file
@@ -289,10 +289,10 @@ describe('Runner', () => {
       assert.equal(errors[2].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `Query.viewer` is missing a description.',
+        'The field `User.id` is missing a description.',
         errors[3].message
       );
-      assert.equal(7, errors[3].location.line);
+      assert.equal(10, errors[3].location.line);
       assert.equal(
         `${__dirname}/fixtures/schema/user.graphql`,
         errors[3].location.file
@@ -300,26 +300,70 @@ describe('Runner', () => {
       assert.equal(errors[3].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `Comment.body` is missing a description.',
+        'The field `User.username` is missing a description.',
         errors[4].message
       );
-      assert.equal(2, errors[4].location.line);
+      assert.equal(11, errors[4].location.line);
       assert.equal(
-        `${__dirname}/fixtures/schema/comment.graphql`,
+        `${__dirname}/fixtures/schema/user.graphql`,
         errors[4].location.file
       );
       assert.equal(errors[4].rule, 'fields-have-descriptions');
 
       assert.equal(
-        'The field `Comment.author` is missing a description.',
+        'The field `User.email` is missing a description.',
         errors[5].message
       );
-      assert.equal(3, errors[5].location.line);
+      assert.equal(12, errors[5].location.line);
       assert.equal(
-        `${__dirname}/fixtures/schema/comment.graphql`,
+        `${__dirname}/fixtures/schema/user.graphql`,
         errors[5].location.file
       );
       assert.equal(errors[5].rule, 'fields-have-descriptions');
+
+      assert.equal(
+        'The field `OldUser.id` is missing a description.',
+        errors[6].message
+      );
+      assert.equal(16, errors[6].location.line);
+      assert.equal(
+        `${__dirname}/fixtures/schema/user.graphql`,
+        errors[6].location.file
+      );
+      assert.equal(errors[6].rule, 'fields-have-descriptions');
+
+      assert.equal(
+        'The field `Query.viewer` is missing a description.',
+        errors[7].message
+      );
+      assert.equal(20, errors[7].location.line);
+      assert.equal(
+        `${__dirname}/fixtures/schema/user.graphql`,
+        errors[7].location.file
+      );
+      assert.equal(errors[7].rule, 'fields-have-descriptions');
+
+      assert.equal(
+        'The field `Comment.body` is missing a description.',
+        errors[8].message
+      );
+      assert.equal(2, errors[8].location.line);
+      assert.equal(
+        `${__dirname}/fixtures/schema/comment.graphql`,
+        errors[8].location.file
+      );
+      assert.equal(errors[8].rule, 'fields-have-descriptions');
+
+      assert.equal(
+        'The field `Comment.author` is missing a description.',
+        errors[9].message
+      );
+      assert.equal(3, errors[9].location.line);
+      assert.equal(
+        `${__dirname}/fixtures/schema/comment.graphql`,
+        errors[9].location.file
+      );
+      assert.equal(errors[9].rule, 'fields-have-descriptions');
     });
 
     it('fails and exits if the output format is unknown', () => {
