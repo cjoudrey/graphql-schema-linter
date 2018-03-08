@@ -6,6 +6,12 @@
 
 ### New features
 
+## 0.1.2 (March 8th, 2017)
+
+### Bug fixes
+
+- Allow non-null list type for `edges` in `relay-connection-types-spec` rule. [#112](https://github.com/cjoudrey/graphql-schema-linter/pull/112)
+
 ## 0.1.1 (February 13th, 2017)
 
 ### Bug fixes
