@@ -48,7 +48,11 @@ export function RelayConnectionTypesSpec(context) {
       }
 
       const edgesField = node.fields.find(field => field.name.value == 'edges');
-      const edgesFieldType = edgesField.type;
+      var edgesFieldType = edgesField.type;
+
+      if (edgesFieldType.kind == 'NonNullType') {
+        edgesFieldType = edgesFieldType.type;
+      }
 
       if (edgesFieldType.kind != 'ListType') {
         context.reportError(

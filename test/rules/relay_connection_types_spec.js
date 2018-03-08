@@ -36,6 +36,21 @@ describe('RelayConnectionTypesSpec  rule', () => {
         pageInfo: PageInfo!
         edges: [Edge]
       }
+
+      type AnotherConnection {
+        pageInfo: PageInfo!
+        edges: [Edge]!
+      }
+
+      type AnotherGoodConnection {
+        pageInfo: PageInfo!
+        edges: [Edge!]!
+      }
+
+      type AgainAnotherConnection {
+        pageInfo: PageInfo!
+        edges: [Edge!]
+      }
     `
     );
   });
