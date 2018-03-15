@@ -208,13 +208,23 @@ This rule will validate that input object values have a description.
 
 ### `relay-connection-types-spec`
 
-This rule will validate the schema adheres to [section 2 (Connection Types)](https://facebook.github.io/relay/graphql/connections.htm#sec-Connection-Types) of the [Relay Cursor Connections Specification]().
+This rule will validate the schema adheres to [section 2 (Connection Types)](https://facebook.github.io/relay/graphql/connections.htm#sec-Connection-Types) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
 
 More specifically:
 
 - Only object type names may end in `Connection`. These object types are considered connection types.
 - Connection types must have a `edges` field that returns a list type.
 - Connection types must have a `pageInfo` field that returns a non-null `PageInfo` object.
+
+### `relay-page-info-spec`
+
+This rule will validate the schema adheres to [section 5 (PageInfo)](https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
+
+More specifically:
+
+- A GraphQL schema must have a `PageInfo` object type.
+- `PageInfo` type must have a `hasNextPage: Boolean!` field.
+- `PageInfo` type must have a `hasPreviousPage: Boolean!` field.
 
 ### `types-are-capitalized`
 

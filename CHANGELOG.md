@@ -6,6 +6,16 @@
 
 ### New features
 
+## 0.1.2 (March 14th, 2017)
+
+### New features
+
+- Add `relay-page-info-spec` rule. See [README.md](https://github.com/cjoudrey/graphql-schema-linter#relay-page-info-spec) for details. [#115](https://github.com/cjoudrey/graphql-schema-linter/pull/115)
+
+### Bug fixes
+
+- Allow non-null list for `edges` field. [#112](https://github.com/cjoudrey/graphql-schema-linter/pull/112)
+
 ## 0.1.1 (February 13th, 2017)
 
 ### Bug fixes
