@@ -22,6 +22,7 @@ require('./rules/input_object_values_have_descriptions');
 require('./rules/input_object_values_are_camel_cased');
 require('./rules/enum_values_have_descriptions');
 require('./rules/relay_connection_types_spec');
+require('./rules/relay_page_info_spec');
 require('./formatters/json_formatter');
 require('./formatters/text_formatter');
 require('./config/rc_file/test');
