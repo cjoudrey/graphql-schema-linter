@@ -36,7 +36,7 @@
     "chalk": "^2.0.1",
     "columnify": "^1.5.4",
     "commander": "^2.11.0",
-    "cosmiconfig": "^3.1.0",
+    "cosmiconfig": "^4.0.0",
     "figures": "^2.0.0",
     "glob": "^7.1.2",
     "graphql": "^0.13.0",
