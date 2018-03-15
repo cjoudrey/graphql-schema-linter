@@ -77,6 +77,8 @@ describe('Runner', () => {
         '--format',
         'text',
         '--comment-descriptions',
+        '--rules',
+        'fields-have-descriptions',
         `${__dirname}/fixtures/schema.comment-descriptions.graphql`,
       ];
 
@@ -119,6 +121,8 @@ describe('Runner', () => {
         'lib/cli.js',
         '--format',
         'text',
+        '--rules',
+        'enum-name-cannot-contain-enum',
         '--custom-rule-paths',
         `${__dirname}/fixtures/custom_rules/*`,
         `${__dirname}/fixtures/animal.graphql`,
