@@ -6,11 +6,13 @@
 
 ### New features
 
-## 0.1.2 (March 14th, 2017)
+## 0.1.3 (March 14th, 2017)
 
 ### New features
 
 - Add `relay-page-info-spec` rule. See [README.md](https://github.com/cjoudrey/graphql-schema-linter#relay-page-info-spec) for details. [#115](https://github.com/cjoudrey/graphql-schema-linter/pull/115)
+
+## 0.1.2 (March 8th, 2017)
 
 ### Bug fixes
 
