@@ -13,6 +13,9 @@ describe('FieldsAreCamelCased rule', () => {
         # Valid
         thisIsValid: String
 
+        # Valid
+        thisIDIsValid: String
+
         # Invalid
         ThisIsInvalid: String
       }
@@ -23,6 +26,9 @@ describe('FieldsAreCamelCased rule', () => {
 
         # Valid
         thisIsValid: String
+
+        # Valid
+        thisIDIsValid: String
       }
     `,
       [
@@ -32,11 +38,11 @@ describe('FieldsAreCamelCased rule', () => {
         },
         {
           message: 'The field `A.ThisIsInvalid` is not camel cased.',
-          locations: [{ line: 10, column: 9 }],
+          locations: [{ line: 13, column: 9 }],
         },
         {
           message: 'The field `Something.invalid_name` is not camel cased.',
-          locations: [{ line: 15, column: 9 }],
+          locations: [{ line: 18, column: 9 }],
         },
       ]
     );
