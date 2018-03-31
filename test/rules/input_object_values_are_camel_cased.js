@@ -9,6 +9,7 @@ describe('InputObjectValuesAreCamelCased rule', () => {
       input User {
         user_name: String
 
+        userID: String
         withDescription: String
       }
     `,

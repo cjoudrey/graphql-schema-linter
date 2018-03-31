@@ -1,5 +1,6 @@
 import { ValidationError } from '../validation_error';
-import { camelCase } from 'lodash';
+
+const camelCaseTest = RegExp('^[a-z][a-zA-Z0-9]*$');
 
 export function InputObjectValuesAreCamelCased(context) {
   return {
@@ -8,8 +9,7 @@ export function InputObjectValuesAreCamelCased(context) {
       const parentNode = ancestors[ancestors.length - 1];
 
       const fieldName = node.name.value;
-      const camelCased = camelCase(fieldName);
-      if (camelCased !== fieldName) {
+      if (!camelCaseTest.test(fieldName)) {
         const inputObjectName = parentNode.name.value;
         context.reportError(
           new ValidationError(
