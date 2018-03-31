@@ -1,7 +1,7 @@
 import { RelayConnectionTypesSpec } from '../../src/rules/relay_connection_types_spec';
 import { expectFailsRule, expectPassesRule } from '../assertions';
 
-describe('RelayConnectionTypesSpec  rule', () => {
+describe('RelayConnectionTypesSpec rule', () => {
   it('catches object types that have missing fields', () => {
     expectFailsRule(
       RelayConnectionTypesSpec,
