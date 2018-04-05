@@ -2257,9 +2257,9 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-lint-staged@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-7.0.1.tgz#064321d79c2ab55808602f84f4ff94f52d872fd5"
+lint-staged@7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-7.0.4.tgz#1aa7f27427e4c4c85d4d6524ac98aac10cbaf1b8"
   dependencies:
     app-root-path "^2.0.1"
     chalk "^2.3.1"
@@ -2281,6 +2281,7 @@ lint-staged@7.0.1:
     pify "^3.0.0"
     please-upgrade-node "^3.0.1"
     staged-git-files "1.1.1"
+    string-argv "^0.0.2"
     stringify-object "^3.2.2"
 
 listr-silent-renderer@^1.1.1:
@@ -3188,6 +3189,10 @@ stream-to-observable@^0.2.0:
   resolved "https://registry.yarnpkg.com/stream-to-observable/-/stream-to-observable-0.2.0.tgz#59d6ea393d87c2c0ddac10aa0d561bc6ba6f0e10"
   dependencies:
     any-observable "^0.2.0"
+
+string-argv@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/string-argv/-/string-argv-0.0.2.tgz#dac30408690c21f3c3630a3ff3a05877bdcbd736"
 
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
