@@ -6,6 +6,18 @@
 
 ### New features
 
+### Bug fixes
+
+## 0.1.4 (April 7th, 2017)
+
+### New features
+
+- Add `relay-connection-arguments-spec` rule. See [README.md](https://github.com/cjoudrey/graphql-schema-linter#relay-connection-arguments-spec) for details. [#116](https://github.com/cjoudrey/graphql-schema-linter/pull/116)
+
+### Bug fixes
+
+- The `fields-are-camel-cased` and `input-object-values-are-camel-cased` rules now allow consecutive capital letters. [#121](https://github.com/cjoudrey/graphql-schema-linter/pull/121) (Thanks @gracenoah)
+
 ## 0.1.3 (March 14th, 2017)
 
 ### New features

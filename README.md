@@ -226,6 +226,16 @@ More specifically:
 - `PageInfo` type must have a `hasNextPage: Boolean!` field.
 - `PageInfo` type must have a `hasPreviousPage: Boolean!` field.
 
+### `relay-connection-arguments-spec`
+
+This rule will validate the schema adheres to [section 4 (Arguments)](https://facebook.github.io/relay/graphql/connections.htm#sec-Arguments) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
+
+More specifically:
+
+- A field that returns a `Connection` must include forward pagination arguments, backward pagination arguments, or both.
+- To enable forward pagination, two arguments are required: `first: Int` and `after: *`.
+- To enable backward pagination, two arguments are required: `last: Int` and `before: *`.
+
 ### `types-are-capitalized`
 
 This rule will validate that interface types and object types have capitalized names.
