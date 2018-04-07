@@ -24,9 +24,22 @@ schema {
   query: Query
 }
 
-type User {
+interface Node {
+  id: ID!
+}
+
+interface Entity {
+  id: ID!
+}
+
+type User implements Node & Entity {
+  id: ID!
   username: String!
   email: String!
+}
+
+type OldUser implements Node, Entity {
+  id: ID!
 }
 
 extend type Query {

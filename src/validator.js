@@ -10,7 +10,7 @@ export function validateSchemaDefinition(
 ) {
   let ast;
   try {
-    ast = parse(schemaDefinition);
+    ast = parse(schemaDefinition, { allowLegacySDLImplementsInterfaces: true });
   } catch (e) {
     if (e instanceof GraphQLError) {
       return [e];
