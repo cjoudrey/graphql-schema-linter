@@ -216,16 +216,6 @@ More specifically:
 - Connection types must have a `edges` field that returns a list type.
 - Connection types must have a `pageInfo` field that returns a non-null `PageInfo` object.
 
-### `relay-page-info-spec`
-
-This rule will validate the schema adheres to [section 5 (PageInfo)](https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
-
-More specifically:
-
-- A GraphQL schema must have a `PageInfo` object type.
-- `PageInfo` type must have a `hasNextPage: Boolean!` field.
-- `PageInfo` type must have a `hasPreviousPage: Boolean!` field.
-
 ### `relay-connection-arguments-spec`
 
 This rule will validate the schema adheres to [section 4 (Arguments)](https://facebook.github.io/relay/graphql/connections.htm#sec-Arguments) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
@@ -235,6 +225,16 @@ More specifically:
 - A field that returns a `Connection` must include forward pagination arguments, backward pagination arguments, or both.
 - To enable forward pagination, two arguments are required: `first: Int` and `after: *`.
 - To enable backward pagination, two arguments are required: `last: Int` and `before: *`.
+
+### `relay-page-info-spec`
+
+This rule will validate the schema adheres to [section 5 (PageInfo)](https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
+
+More specifically:
+
+- A GraphQL schema must have a `PageInfo` object type.
+- `PageInfo` type must have a `hasNextPage: Boolean!` field.
+- `PageInfo` type must have a `hasPreviousPage: Boolean!` field.
 
 ### `types-are-capitalized`
 
