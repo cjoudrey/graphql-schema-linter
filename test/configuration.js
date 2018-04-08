@@ -274,4 +274,16 @@ extend type Query {
       assert.equal(configuration.getCommentDescriptions(), true);
     });
   });
+
+  describe('getOldImplementsSyntax', () => {
+    it('defaults to false', () => {
+      const configuration = new Configuration({});
+      assert.equal(configuration.getOldImplementsSyntax(), false);
+    });
+
+    it('returns specified value', () => {
+      const configuration = new Configuration({ oldImplementsSyntax: true });
+      assert.equal(configuration.getOldImplementsSyntax(), true);
+    });
+  });
 });

@@ -93,6 +93,39 @@ describe('Runner', () => {
       assert.equal(expected, stripAnsi(stdout));
     });
 
+    it('allows using old `implements` syntax in GraphQL SDL', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'json',
+        '--old-implements-syntax',
+        '--rules',
+        'types-have-descriptions',
+        `${__dirname}/fixtures/schema.old-implements.graphql`,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      assert.deepEqual([], JSON.parse(stdout)['errors']);
+    });
+
+    it('validates using new `implements` syntax in GraphQL SDL', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'json',
+        '--rules',
+        'types-have-descriptions',
+        `${__dirname}/fixtures/schema.new-implements.graphql`,
+      ];
+
+      run(mockStdout, mockStdin, mockStderr, argv);
+
+      assert.deepEqual([], JSON.parse(stdout)['errors']);
+    });
+
     it('validates a single schema file and outputs in text', () => {
       const argv = [
         'node',

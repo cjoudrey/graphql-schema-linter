@@ -17,12 +17,14 @@ export class Configuration {
       - customRulePaths: [string array] path to additional custom rules to be loaded
       - stdin: [boolean] pass schema via stdin?
       - commentDescriptions: [boolean] use old way of defining descriptions in GraphQL SDL
+      - oldImplementsSyntax: [boolean] use old way of defining implemented interfaces in GraphQL SDL
   */
   constructor(options = {}, stdinFd = null) {
     const defaultOptions = {
       format: 'text',
       customRulePaths: [],
       commentDescriptions: false,
+      oldImplementsSyntax: false,
     };
     const configOptions = loadOptionsFromConfig(options.configDirectory);
 
@@ -40,6 +42,10 @@ export class Configuration {
 
   getCommentDescriptions() {
     return this.options.commentDescriptions;
+  }
+
+  getOldImplementsSyntax() {
+    return this.options.oldImplementsSyntax;
   }
 
   getSchema() {

@@ -1,0 +1,29 @@
+"""
+Query
+"""
+type Query {
+  node(id: ID!): Node
+  posts: [Post!]!
+}
+
+"""
+Post
+"""
+type Post implements Node, Commentable {
+  id: ID!
+  comments: [String!]!
+}
+
+"""
+Node
+"""
+interface Node {
+  id: ID!
+}
+
+"""
+Commentable
+"""
+interface Commentable {
+  comments: [String!]!
+}
