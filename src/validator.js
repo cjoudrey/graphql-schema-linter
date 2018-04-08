@@ -9,8 +9,14 @@ export function validateSchemaDefinition(
   configuration
 ) {
   let ast;
+
+  let parseOptions = {};
+  if (configuration.getOldImplementsSyntax()) {
+    parseOptions.allowLegacySDLImplementsInterfaces = true;
+  }
+
   try {
-    ast = parse(schemaDefinition);
+    ast = parse(schemaDefinition, parseOptions);
   } catch (e) {
     if (e instanceof GraphQLError) {
       return [e];

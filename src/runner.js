@@ -32,6 +32,10 @@ export function run(stdout, stdin, stderr, argv) {
       '--comment-descriptions',
       'use old way of defining descriptions in GraphQL SDL'
     )
+    .option(
+      '--old-implements-syntax',
+      'use old way of defining implemented interfaces in GraphQL SDL'
+    )
     // DEPRECATED - This code should be removed in v1.0.0.
     .option(
       '-o, --only <rules>',
@@ -142,6 +146,10 @@ function getOptionsFromCommander(commander) {
 
   if (commander.commentDescriptions) {
     options.commentDescriptions = commander.commentDescriptions;
+  }
+
+  if (commander.oldImplementsSyntax) {
+    options.oldImplementsSyntax = commander.oldImplementsSyntax;
   }
 
   if (commander.args && commander.args.length) {
