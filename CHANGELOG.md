@@ -8,6 +8,12 @@
 
 ### Bug fixes
 
+## 0.1.5 (April 7th, 2017)
+
+### New features
+
+- Add `--old-implements-syntax` option to support the old SDL syntax for `implements`. [#124](https://github.com/cjoudrey/graphql-schema-linter/pull/124). (Thanks @ruiaraujo for initial report.)
+
 ## 0.1.4 (April 7th, 2017)
 
 ### New features
