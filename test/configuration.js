@@ -185,9 +185,12 @@ extend type Query {
       );
     });
 
-    it('adds custom rules that are specified in --custom-rules-path', () => {
+    it('dedups duplicate rules', () => {
       const configuration = new Configuration({
-        customRulePaths: [`${__dirname}/fixtures/custom_rules/*.js`],
+        customRulePaths: [
+          `${__dirname}/fixtures/custom_rules/*.js`,
+          `${__dirname}/fixtures/custom_rules/type_name_cannot_contain_type.js`,
+        ],
       });
 
       const rules = configuration.getRules();
@@ -196,6 +199,26 @@ extend type Query {
         2,
         rules.filter(rule => {
           return (
+            rule.name == 'EnumNameCannotContainEnum' ||
+            rule.name == 'TypeNameCannotContainType'
+          );
+        }).length
+      );
+    });
+
+    it('adds custom rules that are specified in --custom-rules-path', () => {
+      const configuration = new Configuration({
+        customRulePaths: [`${__dirname}/fixtures/custom_rules/*.js`],
+      });
+
+      const rules = configuration.getRules();
+
+      assert.equal(
+        4,
+        rules.filter(rule => {
+          return (
+            rule.name == 'SomeRule' ||
+            rule.name == 'AnotherRule' ||
             rule.name == 'EnumNameCannotContainEnum' ||
             rule.name == 'TypeNameCannotContainType'
           );
