@@ -8,6 +8,12 @@
 
 ### Bug fixes
 
+## 0.1.6 (May 16th, 2017)
+
+### Bug fixes
+
+- Fixed an issue that caused certain rules to run twice. [#133](https://github.com/cjoudrey/graphql-schema-linter/pull/133)
+
 ## 0.1.5 (April 7th, 2017)
 
 ### New features
