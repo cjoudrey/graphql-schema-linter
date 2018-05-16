@@ -8,7 +8,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "test": "mocha test/index.js",
-    "prepare": "babel ./src --ignore test --out-dir ./lib"
+    "prepare": "rm -rf lib/* && babel ./src --ignore test --out-dir ./lib"
   },
   "homepage": "https://github.com/cjoudrey/graphql-schema-linter",
   "repository": {
