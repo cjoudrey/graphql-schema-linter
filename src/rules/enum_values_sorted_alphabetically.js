@@ -1,6 +1,7 @@
 import { ValidationError } from '../validation_error';
 
 export function EnumValuesSortedAlphabetically(context) {
+  var isFixable = true;
   return {
     EnumTypeDefinition: function EnumTypeDefinition(
       node,

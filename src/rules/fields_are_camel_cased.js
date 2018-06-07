@@ -3,6 +3,7 @@ import { ValidationError } from '../validation_error';
 const camelCaseTest = RegExp('^[a-z][a-zA-Z0-9]*$');
 
 export function FieldsAreCamelCased(context) {
+  var isFixable = true;
   return {
     FieldDefinition(node, key, parent, path, ancestors) {
       const fieldName = node.name.value;

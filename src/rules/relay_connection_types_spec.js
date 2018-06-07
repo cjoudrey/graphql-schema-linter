@@ -9,8 +9,9 @@ export function RelayConnectionTypesSpec(context) {
       context.reportError(
         new ValidationError(
           'relay-connection-types-spec',
-          `Types that end in \`Connection\` must be an object type as per the relay spec. \`${node
-            .name.value}\` is not an object type.`,
+          `Types that end in \`Connection\` must be an object type as per the relay spec. \`${
+            node.name.value
+          }\` is not an object type.`,
           [node]
         )
       );
@@ -37,10 +38,9 @@ export function RelayConnectionTypesSpec(context) {
         context.reportError(
           new ValidationError(
             'relay-connection-types-spec',
-            `Connection \`${typeName}\` is missing the following field${missingFields.length >
-            1
-              ? 's'
-              : ''}: ${missingFields.join(', ')}.`,
+            `Connection \`${typeName}\` is missing the following field${
+              missingFields.length > 1 ? 's' : ''
+            }: ${missingFields.join(', ')}.`,
             [node]
           )
         );

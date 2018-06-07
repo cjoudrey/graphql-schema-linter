@@ -4,6 +4,7 @@ export function DefinedTypesAreUsed(context) {
   var ignoredTypes = ['Query', 'Mutation', 'Subscription'];
   var definedTypes = [];
   var referencedTypes = new Set();
+  var isFixable = false;
 
   var recordDefinedType = node => {
     if (ignoredTypes.indexOf(node.name.value) == -1) {
