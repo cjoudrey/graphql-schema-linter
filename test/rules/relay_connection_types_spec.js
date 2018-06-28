@@ -55,6 +55,31 @@ describe('RelayConnectionTypesSpec rule', () => {
     );
   });
 
+  it('accepts interfaces with the correct fields.', () => {
+    expectPassesRule(
+      RelayConnectionTypesSpec,
+      `
+      type PageInfo {
+        a: String
+      }
+
+      interface Edge {
+        a: String
+      }
+
+      interface Connection {
+        pageInfo: PageInfo!
+        edges: [Edge!]!
+      }
+
+      interface OtherConnection {
+        pageInfo: PageInfo!
+        edges: [Edge!]!
+      }
+    `
+    );
+  });
+
   it('catches edges fields that are not lists of edges', () => {
     expectFailsRule(
       RelayConnectionTypesSpec,
@@ -145,10 +170,6 @@ describe('RelayConnectionTypesSpec rule', () => {
       `
       scalar AConnection
 
-      interface BConnection {
-        a: String!
-      }
-
       type F {
         a: String!
       }
@@ -179,19 +200,7 @@ describe('RelayConnectionTypesSpec rule', () => {
           locations: [
             {
               column: 7,
-              line: 4,
-            },
-          ],
-          message:
-            'Types that end in `Connection` must be an object type as per the relay spec. `BConnection` is not an object type.',
-          path: [undefined],
-          ruleName: 'relay-connection-types-spec',
-        },
-        {
-          locations: [
-            {
-              column: 7,
-              line: 11,
+              line: 7,
             },
           ],
           message:
@@ -203,7 +212,7 @@ describe('RelayConnectionTypesSpec rule', () => {
           locations: [
             {
               column: 7,
-              line: 13,
+              line: 9,
             },
           ],
           message:
@@ -215,7 +224,7 @@ describe('RelayConnectionTypesSpec rule', () => {
           locations: [
             {
               column: 7,
-              line: 17,
+              line: 13,
             },
           ],
           message:
