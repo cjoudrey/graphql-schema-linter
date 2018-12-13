@@ -172,7 +172,6 @@ describe('RelayConnectionTypesSpec rule', () => {
           ],
           message:
             'Types that end in `Connection` must be an object type as per the relay spec. `AConnection` is not an object type.',
-          path: [undefined],
           ruleName: 'relay-connection-types-spec',
         },
         {
@@ -184,7 +183,6 @@ describe('RelayConnectionTypesSpec rule', () => {
           ],
           message:
             'Types that end in `Connection` must be an object type as per the relay spec. `BConnection` is not an object type.',
-          path: [undefined],
           ruleName: 'relay-connection-types-spec',
         },
         {
@@ -196,7 +194,6 @@ describe('RelayConnectionTypesSpec rule', () => {
           ],
           message:
             'Types that end in `Connection` must be an object type as per the relay spec. `CConnection` is not an object type.',
-          path: [undefined],
           ruleName: 'relay-connection-types-spec',
         },
         {
@@ -208,7 +205,6 @@ describe('RelayConnectionTypesSpec rule', () => {
           ],
           message:
             'Types that end in `Connection` must be an object type as per the relay spec. `DConnection` is not an object type.',
-          path: [undefined],
           ruleName: 'relay-connection-types-spec',
         },
         {
@@ -220,7 +216,6 @@ describe('RelayConnectionTypesSpec rule', () => {
           ],
           message:
             'Types that end in `Connection` must be an object type as per the relay spec. `EConnection` is not an object type.',
-          path: [undefined],
           ruleName: 'relay-connection-types-spec',
         },
       ]

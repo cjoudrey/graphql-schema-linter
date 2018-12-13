@@ -33,7 +33,6 @@ export function expectFailsRuleWithConfiguration(
     expectedErrors.map(expectedError => {
       return Object.assign(expectedError, {
         ruleName: kebabCase(rule.name),
-        path: undefined,
       });
     })
   );
