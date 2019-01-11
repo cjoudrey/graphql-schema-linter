@@ -8,19 +8,19 @@
 
 ### Bug fixes
 
-## 0.1.6 (May 16th, 2017)
+## 0.1.6 (May 16th, 2018)
 
 ### Bug fixes
 
 - Fixed an issue that caused certain rules to run twice. [#133](https://github.com/cjoudrey/graphql-schema-linter/pull/133)
 
-## 0.1.5 (April 7th, 2017)
+## 0.1.5 (April 7th, 2018)
 
 ### New features
 
 - Add `--old-implements-syntax` option to support the old SDL syntax for `implements`. [#124](https://github.com/cjoudrey/graphql-schema-linter/pull/124). (Thanks @ruiaraujo for initial report.)
 
-## 0.1.4 (April 7th, 2017)
+## 0.1.4 (April 7th, 2018)
 
 ### New features
 
@@ -30,25 +30,25 @@
 
 - The `fields-are-camel-cased` and `input-object-values-are-camel-cased` rules now allow consecutive capital letters. [#121](https://github.com/cjoudrey/graphql-schema-linter/pull/121) (Thanks @gracenoah)
 
-## 0.1.3 (March 14th, 2017)
+## 0.1.3 (March 14th, 2018)
 
 ### New features
 
 - Add `relay-page-info-spec` rule. See [README.md](https://github.com/cjoudrey/graphql-schema-linter#relay-page-info-spec) for details. [#115](https://github.com/cjoudrey/graphql-schema-linter/pull/115)
 
-## 0.1.2 (March 8th, 2017)
+## 0.1.2 (March 8th, 2018)
 
 ### Bug fixes
 
 - Allow non-null list for `edges` field. [#112](https://github.com/cjoudrey/graphql-schema-linter/pull/112)
 
-## 0.1.1 (February 13th, 2017)
+## 0.1.1 (February 13th, 2018)
 
 ### Bug fixes
 
 - Removed dependency on `graphql-config` until it is actually used.
 
-## 0.1.0 (February 12th, 2017)
+## 0.1.0 (February 12th, 2018)
 
 ### Breaking change
 
@@ -58,7 +58,7 @@ In order to provide a graceful upgrade path, users can use the `--comment-descri
 
 More information available in [#95](https://github.com/cjoudrey/graphql-schema-linter/pull/95).
 
-## 0.0.30 (February 12th, 2017)
+## 0.0.30 (February 12th, 2018)
 
 ### Bug fixes
 
@@ -66,7 +66,7 @@ More information available in [#95](https://github.com/cjoudrey/graphql-schema-l
 - `defined-types-are-used` should not report unreferenced types that implement an interface that is used. [#94](https://github.com/cjoudrey/graphql-schema-linter/pull/94)
 - Return useful error when --stdin is specified but no schema is provided. [#96](https://github.com/cjoudrey/graphql-schema-linter/pull/96)
 
-## 0.0.29 (February 11th, 2017)
+## 0.0.29 (February 11th, 2018)
 
 ### New features
 
@@ -77,19 +77,19 @@ More information available in [#95](https://github.com/cjoudrey/graphql-schema-l
 - Add support for node v6. [#90](https://github.com/cjoudrey/graphql-schema-linter/pull/90) (Thanks @bwillis)
 - Fix crash when no schema is provided to the linter. [#88](https://github.com/cjoudrey/graphql-schema-linter/pull/88) (Thanks @ruiaraujo)
 
-## 0.0.28 (January 16th, 2017)
+## 0.0.28 (January 16th, 2018)
 
 ### New features
 
 - Add support for custom rules. [#79](https://github.com/cjoudrey/graphql-schema-linter/pull/79) (Thanks @bwillis)
 
-## 0.0.27 (January 14th, 2017)
+## 0.0.27 (January 14th, 2018)
 
 ### Bug fixes
 
 - Fix crash when duplicate paths are passed to the linter. [#82](https://github.com/cjoudrey/graphql-schema-linter/pull/82) (Thanks @boopathi)
 
-## 0.0.26 (January 10th, 2017)
+## 0.0.26 (January 10th, 2018)
 
 ### New features
 
