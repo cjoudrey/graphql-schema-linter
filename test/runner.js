@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { run } from '../src/runner.js';
 import { openSync } from 'fs';
-const stripAnsi = require('strip-ansi');
+import { stripAnsi } from './strip_ansi.js';
 
 describe('Runner', () => {
   var stdout;
