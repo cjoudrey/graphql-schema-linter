@@ -8,6 +8,12 @@
 
 ### Bug fixes
 
+## 0.2.0 (January 16th, 2018)
+
+### New features
+
+- Add built-in validation for invalid GraphQL schema definitions. Rather than assume GraphQL schemas are valid and crash when they are not, `graphql-schema-linter` will report these errors. [#163](https://github.com/cjoudrey/graphql-schema-linter/pull/163)
+
 ## 0.1.6 (May 16th, 2018)
 
 ### Bug fixes
