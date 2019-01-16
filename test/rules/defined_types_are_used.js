@@ -132,7 +132,7 @@ describe('DefinedTypesAreUsed rule', () => {
       DefinedTypesAreUsed,
       `
       extend type Query {
-        a: Node
+        c: Node
       }
 
       interface Node {
@@ -206,7 +206,7 @@ describe('DefinedTypesAreUsed rule', () => {
       DefinedTypesAreUsed,
       `
       extend type Query {
-        a: String
+        c: String
       }
     `
     );
