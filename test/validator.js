@@ -41,6 +41,48 @@ describe('validateSchemaDefinition', () => {
     assert.equal(1, errors.length);
   });
 
+  it('catches and returns GraphQL schema errors', () => {
+    const schemaPath = `${__dirname}/fixtures/invalid-schema.graphql`;
+    const configuration = new Configuration({ schemaPaths: [schemaPath] });
+
+    const schemaDefinition = configuration.getSchema();
+
+    const errors = validateSchemaDefinition(
+      schemaDefinition,
+      [],
+      configuration
+    );
+
+    assert.equal(2, errors.length);
+
+    assert.equal('Unknown type "Node".', errors[0].message);
+    assert.equal(3, errors[0].locations[0].line);
+
+    assert.equal('Unknown type "Product".', errors[1].message);
+    assert.equal(7, errors[1].locations[0].line);
+  });
+
+  it('handles invalid GraphQL schemas', () => {
+    const schemaPath = `${__dirname}/fixtures/invalid-query-root.graphql`;
+    const configuration = new Configuration({ schemaPaths: [schemaPath] });
+
+    const schemaDefinition = configuration.getSchema();
+
+    const errors = validateSchemaDefinition(
+      schemaDefinition,
+      [],
+      configuration
+    );
+
+    assert.equal(1, errors.length);
+
+    assert.equal(
+      'Query root type must be Object type, it cannot be Query.',
+      errors[0].message
+    );
+    assert.equal(1, errors[0].locations[0].line);
+  });
+
   it('passes configuration to rules that require it', () => {
     const schemaPath = `${__dirname}/fixtures/valid.graphql`;
     const configuration = new Configuration({ schemaPaths: [schemaPath] });

@@ -2,6 +2,8 @@ import { parse } from 'graphql';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { GraphQLError } from 'graphql/error';
+import { validateSDL } from 'graphql/validation/validate';
+import { validateSchema } from 'graphql/type/validate';
 
 export function validateSchemaDefinition(
   schemaDefinition,
@@ -24,9 +26,23 @@ export function validateSchemaDefinition(
       throw e;
     }
   }
+
+  let schemaErrors = validateSDL(ast);
+  if (schemaErrors.length > 0) {
+    return sortErrors(schemaErrors);
+  }
+
   const schema = buildASTSchema(ast, {
     commentDescriptions: configuration.getCommentDescriptions(),
+    assumeValidSDL: true,
+    assumeValid: true,
   });
+
+  schema.__validationErrors = undefined;
+  schemaErrors = validateSchema(schema);
+  if (schemaErrors.length > 0) {
+    return sortErrors(schemaErrors);
+  }
 
   const rulesWithConfiguration = rules.map(rule => {
     return ruleWithConfiguration(rule, configuration);
