@@ -155,7 +155,7 @@ describe('TypesHaveDescriptions rule', () => {
         make: String!
       }
 
-      extend type Vehicle {
+      extend interface Vehicle {
         something: String!
       }
     `

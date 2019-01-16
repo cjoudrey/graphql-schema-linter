@@ -1,0 +1,8 @@
+type Query {
+  a: String
+  b: Node
+}
+
+type Another {
+  b: Product
+}
