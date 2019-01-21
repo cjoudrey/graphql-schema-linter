@@ -1,6 +1,6 @@
 import assert from 'assert';
 import TextFormatter from '../../src/formatters/text_formatter';
-import figures from 'figures';
+import figures from '../../src/figures';
 const stripAnsi = require('strip-ansi');
 
 describe('TextFormatter', () => {

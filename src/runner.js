@@ -2,7 +2,7 @@ import { validateSchemaDefinition } from './validator.js';
 import { version } from '../package.json';
 import { Command } from 'commander';
 import { Configuration } from './configuration.js';
-import figures from 'figures';
+import figures from './figures';
 import chalk from 'chalk';
 
 export function run(stdout, stdin, stderr, argv) {

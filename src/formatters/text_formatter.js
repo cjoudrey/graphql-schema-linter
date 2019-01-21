@@ -1,5 +1,5 @@
 import columnify from 'columnify';
-import figures from 'figures';
+import figures from '../figures';
 import chalk from 'chalk';
 
 export default function TextFormatter(errorsGroupedByFile) {
