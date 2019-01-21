@@ -2,7 +2,6 @@ import assert from 'assert';
 import { parse } from 'graphql';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
-import { kebabCase } from 'lodash';
 import { validateSchemaDefinition } from '../src/validator.js';
 import { Configuration } from '../src/configuration.js';
 
@@ -32,7 +31,10 @@ export function expectFailsRuleWithConfiguration(
     errors,
     expectedErrors.map(expectedError => {
       return Object.assign(expectedError, {
-        ruleName: kebabCase(rule.name),
+        ruleName: rule.name
+          .replace(/([A-Z])/g, '-$1')
+          .toLowerCase()
+          .replace(/^-/, ''),
       });
     })
   );
