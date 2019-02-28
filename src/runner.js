@@ -93,11 +93,19 @@ export function run(stdout, stdin, stderr, argv) {
   const schemaSourceMap = configuration.getSchemaSourceMap();
 
   const errors = validateSchemaDefinition(schema, rules, configuration);
-  const groupedErrors = groupErrorsBySchemaFilePath(errors, schemaSourceMap);
+
+  const filteredErrors = errors.filter(({ message }) => {
+    return message !== 'Unknown directive "aws_subscribe".';
+  });
+
+  const groupedErrors = groupErrorsBySchemaFilePath(
+    filteredErrors,
+    schemaSourceMap
+  );
 
   stdout.write(formatter(groupedErrors));
 
-  return errors.length > 0 ? 1 : 0;
+  return filteredErrors.length > 0 ? 1 : 0;
 }
 
 function groupErrorsBySchemaFilePath(errors, schemaSourceMap) {
