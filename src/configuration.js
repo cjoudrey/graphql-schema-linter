@@ -177,8 +177,7 @@ function loadOptionsFromConfig(configDirectory) {
 
   const cosmic = cosmiconfig('graphql-schema-linter', {
     cache: false,
-    sync: true,
-  }).load(searchPath);
+  }).searchSync(searchPath);
 
   if (cosmic) {
     return {
