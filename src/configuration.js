@@ -35,9 +35,8 @@ export class Configuration {
     this.schema = null;
     this.sourceMap = null;
     this.rules = null;
-    this.rulePaths = this.options.customRulePaths.concat(
-      path.join(__dirname, 'rules/*.js')
-    );
+    this.builtInRulePaths = path.join(__dirname, 'rules/*.js');
+    this.rulePaths = this.options.customRulePaths.concat(this.builtInRulePaths);
   }
 
   getCommentDescriptions() {
@@ -124,23 +123,52 @@ export class Configuration {
       return this.rules;
     }
 
-    let expandedPaths = expandPaths(this.rulePaths);
-    let rules = new Set([]);
+    this.rules = this.getRulesFromPaths(this.rulePaths);
+
+    return this.rules;
+  }
+
+  getRulesFromPaths(rulePaths) {
+    const expandedPaths = expandPaths(rulePaths);
+    const rules = new Set([]);
 
     expandedPaths.map(rulePath => {
       let ruleMap = require(rulePath);
       Object.keys(ruleMap).forEach(k => rules.add(ruleMap[k]));
     });
 
-    this.rules = Array.from(rules);
+    return Array.from(rules);
+  }
 
-    return this.rules;
+  getAllBuiltInRules() {
+    return this.getRulesFromPaths([this.builtInRulePaths]);
   }
 
   validate() {
     const issues = [];
 
-    const ruleNames = this.getAllRules().map(rule => rule.name);
+    let rules;
+
+    try {
+      rules = this.getAllRules();
+    } catch (e) {
+      if (e.code === 'MODULE_NOT_FOUND') {
+        issues.push({
+          message: `The custom rule paths '${
+            this.options.customRulePaths
+          }' is invalid`,
+          field: 'custom-rule-paths',
+          type: 'error',
+        });
+
+        rules = this.getAllBuiltInRules();
+      } else {
+        throw e;
+      }
+    }
+
+    const ruleNames = rules.map(rule => rule.name);
+
     let misConfiguredRuleNames = []
       .concat(
         this.options.only || [],
