@@ -154,7 +154,9 @@ export class Configuration {
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') {
         issues.push({
-          message: `There was an issue loading the specified custom rules: '${e.message}'`,
+          message: `There was an issue loading the specified custom rules: '${
+            e.message.split('\n')[0]
+          }'`,
           field: 'custom-rule-paths',
           type: 'error',
         });
