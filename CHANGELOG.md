@@ -8,7 +8,13 @@
 
 ### Bug fixes
 
-## 0.2.0 (January 16th, 2018)
+## 0.2.1 (July 12th, 2019)
+
+### Bug fixes
+
+- Catch invalid `--custom-rule-paths` and report them as errors instead of crashing. [#181](https://github.com/cjoudrey/graphql-schema-linter/pull/181) (Thanks @jizhang27)
+
+## 0.2.0 (January 16th, 2019)
 
 ### New features
 
