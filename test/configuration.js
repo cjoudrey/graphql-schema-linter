@@ -276,7 +276,7 @@ extend type Query {
 
     it('errors when invalid custom rule paths is configured', () => {
       const invalidPaths = [
-        `${__dirname}/fixtures/nonexistent_path/`,
+        `${__dirname}/fixtures/nonexistent_path`,
         `${__dirname}/fixtures/custom_rules/*.js`,
       ];
 
@@ -290,7 +290,7 @@ extend type Query {
       assert.equal(issues.length, 1);
       assert.equal(
         issues[0].message,
-        `The custom rule paths '${invalidPaths}' is invalid`
+        `There was an issue loading the specified custom rules: 'Cannot find module '${__dirname}/fixtures/nonexistent_path''`
       );
       assert.equal(issues[0].field, 'custom-rule-paths');
       assert.equal(issues[0].type, 'error');

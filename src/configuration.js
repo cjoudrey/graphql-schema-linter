@@ -154,9 +154,7 @@ export class Configuration {
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') {
         issues.push({
-          message: `The custom rule paths '${
-            this.options.customRulePaths
-          }' is invalid`,
+          message: `There was an issue loading the specified custom rules: '${e.message}'`,
           field: 'custom-rule-paths',
           type: 'error',
         });
