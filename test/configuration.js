@@ -274,6 +274,28 @@ extend type Query {
       assert.equal(issues[0].type, 'warning');
     });
 
+    it('errors when invalid custom rule paths is configured', () => {
+      const invalidPaths = [
+        `${__dirname}/fixtures/nonexistent_path/`,
+        `${__dirname}/fixtures/custom_rules/*.js`,
+      ];
+
+      const configuration = new Configuration({
+        customRulePaths: invalidPaths,
+        rules: ['fields-have-descriptions', 'types-have-descriptions'],
+      });
+
+      const issues = configuration.validate();
+
+      assert.equal(issues.length, 1);
+      assert.equal(
+        issues[0].message,
+        `The custom rule paths '${invalidPaths}' is invalid`
+      );
+      assert.equal(issues[0].field, 'custom-rule-paths');
+      assert.equal(issues[0].type, 'error');
+    });
+
     it('warns and errors when multiple issues arise configured', () => {
       const configuration = new Configuration({
         except: ['NoRuleOfMine', 'FieldsHaveDescriptions'],
