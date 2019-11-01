@@ -57,6 +57,42 @@ describe('Runner', () => {
       assert.equal(1, exitCode);
     });
 
+    it('validates schema when query root is missing', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        `${__dirname}/fixtures/schema.missing-query-root.graphql`,
+      ];
+
+      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+
+      const expected =
+        `${__dirname}/fixtures/schema.missing-query-root.graphql\n` +
+        '1:1 Query root type must be provided.  invalid-graphql-schema\n' +
+        '\n' +
+        '✖ 1 error detected\n';
+
+      assert.equal(expected, stripAnsi(stdout));
+    });
+
+    it('validates schema when ast is invalid', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        `${__dirname}/fixtures/invalid-ast.graphql`,
+      ];
+
+      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+
+      const expected =
+        `${__dirname}/fixtures/invalid-ast.graphql\n` +
+        '9:1 Must provide only one schema definition.  invalid-graphql-schema\n' +
+        '\n' +
+        '✖ 1 error detected\n';
+
+      assert.equal(expected, stripAnsi(stdout));
+    });
+
     it('returns exit code 0 when there are errors', () => {
       const argv = [
         'node',

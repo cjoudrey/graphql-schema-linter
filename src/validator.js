@@ -4,6 +4,7 @@ import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { GraphQLError } from 'graphql/error';
 import { validateSDL } from 'graphql/validation/validate';
 import { validateSchema } from 'graphql/type/validate';
+import { ValidationError } from './validation_error';
 
 export function validateSchemaDefinition(
   schemaDefinition,
@@ -33,9 +34,11 @@ export function validateSchemaDefinition(
   if (schemaErrors.length > 0) {
     return sortErrors(
       schemaErrors.map(error => {
-        error.ruleName = 'invalid-graphql-schema';
-
-        return error;
+        return new ValidationError(
+          'invalid-graphql-schema',
+          error.message,
+          error.nodes
+        );
       })
     );
   }
@@ -51,9 +54,11 @@ export function validateSchemaDefinition(
   if (schemaErrors.length > 0) {
     return sortErrors(
       schemaErrors.map(error => {
-        error.ruleName = 'invalid-graphql-schema';
-
-        return error;
+        return new ValidationError(
+          'invalid-graphql-schema',
+          error.message,
+          error.nodes || ast
+        );
       })
     );
   }
