@@ -1,0 +1,11 @@
+type Query {
+  a: String
+}
+
+schema {
+  query: Query
+}
+
+schema {
+  mutation: Query
+}

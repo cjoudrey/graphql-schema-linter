@@ -41,6 +41,21 @@ describe('validateSchemaDefinition', () => {
     assert.equal(1, errors.length);
   });
 
+  it('reports schema with missing query root', () => {
+    const schemaPath = `${__dirname}/fixtures/schema.missing-query-root.graphql`;
+    const configuration = new Configuration({ schemaPaths: [schemaPath] });
+
+    const schemaDefinition = configuration.getSchema();
+
+    const errors = validateSchemaDefinition(
+      schemaDefinition,
+      [],
+      configuration
+    );
+
+    assert.equal(1, errors.length);
+  });
+
   it('catches and returns GraphQL schema errors', () => {
     const schemaPath = `${__dirname}/fixtures/invalid-schema.graphql`;
     const configuration = new Configuration({ schemaPaths: [schemaPath] });
