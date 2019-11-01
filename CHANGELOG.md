@@ -8,6 +8,12 @@
 
 ### Bug fixes
 
+## 0.2.2 (October 31st, 2019)
+
+### Bug fixes
+
+- Gracefully handle validating schemas that are missing a query root. [#189](https://github.com/cjoudrey/graphql-schema-linter/pull/189)
+
 ## 0.2.1 (July 12th, 2019)
 
 ### Bug fixes
