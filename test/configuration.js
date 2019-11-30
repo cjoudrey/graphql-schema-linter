@@ -2,6 +2,7 @@ import assert from 'assert';
 import { Configuration } from '../src/configuration.js';
 import JSONFormatter from '../src/formatters/json_formatter.js';
 import TextFormatter from '../src/formatters/text_formatter.js';
+import path from 'path';
 import { openSync, readFileSync } from 'fs';
 import { relative as pathRelative } from 'path';
 
@@ -35,6 +36,17 @@ extend type Query {
 `;
 
       assert.equal(configuration.getSchema(), expectedSchema);
+    });
+
+    it('reads schema from package.json when configDirectory is provided', () => {
+      const fixturePath = `${__dirname}/fixtures/schema.graphql`;
+      const configuration = new Configuration({
+        configDirectory: path.join(`${__dirname}/config/package_json`),
+      });
+      assert.equal(
+        configuration.getSchema(),
+        readFileSync(fixturePath).toString('utf8')
+      );
     });
 
     it('reads schema from file when provided', () => {
