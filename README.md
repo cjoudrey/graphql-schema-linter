@@ -72,7 +72,7 @@ Options:
 ### Usage with pre-commit Hooks
 
 Using [lint-staged](https://github.com/okonet/lint-staged) and [husky](https://github.com/typicode/husky), you can lint
-your staged GraphQL schema file before you commit.  First, install these packages:
+your staged GraphQL schema file before you commit. First, install these packages:
 
 ```bash
 yarn add --dev lint-staged husky
@@ -144,14 +144,16 @@ If you have multiple schemas in the same folder, your `lint-staged` configuratio
 In addition to being able to configure `graphql-schema-linter` via command line options, it can also be configured via
 one of the following configuration files.
 
-For now, only `rules` can be configured in a configuration file, but more options may be added in the future.
+For now, only `rules`, `customRulePaths` and `schemaPaths` can be configured in a configuration file, but more options may be added in the future.
 
 ### In `package.json`
 
 ```json
 {
   "graphql-schema-linter": {
-    "rules": ["enum-values-sorted-alphabetically"]
+    "rules": ["enum-values-sorted-alphabetically"],
+    "schemaPaths": ["path/to/mySchemaFiles/**.graphql"],
+    "customRulePaths": ["path/to/myCustomRules/**.js"]
   }
 }
 ```
@@ -160,7 +162,9 @@ For now, only `rules` can be configured in a configuration file, but more option
 
 ```json
 {
-  "rules": ["enum-values-sorted-alphabetically"]
+  "rules": ["enum-values-sorted-alphabetically"],
+  "schemaPaths": ["path/to/mySchemaFiles/**.graphql"],
+  "customRulePaths": ["path/to/myCustomRules/**.js"]
 }
 ```
 
@@ -169,6 +173,8 @@ For now, only `rules` can be configured in a configuration file, but more option
 ```js
 module.exports = {
   rules: ['enum-values-sorted-alphabetically'],
+  schemaPaths: ['path/to/mySchemaFiles/**.graphql'],
+  customRulePaths: ['path/to/myCustomRules/**.js'],
 };
 ```
 
