@@ -95,7 +95,6 @@ export class Configuration {
   getRules() {
     let rules = this.getAllRules();
     let specifiedRules;
-    debugger;
     if (this.options.rules && this.options.rules.length > 0) {
       specifiedRules = this.options.rules.map(toUpperCamelCase);
       rules = this.getAllRules().filter(rule => {
@@ -230,7 +229,6 @@ function loadOptionsFromConfig(configDirectory) {
       );
     }
 
-    debugger;
     return {
       rules: cosmic.config.rules,
       customRulePaths: customRulePaths || [],
