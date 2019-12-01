@@ -1,5 +1,5 @@
 import path from 'path';
-import { readSync, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import assert from 'assert';
 import { Configuration } from '../../../src/configuration';
 
