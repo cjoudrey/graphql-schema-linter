@@ -152,8 +152,8 @@ For now, only `rules`, `customRulePaths` and `schemaPaths` can be configured in 
 {
   "graphql-schema-linter": {
     "rules": ["enum-values-sorted-alphabetically"],
-    "schemaPaths": ["path/to/mySchemaFiles/**.graphql"],
-    "customRulePaths": ["path/to/myCustomRules/**.js"]
+    "schemaPaths": ["path/to/my/schema/files/**.graphql"],
+    "customRulePaths": ["path/to/my/custom/rules/*.js"]
   }
 }
 ```
@@ -163,8 +163,8 @@ For now, only `rules`, `customRulePaths` and `schemaPaths` can be configured in 
 ```json
 {
   "rules": ["enum-values-sorted-alphabetically"],
-  "schemaPaths": ["path/to/mySchemaFiles/**.graphql"],
-  "customRulePaths": ["path/to/myCustomRules/**.js"]
+  "schemaPaths": ["path/to/my/schema/files/**.graphql"],
+  "customRulePaths": ["path/to/my/custom/rules/*.js"]
 }
 ```
 
@@ -173,8 +173,8 @@ For now, only `rules`, `customRulePaths` and `schemaPaths` can be configured in 
 ```js
 module.exports = {
   rules: ['enum-values-sorted-alphabetically'],
-  schemaPaths: ['path/to/mySchemaFiles/**.graphql'],
-  customRulePaths: ['path/to/myCustomRules/**.js'],
+  schemaPaths: ['path/to/my/schema/files/**.graphql'],
+  customRulePaths: ['path/to/my/custom/rules/*.js'],
 };
 ```
 
