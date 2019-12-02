@@ -12,7 +12,7 @@
 
 ### New features
 
-- Add support for `schemaPaths` to be configured via `package.json`. See [README.md](https://github.com/cjoudrey/graphql-schema-linter/blob/5dfe1f0550ac80319b2550ddcaff7535b2ef7ee5/README.md#configuration-file) for examples. [#](https://github.com/cjoudrey/graphql-schema-linter/pull/196) (Thanks @gagoar)
+- Add support for `schemaPaths` to be configured via `package.json`. See [README.md](https://github.com/cjoudrey/graphql-schema-linter/blob/5dfe1f0550ac80319b2550ddcaff7535b2ef7ee5/README.md#configuration-file) for examples. [#196](https://github.com/cjoudrey/graphql-schema-linter/pull/196) (Thanks @gagoar)
 
 ## 0.2.2 (October 31st, 2019)
 
