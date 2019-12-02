@@ -1,0 +1,57 @@
+import 'regenerator-runtime/runtime';
+import fs from 'fs';
+import path from 'path';
+import { tmpdir } from 'os';
+import { promisify } from 'util';
+import { config } from 'rxjs';
+
+const writeFile = promisify(fs.writeFile);
+
+const writeJSONFile = (filename, data) =>
+  writeFile(filename, JSON.stringify(data));
+
+/**
+ * There's some magic in order to create a relative path to the temporal directory. but mostly it does 3 things.
+ * 1) gets the dirname of the given path.
+ * 2) finds the relative from the temp file to the dirname found in step 1)
+ * 3) joins relativePath to the remaining fullPath (minus the dirnamePath)
+ */
+
+const getRelocatedPath = (dir, fullPath) => {
+  const dirnamePath = path.dirname(fullPath);
+  const relativePath = path.relative(dir, dirnamePath);
+  return path.join(path.join(relativePath, fullPath.split(dirnamePath)[1]));
+};
+
+export const temporaryConfigDirectory = async ({
+  rules = null,
+  customRulePaths = [],
+  schemaPaths = [],
+}) => {
+  const configDirectory = tmpdir();
+  let fixCustomRulePaths = [];
+  let fixedSchemaPaths = [];
+  const options = { rules };
+
+  // due to the temp nature of the directory creation we ought to fix the provided paths to match the location.
+  if (customRulePaths.length) {
+    fixCustomRulePaths = customRulePaths.map(rulePath =>
+      getRelocatedPath(configDirectory, rulePath)
+    );
+
+    options.customRulePaths = fixCustomRulePaths;
+  }
+
+  if (schemaPaths.length) {
+    fixedSchemaPaths = schemaPaths.map(globPath =>
+      getRelocatedPath(configDirectory, globPath)
+    );
+
+    options.schemaPaths = fixedSchemaPaths;
+  }
+
+  await writeJSONFile(path.join(configDirectory, 'package.json'), {
+    'graphql-schema-linter': { ...options },
+  });
+  return configDirectory;
+};
