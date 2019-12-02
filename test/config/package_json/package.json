@@ -1,5 +1,14 @@
 {
   "graphql-schema-linter": {
-    "rules": ["enum-values-sorted-alphabetically"]
+    "rules": [
+      "enum-values-sorted-alphabetically",
+      "SomeRule"
+    ],
+    "customRulePaths": [
+      "../../fixtures/custom_rules/*.js"
+    ],
+    "schemaPaths": [
+      "../../fixtures/schema.graphql"
+    ]
   }
 }

@@ -1,4 +1,4 @@
-const cosmiconfig = require('cosmiconfig');
+import cosmiconfig from 'cosmiconfig';
 import { readSync, readFileSync } from 'fs';
 import path from 'path';
 import { sync as globSync, hasMagic as globHasMagic } from 'glob';
@@ -60,8 +60,11 @@ export class Configuration {
 
       this.sourceMap = new SourceMap({ stdin: this.schema });
     } else if (this.options.schemaPaths) {
-      const expandedPaths = expandPaths(this.options.schemaPaths);
+      let schemaPaths = this.options.schemaPaths;
+
+      const expandedPaths = expandPaths(schemaPaths);
       const segments = getSchemaSegmentsFromFiles(expandedPaths);
+
       if (Object.keys(segments).length === 0) {
         return null;
       }
@@ -208,9 +211,28 @@ function loadOptionsFromConfig(configDirectory) {
   }).searchSync(searchPath);
 
   if (cosmic) {
+    let schemaPaths = [];
+    let customRulePaths = [];
+
+    // If schemaPaths come from cosmic, we resolve the given paths relative to the searchPath.
+
+    if (cosmic.config.schemaPaths) {
+      schemaPaths = cosmic.config.schemaPaths.map(schemaPath =>
+        path.resolve(searchPath, schemaPath)
+      );
+    }
+
+    // If customRulePaths come from cosmic, we resolve the given paths relative to the searchPath.
+    if (cosmic.config.customRulePaths) {
+      customRulePaths = cosmic.config.customRulePaths.map(schemaPath =>
+        path.resolve(searchPath, schemaPath)
+      );
+    }
+
     return {
       rules: cosmic.config.rules,
-      customRulePaths: cosmic.config.customRulePaths || [],
+      customRulePaths: customRulePaths || [],
+      schemaPaths: schemaPaths,
     };
   } else {
     return {};
