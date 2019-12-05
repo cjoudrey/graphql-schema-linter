@@ -6,9 +6,9 @@ import { temporaryConfigDirectory } from '../../helpers';
 
 describe('Config', () => {
   describe('getRules', () => {
-    it('pulls rule config from the package.json file', async () => {
+    it('pulls rule config from the package.json file', () => {
       const configuration = new Configuration({
-        configDirectory: await temporaryConfigDirectory({
+        configDirectory: temporaryConfigDirectory({
           rules: ['enum-values-sorted-alphabetically'],
           schemaPaths: [path.join(__dirname, '/../../fixtures/schema.graphql')],
         }),
@@ -27,9 +27,9 @@ describe('Config', () => {
   });
 
   describe('customRulePaths', () => {
-    it('pulls customRulePaths from package.json', async () => {
+    it('pulls customRulePaths from package.json', () => {
       const configuration = new Configuration({
-        configDirectory: await temporaryConfigDirectory({
+        configDirectory: temporaryConfigDirectory({
           rules: ['SomeRule'],
           customRulePaths: [
             // we provide the full path to the helper
@@ -45,13 +45,13 @@ describe('Config', () => {
   });
 
   describe('schemaPaths', () => {
-    it('pulls schemaPaths from package.json when configDirectory is provided', async () => {
+    it('pulls schemaPaths from package.json when configDirectory is provided', () => {
       const fixturePath = path.join(
         __dirname,
         '/../../fixtures/schema.graphql'
       );
       const configuration = new Configuration({
-        configDirectory: await temporaryConfigDirectory({
+        configDirectory: temporaryConfigDirectory({
           rules: ['"enum-values-sorted-alphabetically"'],
           schemaPaths: [fixturePath],
         }),

@@ -1,3 +1,4 @@
 node_modules
+.mockedTests-*/
 lib
 .vscode/

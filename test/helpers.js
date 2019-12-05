@@ -1,14 +1,10 @@
-import 'regenerator-runtime/runtime';
-import fs from 'fs';
+import { writeFileSync, mkdtempSync } from 'fs';
 import path from 'path';
-import { tmpdir } from 'os';
 import { promisify } from 'util';
-import { config } from 'rxjs';
 
-const writeFile = promisify(fs.writeFile);
-
+const TEMP_DIR_PREFIX = '.mockedTests-';
 const writeJSONFile = (filename, data) =>
-  writeFile(filename, JSON.stringify(data));
+  writeFileSync(filename, JSON.stringify(data));
 
 /**
  * There's some magic in order to create a relative path to the temporal directory. but mostly it does 3 things.
@@ -23,12 +19,12 @@ const getRelocatedPath = (dir, fullPath) => {
   return path.join(path.join(relativePath, fullPath.split(dirnamePath)[1]));
 };
 
-export const temporaryConfigDirectory = async ({
+export const temporaryConfigDirectory = ({
   rules = null,
   customRulePaths = [],
   schemaPaths = [],
 }) => {
-  const configDirectory = tmpdir();
+  const configDirectory = mkdtempSync(TEMP_DIR_PREFIX);
   let fixCustomRulePaths = [];
   let fixedSchemaPaths = [];
   const options = { rules };
@@ -50,7 +46,7 @@ export const temporaryConfigDirectory = async ({
     options.schemaPaths = fixedSchemaPaths;
   }
 
-  await writeJSONFile(path.join(configDirectory, 'package.json'), {
+  writeJSONFile(path.join(configDirectory, 'package.json'), {
     'graphql-schema-linter': { ...options },
   });
   return configDirectory;
