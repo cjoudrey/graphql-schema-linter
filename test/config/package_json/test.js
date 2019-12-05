@@ -52,7 +52,7 @@ describe('Config', () => {
       );
       const configuration = new Configuration({
         configDirectory: temporaryConfigDirectory({
-          rules: ['"enum-values-sorted-alphabetically"'],
+          rules: ['enum-values-sorted-alphabetically'],
           schemaPaths: [fixturePath],
         }),
       });

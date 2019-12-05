@@ -1,6 +1,5 @@
 import { writeFileSync, mkdtempSync } from 'fs';
 import path from 'path';
-import { promisify } from 'util';
 
 const TEMP_DIR_PREFIX = '.mockedTests-';
 const writeJSONFile = (filename, data) =>
