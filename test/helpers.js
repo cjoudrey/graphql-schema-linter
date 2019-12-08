@@ -1,4 +1,5 @@
 import { writeFileSync, mkdtempSync } from 'fs';
+import os from 'os';
 import path from 'path';
 
 const TEMP_DIR_PREFIX = '.mockedTests-';
@@ -23,7 +24,7 @@ export const temporaryConfigDirectory = ({
   customRulePaths = [],
   schemaPaths = [],
 }) => {
-  const configDirectory = mkdtempSync(TEMP_DIR_PREFIX);
+  const configDirectory = mkdtempSync(path.join(os.tmpdir(), TEMP_DIR_PREFIX));
   let fixCustomRulePaths = [];
   let fixedSchemaPaths = [];
   const options = { rules };
