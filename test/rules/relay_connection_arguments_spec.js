@@ -59,7 +59,7 @@ describe('RelayConnectionArgumentsSpec rule', () => {
     );
   });
 
-  it('accepts connection with proper foward and backward pagination arguments', () => {
+  it('accepts connection with proper forward and backward pagination arguments', () => {
     expectPassesRule(
       RelayConnectionArgumentsSpec,
       `
