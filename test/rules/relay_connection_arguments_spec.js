@@ -74,6 +74,90 @@ describe('RelayConnectionArgumentsSpec rule', () => {
     );
   });
 
+  it('accepts connection with required first argument if no backward pagination is specified', () => {
+    expectPassesRule(
+      RelayConnectionArgumentsSpec,
+      `
+      extend type Query {
+        users(first: Int!, after: String): UserConnection
+      }
+
+      type UserConnection {
+        a: String
+      }
+    `
+    );
+  });
+
+  it('accepts connection with required last argument if no forward pagination is specified', () => {
+    expectPassesRule(
+      RelayConnectionArgumentsSpec,
+      `
+      extend type Query {
+        users(last: Int!, before: String): UserConnection
+      }
+
+      type UserConnection {
+        a: String
+      }
+    `
+    );
+  });
+
+  it('reports invalid first argument if first is required and backward pagination is specified', () => {
+    expectFailsRule(
+      RelayConnectionArgumentsSpec,
+      `
+      extend type Query {
+        users(first: Int!, after: String, last: Int, before: String): UserConnection
+      }
+
+      type UserConnection {
+        a: String
+      }
+    `,
+      [
+        {
+          locations: [
+            {
+              column: 15,
+              line: 3,
+            },
+          ],
+          message:
+            'Fields that support forward and backward pagination must include a `first` argument that takes a nullable non-negative integer as per the Relay spec.',
+        },
+      ]
+    );
+  });
+
+  it('reports invalid last argument if last is required and forward pagination is specified', () => {
+    expectFailsRule(
+      RelayConnectionArgumentsSpec,
+      `
+      extend type Query {
+        users(first: Int, after: String, last: Int!, before: String): UserConnection
+      }
+
+      type UserConnection {
+        a: String
+      }
+    `,
+      [
+        {
+          locations: [
+            {
+              column: 42,
+              line: 3,
+            },
+          ],
+          message:
+            'Fields that support forward and backward pagination must include a `last` argument that takes a nullable non-negative integer as per the Relay spec.',
+        },
+      ]
+    );
+  });
+
   it('reports invalid first argument', () => {
     expectFailsRule(
       RelayConnectionArgumentsSpec,
@@ -122,7 +206,7 @@ describe('RelayConnectionArgumentsSpec rule', () => {
             },
           ],
           message:
-            'Fields that support forward pagination must include a `last` argument that takes a non-negative integer as per the Relay spec.',
+            'Fields that support backward pagination must include a `last` argument that takes a non-negative integer as per the Relay spec.',
         },
       ]
     );
