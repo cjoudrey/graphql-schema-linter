@@ -430,5 +430,35 @@ describe('Runner', () => {
       );
       assert.equal(0, exitCode);
     });
+
+    it('prints config and exits with 0 if config is valid', () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--print-config',
+        '--rules',
+        'no-rule-of-mine,fields-have-descriptions',
+        '--stdin',
+        'foo.graphql',
+        '--format',
+        'json',
+        '--custom-rule-paths',
+        `${__dirname}/fixtures/custom_rules/*`,
+      ];
+
+      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      assert.strictEqual(exitCode, 0);
+
+      const config = JSON.parse(stdout);
+      assert(config.options.stdin);
+      assert.strictEqual(config.options.format, 'json');
+      assert(!config.options.commentDescriptions);
+      assert(!config.options.oldImplementsSyntax);
+      assert.strictEqual(config.options.customRulePaths.length, 1);
+      assert.strictEqual(config.options.rules.length, 2);
+      assert(config.rules.length > 0);
+      assert(config.builtInRulePaths);
+      assert.strictEqual(config.rulePaths.length, 2);
+    });
   });
 });

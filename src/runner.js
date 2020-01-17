@@ -46,6 +46,10 @@ export function run(stdout, stdin, stderr, argv) {
       '-e, --except <rules>',
       'This option is DEPRECATED. Use `--rules` instead.'
     )
+    .option(
+      '--print-config',
+      'print the configuration if valid and exit with 0'
+    )
     .version(version, '--version')
     .parse(argv);
 
@@ -83,6 +87,12 @@ export function run(stdout, stdin, stderr, argv) {
     return 2;
   }
 
+  if (commander.printConfig) {
+    const { schema, sourceMap, stdinFd, ...strippedConfig } = configuration;
+    stdout.write(JSON.stringify(strippedConfig, stringifyRule, 2) + '\n');
+    return 0;
+  }
+
   const schema = configuration.getSchema();
   if (schema == null) {
     console.error('No valid schema input.');
@@ -98,6 +108,13 @@ export function run(stdout, stdin, stderr, argv) {
   stdout.write(formatter(groupedErrors));
 
   return errors.length > 0 ? 1 : 0;
+}
+
+function stringifyRule(key, value) {
+  if (typeof value === 'function') {
+    return value.name;
+  }
+  return value;
 }
 
 function groupErrorsBySchemaFilePath(errors, schemaSourceMap) {
