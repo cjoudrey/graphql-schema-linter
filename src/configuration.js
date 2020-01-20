@@ -6,6 +6,7 @@ import { sync as globSync, hasMagic as globHasMagic } from 'glob';
 import { SourceMap } from './source_map.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
+import InlineTextFormatter from './formatters/inline_text_formatter.js';
 
 export class Configuration {
   /*
@@ -89,6 +90,8 @@ export class Configuration {
         return JSONFormatter;
       case 'text':
         return TextFormatter;
+      case 'inline-text':
+        return InlineTextFormatter;
     }
   }
 
