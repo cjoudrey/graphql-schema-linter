@@ -265,6 +265,7 @@ The following formatters are currently available: `text`, `json`.
 Sample output:
 
 ```
+app/schema.graphql
 5:1 The object type `QueryRoot` is missing a description.  types-have-descriptions
 6:3 The field `QueryRoot.a` is missing a description.      fields-have-descriptions
 
