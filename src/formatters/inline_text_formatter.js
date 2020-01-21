@@ -1,5 +1,4 @@
 // Text format for easy machine parsing.
-import chalk from 'chalk';
 import columnify from 'columnify';
 
 export default function InlineTextFormatter(errorsGroupedByFile) {
@@ -18,9 +17,9 @@ function generateErrorsForFile(file, errors) {
     const location = error.locations[0];
 
     return {
-      location: chalk.dim(`${file}:${location.line}:${location.column}`),
+      location: `${file}:${location.line}:${location.column}`,
       message: error.message,
-      rule: chalk.dim(` ${error.ruleName}`),
+      rule: ` ${error.ruleName}`,
     };
   });
 
