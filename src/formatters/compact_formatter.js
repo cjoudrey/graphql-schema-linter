@@ -1,7 +1,7 @@
 // Text format for easy machine parsing.
 import columnify from 'columnify';
 
-export default function InlineTextFormatter(errorsGroupedByFile) {
+export default function CompactFormatter(errorsGroupedByFile) {
   const files = Object.keys(errorsGroupedByFile);
 
   const errorsText = files
@@ -15,17 +15,8 @@ export default function InlineTextFormatter(errorsGroupedByFile) {
 function generateErrorsForFile(file, errors) {
   const formattedErrors = errors.map(error => {
     const location = error.locations[0];
-
-    return {
-      location: `${file}:${location.line}:${location.column}`,
-      message: error.message,
-      rule: ` ${error.ruleName}`,
-    };
+    return `${file}:${location.line}:${location.column} ${error.message} (${error.ruleName})`;
   });
 
-  const errorsText = columnify(formattedErrors, {
-    showHeaders: false,
-  });
-
-  return errorsText;
+  return formattedErrors.join('\n');
 }

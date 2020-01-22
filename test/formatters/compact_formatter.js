@@ -1,10 +1,10 @@
 import assert from 'assert';
-import InlineTextFormatter from '../../src/formatters/inline_text_formatter.js';
+import CompactFormatter from '../../src/formatters/compact_formatter.js';
 
-describe('InlineTextFormatter', () => {
+describe('CompactFormatter', () => {
   it('returns a single newline when there are no errors', () => {
     const expected = '\n';
-    assert.equal(InlineTextFormatter({}), expected);
+    assert.equal(CompactFormatter({}), expected);
   });
 
   it('returns a single block of text for all errors otherwise', () => {
@@ -26,8 +26,10 @@ describe('InlineTextFormatter', () => {
     };
 
     const expected =
-      '' + 'file1:1:1 error. a-rule\n' + 'file2:1:1 another error. a-rule\n';
+      '' +
+      'file1:1:1 error. (a-rule)\n' +
+      'file2:1:1 another error. (a-rule)\n';
 
-    assert.equal(InlineTextFormatter(errors), expected);
+    assert.equal(CompactFormatter(errors), expected);
   });
 });
