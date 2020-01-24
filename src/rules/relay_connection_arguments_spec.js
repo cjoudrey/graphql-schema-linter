@@ -62,11 +62,7 @@ export function RelayConnectionArgumentsSpec(context) {
           }
         } else {
           // first can be non-nullable if only forward pagination is supported.
-          const isFirstArgumentNullable =
-            firstArgument.type.kind !== 'NonNullType';
-          const type = isFirstArgumentNullable
-            ? firstArgument.type
-            : firstArgument.type.type;
+          const type = unwrapType(firstArgument.type);
           if (type.kind != 'NamedType' || type.name.value != 'Int') {
             return context.reportError(
               new ValidationError(
@@ -96,11 +92,7 @@ export function RelayConnectionArgumentsSpec(context) {
           }
         } else {
           // last can be non-nullable if only backward pagination is supported.
-          const isLastArgumentNullable =
-            lastArgument.type.kind !== 'NonNullType';
-          const type = isLastArgumentNullable
-            ? lastArgument.type
-            : lastArgument.type.type;
+          const type = unwrapType(lastArgument.type);
           if (type.kind != 'NamedType' || type.name.value != 'Int') {
             return context.reportError(
               new ValidationError(
