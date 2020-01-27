@@ -258,23 +258,38 @@ This will will validate that interface types, object types, union types, scalar 
 
 The format of the output can be controlled via the `--format` option.
 
-The following formatters are currently available: `text`, `json`.
+The following formatters are currently available: `text`, `compact`, `json`.
 
-### `TextFormatter` (default)
+### Text (default)
 
 Sample output:
 
 ```
 app/schema.graphql
 5:1 The object type `QueryRoot` is missing a description.  types-have-descriptions
-6:3 The field `QueryRoot.a` is missing a description.      fields-have-descriptions
+6:3 The field `QueryRoot.songs` is missing a description.  fields-have-descriptions
 
-2 errors detected
+app/songs.graphql
+1:1 The object type `Song` is missing a description.  types-have-descriptions
+
+3 errors detected
 ```
 
 Each error is prefixed with the line number and column the error occurred on.
 
-### `JSONFormatter`
+### Compact
+
+Sample output:
+
+```
+app/schema.graphql:5:1 The object type `QueryRoot` is missing a description. (types-have-descriptions)
+app/schema.graphql:6:3 The field `QueryRoot.a` is missing a description. (fields-have-descriptions)
+app/songs.graphql:1:1 The object type `Song` is missing a description. (types-have-descriptions)
+```
+
+Each error is prefixed with the path, the line number and column the error occurred on.
+
+### JSON
 
 Sample output:
 
