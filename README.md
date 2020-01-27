@@ -38,7 +38,7 @@ Options:
 
     choose the output format of the report
 
-    possible values: json, text
+    possible values: compact, json, text
 
   -s, --stdin
 
