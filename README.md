@@ -236,7 +236,7 @@ More specifically:
 - To enable forward pagination, two arguments are required: `first: Int` and `after: *`.
 - To enable backward pagination, two arguments are required: `last: Int` and `before: *`.
 
-### `relay-page-info-spec`
+Note: If only forward pagination is enabled, the `first` argument can be specified as non-nullable (i.e., `Int!` instead of `Int`). Similarly, if only backward pagination is enabled, the `last` argument can be specified as non-nullable.
 
 This rule will validate the schema adheres to [section 5 (PageInfo)](https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
 

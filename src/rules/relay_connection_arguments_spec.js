@@ -46,32 +46,62 @@ export function RelayConnectionArgumentsSpec(context) {
       }
 
       if (firstArgument) {
-        if (
-          firstArgument.type.kind != 'NamedType' ||
-          firstArgument.type.name.value != 'Int'
-        ) {
-          return context.reportError(
-            new ValidationError(
-              'relay-connection-arguments-spec',
-              'Fields that support forward pagination must include a `first` argument that takes a non-negative integer as per the Relay spec.',
-              [firstArgument]
-            )
-          );
+        if (hasBackwardPagination) {
+          // first and last must be nullable if both forward and backward pagination are supported.
+          if (
+            firstArgument.type.kind != 'NamedType' ||
+            firstArgument.type.name.value != 'Int'
+          ) {
+            return context.reportError(
+              new ValidationError(
+                'relay-connection-arguments-spec',
+                'Fields that support forward and backward pagination must include a `first` argument that takes a nullable non-negative integer as per the Relay spec.',
+                [firstArgument]
+              )
+            );
+          }
+        } else {
+          // first can be non-nullable if only forward pagination is supported.
+          const type = unwrapType(firstArgument.type);
+          if (type.kind != 'NamedType' || type.name.value != 'Int') {
+            return context.reportError(
+              new ValidationError(
+                'relay-connection-arguments-spec',
+                'Fields that support forward pagination must include a `first` argument that takes a non-negative integer as per the Relay spec.',
+                [firstArgument]
+              )
+            );
+          }
         }
       }
 
       if (lastArgument) {
-        if (
-          lastArgument.type.kind != 'NamedType' ||
-          lastArgument.type.name.value != 'Int'
-        ) {
-          return context.reportError(
-            new ValidationError(
-              'relay-connection-arguments-spec',
-              'Fields that support forward pagination must include a `last` argument that takes a non-negative integer as per the Relay spec.',
-              [lastArgument]
-            )
-          );
+        if (hasForwardPagination) {
+          // first and last must be nullable if both forward and backward pagination are supported.
+          if (
+            lastArgument.type.kind != 'NamedType' ||
+            lastArgument.type.name.value != 'Int'
+          ) {
+            return context.reportError(
+              new ValidationError(
+                'relay-connection-arguments-spec',
+                'Fields that support forward and backward pagination must include a `last` argument that takes a nullable non-negative integer as per the Relay spec.',
+                [lastArgument]
+              )
+            );
+          }
+        } else {
+          // last can be non-nullable if only backward pagination is supported.
+          const type = unwrapType(lastArgument.type);
+          if (type.kind != 'NamedType' || type.name.value != 'Int') {
+            return context.reportError(
+              new ValidationError(
+                'relay-connection-arguments-spec',
+                'Fields that support backward pagination must include a `last` argument that takes a non-negative integer as per the Relay spec.',
+                [lastArgument]
+              )
+            );
+          }
         }
       }
     },
