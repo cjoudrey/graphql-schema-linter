@@ -26,6 +26,7 @@ require('./rules/relay_connection_arguments_spec');
 require('./rules/relay_page_info_spec');
 require('./formatters/json_formatter');
 require('./formatters/text_formatter');
+require('./formatters/compact_formatter.js');
 require('./config/rc_file/test');
 require('./config/package_json/test');
 require('./config/js_file/test');
