@@ -8,6 +8,17 @@
 
 ### Bug fixes
 
+## 0.2.4 (January 27st, 2020)
+
+### New features
+
+- Add a third output format named `compact` that can be used in conjunction with programs like `grep`. See [README.md](https://github.com/cjoudrey/graphql-schema-linter#output-formatters) for sample output. [#209](https://github.com/cjoudrey/graphql-schema-linter/pull/209) (Thanks @MatthewRines)
+
+### Bug fixes
+
+- Allow `first` argument to be a non-nullable integer when connection only supports forward pagination. [#203](https://github.com/cjoudrey/graphql-schema-linter/pull/203) (Thanks @swac)
+- Allow `last` argument to be a non-nullable integer when connection only supports backward pagination. [#203](https://github.com/cjoudrey/graphql-schema-linter/pull/203) (Thanks @swac)
+
 ## 0.2.3 (December 1st, 2019)
 
 ### New features
