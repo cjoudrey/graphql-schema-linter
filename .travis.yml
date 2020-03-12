@@ -5,9 +5,11 @@ node_js:
   - "8"
 before_script:
   - yarn prepare
+  - yarn install
 script:
-  - yarn test
-  - node lib/cli.js --version
-  - node lib/cli.js test/fixtures/valid.graphql
+  #  - yarn test
+  #  - node lib/cli.js --version
+  #  - node lib/cli.js test/fixtures/valid.graphql
+  - ls && ls bin
 notifications:
   email: false
