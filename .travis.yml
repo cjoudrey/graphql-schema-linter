@@ -10,6 +10,6 @@ script:
   #  - yarn test
   #  - node lib/cli.js --version
   #  - node lib/cli.js test/fixtures/valid.graphql
-  - ls && ls bin
+  - bash test/package-json-integration.sh
 notifications:
   email: false
