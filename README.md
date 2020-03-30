@@ -180,6 +180,10 @@ module.exports = {
 
 ## Built-in rules
 
+### `arguments-have-descriptions`
+
+This rule will validate that all field arguments have a description.
+
 ### `defined-types-are-used`
 
 This rule will validate that all defined types are used at least once in the schema.
@@ -187,6 +191,10 @@ This rule will validate that all defined types are used at least once in the sch
 ### `deprecations-have-a-reason`
 
 This rule will validate that all deprecations have a reason.
+
+### `descriptions-are-capitalized`
+
+This rule will validate that all descriptions, if present, start with a capital letter.
 
 ### `enum-values-all-caps`
 
@@ -207,6 +215,10 @@ This rule will validate that object type field and interface type field names ar
 ### `fields-have-descriptions`
 
 This rule will validate that object type fields and interface type fields have a description.
+
+### `input-object-fields-sorted-alphabetically`
+
+This rule will validate that all input object fields are sorted alphabetically.
 
 ### `input-object-values-are-camel-cased`
 
@@ -245,6 +257,10 @@ More specifically:
 - A GraphQL schema must have a `PageInfo` object type.
 - `PageInfo` type must have a `hasNextPage: Boolean!` field.
 - `PageInfo` type must have a `hasPreviousPage: Boolean!` field.
+
+### `type-fields-sorted-alphabetically`
+
+This rule will validate that all type object fields are sorted alphabetically.
 
 ### `types-are-capitalized`
 
