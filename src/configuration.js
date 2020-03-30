@@ -3,6 +3,7 @@ import { readSync, readFileSync } from 'fs';
 import path from 'path';
 import { sync as globSync, hasMagic as globHasMagic } from 'glob';
 
+import ModuleResolver from './relative_module_resolver.js';
 import { SourceMap } from './source_map.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
@@ -15,6 +16,7 @@ export class Configuration {
       - format: (required) `text` | `json`
       - rules: [string array] whitelist rules
       - schemaPaths: [string array] file(s) to read schema from
+      - customRulePackages: [string array] names of packages where the entry point named exports are rules
       - customRulePaths: [string array] path to additional custom rules to be loaded
       - stdin: [boolean] pass schema via stdin?
       - commentDescriptions: [boolean] use old way of defining descriptions in GraphQL SDL
@@ -23,6 +25,7 @@ export class Configuration {
   constructor(options = {}, stdinFd = null) {
     const defaultOptions = {
       format: 'text',
+      customRulePackages: [],
       customRulePaths: [],
       commentDescriptions: false,
       oldImplementsSyntax: false,
@@ -36,6 +39,7 @@ export class Configuration {
     this.schema = null;
     this.sourceMap = null;
     this.rules = null;
+    this.rulePackages = this.options.customRulePackages;
     this.builtInRulePaths = path.join(__dirname, 'rules/*.js');
     this.rulePaths = this.options.customRulePaths.concat(this.builtInRulePaths);
   }
@@ -129,9 +133,28 @@ export class Configuration {
       return this.rules;
     }
 
-    this.rules = this.getRulesFromPaths(this.rulePaths);
+    const packageRules = this.getRulesFromPackages(this.rulePackages);
+    const pathRules = this.getRulesFromPaths(this.rulePaths);
+
+    this.rules = packageRules.concat(pathRules);
 
     return this.rules;
+  }
+
+  getRulesFromPackages(rulePackages) {
+    const rules = new Set([]);
+
+    rulePackages.map(rulePackage => {
+      // We can't simply call `require()` because it needs to be from the project's node_modules
+      const rulePackagePath = ModuleResolver.resolve(
+        rulePackage,
+        path.join(process.cwd(), '__placeholder__.js')
+      );
+      let ruleMap = require(rulePackagePath);
+      Object.keys(ruleMap).forEach(k => rules.add(ruleMap[k]));
+    });
+
+    return Array.from(rules);
   }
 
   getRulesFromPaths(rulePaths) {
@@ -156,7 +179,25 @@ export class Configuration {
     let rules;
 
     try {
-      rules = this.getAllRules();
+      rules = this.getRulesFromPackages(this.rulePackages);
+    } catch (e) {
+      if (e.code === 'MODULE_NOT_FOUND') {
+        issues.push({
+          message: `There was an issue loading the specified custom rules: '${
+            e.message.split('\n')[0]
+          }'`,
+          field: 'custom-rule-packages',
+          type: 'error',
+        });
+
+        rules = [];
+      } else {
+        throw e;
+      }
+    }
+
+    try {
+      rules = rules.concat(this.getRulesFromPaths(this.rulePaths));
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') {
         issues.push({
@@ -166,11 +207,13 @@ export class Configuration {
           field: 'custom-rule-paths',
           type: 'error',
         });
-
-        rules = this.getAllBuiltInRules();
       } else {
         throw e;
       }
+    }
+
+    if (rules.length === 0) {
+      rules = this.getAllBuiltInRules();
     }
 
     const ruleNames = rules.map(rule => rule.name);
@@ -234,6 +277,7 @@ function loadOptionsFromConfig(configDirectory) {
 
     return {
       rules: cosmic.config.rules,
+      customRulePackages: cosmic.config.customRulePackages,
       customRulePaths: customRulePaths || [],
       schemaPaths: schemaPaths,
     };
