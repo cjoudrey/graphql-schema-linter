@@ -8,6 +8,15 @@
 
 ### Bug fixes
 
+## 0.2.5 (April 4th, 2020)
+
+### New features
+
+- Add `arguments-have-descriptions` rule. This rule will validate that all field arguments have a description. [#219](https://github.com/cjoudrey/graphql-schema-linter/pull/219) (Thanks @aldeed)
+- Add `descriptions-are-capitalized` rule. This rule will validate that all descriptions, if present, start with a capital letter. [#219](https://github.com/cjoudrey/graphql-schema-linter/pull/219) (Thanks @aldeed)
+- Add `input-object-fields-sorted-alphabetically` rule. This rule will validate that all input object fields are sorted alphabetically. [#219](https://github.com/cjoudrey/graphql-schema-linter/pull/219) (Thanks @aldeed)
+- Add `type-fields-sorted-alphabetically` rule. This rule will validate that all type object fields are sorted alphabetically. [#219](https://github.com/cjoudrey/graphql-schema-linter/pull/219) (Thanks @aldeed)
+
 ## 0.2.4 (January 27th, 2020)
 
 ### New features
