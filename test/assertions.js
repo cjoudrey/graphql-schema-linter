@@ -4,6 +4,7 @@ import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { validateSchemaDefinition } from '../src/validator.js';
 import { Configuration } from '../src/configuration.js';
+import { Schema } from '../src/schema.js';
 
 const DefaultSchema = `
   "Query root"
@@ -58,10 +59,14 @@ export function expectPassesRuleWithConfiguration(
 }
 
 function validateSchemaWithRule(rule, schemaSDL, configurationOptions) {
-  const fullSchemaSDL = `${schemaSDL}${DefaultSchema}`;
   const rules = [rule];
-  const configuration = new Configuration(configurationOptions, null);
-  const errors = validateSchemaDefinition(fullSchemaSDL, rules, configuration);
+  const schema = new Schema(`${schemaSDL}${DefaultSchema}`, null);
+  const configuration = new Configuration(schema, configurationOptions);
+  const errors = validateSchemaDefinition(
+    schema.definition,
+    rules,
+    configuration
+  );
 
   return errors;
 }

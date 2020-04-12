@@ -2,7 +2,7 @@
 
 import { run } from './runner';
 
-process.on('uncaughtException', err => {
+function handleUncaughtException(err) {
   console.error(
     'It looks like you may have hit a bug in graphql-schema-linter.'
   );
@@ -13,13 +13,10 @@ process.on('uncaughtException', err => {
   console.error('');
   console.error(err.stack);
   process.exit(3);
-});
+}
 
-const exitCode = run(
-  process.stdout,
-  process.stdin,
-  process.stderr,
-  process.argv
-);
+process.on('uncaughtException', handleUncaughtException);
 
-process.exit(exitCode);
+run(process.stdout, process.stdin, process.stderr, process.argv)
+  .then(exitCode => process.exit(exitCode))
+  .catch(err => handleUncaughtException(err));

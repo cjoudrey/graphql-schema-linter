@@ -2,17 +2,19 @@ import path from 'path';
 import { readFileSync } from 'fs';
 import assert from 'assert';
 import { Configuration } from '../../../src/configuration';
+import { loadSchema, emptySchema } from '../../../src/schema';
+import { loadOptionsFromConfigDir } from '../../../src/options';
 import { temporaryConfigDirectory } from '../../helpers';
 
 describe('Config', () => {
   describe('getRules', () => {
     it('pulls rule config from the package.json file', () => {
-      const configuration = new Configuration({
-        configDirectory: temporaryConfigDirectory({
+      const options = loadOptionsFromConfigDir(
+        temporaryConfigDirectory({
           rules: ['enum-values-sorted-alphabetically'],
-          schemaPaths: [path.join(__dirname, '/../../fixtures/schema.graphql')],
-        }),
-      });
+        })
+      );
+      const configuration = new Configuration(emptySchema, options);
 
       const rules = configuration.getRules();
 
@@ -28,15 +30,16 @@ describe('Config', () => {
 
   describe('customRulePaths', () => {
     it('pulls customRulePaths from package.json', () => {
-      const configuration = new Configuration({
-        configDirectory: temporaryConfigDirectory({
+      const options = loadOptionsFromConfigDir(
+        temporaryConfigDirectory({
           rules: ['SomeRule'],
           customRulePaths: [
             // we provide the full path to the helper
             path.join(__dirname, '../../fixtures/custom_rules/*.js'),
           ],
-        }),
-      });
+        })
+      );
+      const configuration = new Configuration(emptySchema, options);
 
       const rules = configuration.getRules();
 
@@ -45,15 +48,15 @@ describe('Config', () => {
   });
 
   describe('schemaPaths', () => {
-    it('pulls schemaPaths from package.json when configDirectory is provided', () => {
+    it('pulls schemaPaths from package.json when configDirectory is provided', async () => {
       const fixturePath = path.join(
         __dirname,
         '/../../fixtures/schema.graphql'
       );
-      const configuration = new Configuration({
+      const schema = await loadSchema({ schemaPaths: [fixturePath] });
+      const configuration = new Configuration(schema, {
         configDirectory: temporaryConfigDirectory({
           rules: ['enum-values-sorted-alphabetically'],
-          schemaPaths: [fixturePath],
         }),
       });
       assert.equal(

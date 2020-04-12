@@ -1,6 +1,7 @@
 import assert from 'assert';
 import { run } from '../src/runner.js';
-import { openSync } from 'fs';
+import { createReadStream } from 'fs';
+import { Readable } from 'stream';
 import { stripAnsi } from './strip_ansi.js';
 
 describe('Runner', () => {
@@ -24,10 +25,10 @@ describe('Runner', () => {
   });
 
   const fixturePath = `${__dirname}/fixtures/schema.graphql`;
-  const mockStdin = { fd: openSync(fixturePath, 'r') };
+  const mockStdin = createReadStream(fixturePath);
 
-  describe('run', () => {
-    it('returns exit code 1 when schema has a syntax error', () => {
+  describe('run', async () => {
+    it('returns exit code 1 when schema has a syntax error', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -36,7 +37,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/invalid.graphql`,
       ];
 
-      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      const exitCode = await run(mockStdout, mockStdin, mockStderr, argv);
       assert.equal(1, exitCode);
 
       var errors = JSON.parse(stdout)['errors'];
@@ -44,7 +45,7 @@ describe('Runner', () => {
       assert.equal(1, errors.length);
     });
 
-    it('returns exit code 1 when there are errors', () => {
+    it('returns exit code 1 when there are errors', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -53,18 +54,18 @@ describe('Runner', () => {
         fixturePath,
       ];
 
-      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      const exitCode = await run(mockStdout, mockStdin, mockStderr, argv);
       assert.equal(1, exitCode);
     });
 
-    it('validates schema when query root is missing', () => {
+    it('validates schema when query root is missing', async () => {
       const argv = [
         'node',
         'lib/cli.js',
         `${__dirname}/fixtures/schema.missing-query-root.graphql`,
       ];
 
-      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      const exitCode = await run(mockStdout, mockStdin, mockStderr, argv);
 
       const expected =
         `${__dirname}/fixtures/schema.missing-query-root.graphql\n` +
@@ -75,14 +76,14 @@ describe('Runner', () => {
       assert.equal(expected, stripAnsi(stdout));
     });
 
-    it('validates schema when ast is invalid', () => {
+    it('validates schema when ast is invalid', async () => {
       const argv = [
         'node',
         'lib/cli.js',
         `${__dirname}/fixtures/invalid-ast.graphql`,
       ];
 
-      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      const exitCode = await run(mockStdout, mockStdin, mockStderr, argv);
 
       const expected =
         `${__dirname}/fixtures/invalid-ast.graphql\n` +
@@ -93,7 +94,7 @@ describe('Runner', () => {
       assert.equal(expected, stripAnsi(stdout));
     });
 
-    it('returns exit code 0 when there are errors', () => {
+    it('returns exit code 0 when there are errors', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -102,11 +103,11 @@ describe('Runner', () => {
         `${__dirname}/fixtures/valid.graphql`,
       ];
 
-      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      const exitCode = await run(mockStdout, mockStdin, mockStderr, argv);
       assert.equal(0, exitCode);
     });
 
-    it('allows setting descriptions using comments in GraphQL SDL', () => {
+    it('allows setting descriptions using comments in GraphQL SDL', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -118,7 +119,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema.comment-descriptions.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       const expected =
         `${__dirname}/fixtures/schema.comment-descriptions.graphql\n` +
@@ -129,7 +130,7 @@ describe('Runner', () => {
       assert.equal(expected, stripAnsi(stdout));
     });
 
-    it('allows using old `implements` syntax in GraphQL SDL', () => {
+    it('allows using old `implements` syntax in GraphQL SDL', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -141,12 +142,12 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema.old-implements.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       assert.deepEqual([], JSON.parse(stdout)['errors']);
     });
 
-    it('validates using new `implements` syntax in GraphQL SDL', () => {
+    it('validates using new `implements` syntax in GraphQL SDL', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -157,12 +158,12 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema.new-implements.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       assert.deepEqual([], JSON.parse(stdout)['errors']);
     });
 
-    it('validates a single schema file and outputs in text', () => {
+    it('validates a single schema file and outputs in text', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -173,7 +174,7 @@ describe('Runner', () => {
         fixturePath,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       const expected =
         `${fixturePath}\n` +
@@ -184,7 +185,7 @@ describe('Runner', () => {
       assert.equal(expected, stripAnsi(stdout));
     });
 
-    it('validates a single schema file by a custom rule and outputs in text', () => {
+    it('validates a single schema file by a custom rule and outputs in text', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -197,7 +198,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/animal.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       const expected =
         `${__dirname}/fixtures/animal.graphql\n` +
@@ -209,7 +210,7 @@ describe('Runner', () => {
       assert.equal(expected, stripAnsi(stdout));
     });
 
-    it('validates schema passed in via stdin and outputs in json', () => {
+    it('validates schema passed in via stdin and outputs in json', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -220,14 +221,14 @@ describe('Runner', () => {
         '--stdin',
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       var errors = JSON.parse(stdout)['errors'];
       assert(errors);
       assert.equal(1, errors.length);
     });
 
-    it('validates a single schema file and outputs in json', () => {
+    it('validates a single schema file and outputs in json', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -238,7 +239,7 @@ describe('Runner', () => {
         fixturePath,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       var errors = JSON.parse(stdout)['errors'];
       assert.deepEqual(
@@ -253,25 +254,7 @@ describe('Runner', () => {
       );
     });
 
-    it('validates schema passed in via stdin and outputs in json', () => {
-      const argv = [
-        'node',
-        'lib/cli.js',
-        '--format',
-        'json',
-        '--rules',
-        'fields-have-descriptions',
-        '--stdin',
-      ];
-
-      run(mockStdout, mockStdin, mockStderr, argv);
-
-      var errors = JSON.parse(stdout)['errors'];
-      assert(errors);
-      assert.equal(1, errors.length);
-    });
-
-    it('validates a schema composed of multiple files (glob) and outputs in json', () => {
+    it('validates a schema composed of multiple files (glob) and outputs in json', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -282,14 +265,14 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/*.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       var errors = JSON.parse(stdout)['errors'];
       assert(errors);
       assert.equal(6, errors.length);
     });
 
-    it('validates a schema composed of multiple files (args) and outputs in json', () => {
+    it('validates a schema composed of multiple files (args) and outputs in json', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -301,14 +284,14 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/user.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       var errors = JSON.parse(stdout)['errors'];
       assert(errors);
       assert.equal(4, errors.length);
     });
 
-    it('preserves original line numbers when schema is composed of multiple files', () => {
+    it('preserves original line numbers when schema is composed of multiple files', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -321,7 +304,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/schema/comment.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
+      await run(mockStdout, mockStdin, mockStderr, argv);
 
       var errors = JSON.parse(stdout)['errors'];
       assert(errors);
@@ -395,7 +378,7 @@ describe('Runner', () => {
       assert.equal(errors[5].rule, 'fields-have-descriptions');
     });
 
-    it('fails and exits if the output format is unknown', () => {
+    it('fails and exits if the output format is unknown', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -406,14 +389,12 @@ describe('Runner', () => {
         `${__dirname}/fixtures/valid.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
-
-      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      const exitCode = await run(mockStdout, mockStdin, mockStderr, argv);
       assert(stderr.indexOf("The output format 'xml' is invalid") >= 0);
       assert.equal(2, exitCode);
     });
 
-    it('warns but continues if a rule is unknown', () => {
+    it('warns but continues if a rule is unknown', async () => {
       const argv = [
         'node',
         'lib/cli.js',
@@ -422,9 +403,7 @@ describe('Runner', () => {
         `${__dirname}/fixtures/valid.graphql`,
       ];
 
-      run(mockStdout, mockStdin, mockStderr, argv);
-
-      const exitCode = run(mockStdout, mockStdin, mockStderr, argv);
+      const exitCode = await run(mockStdout, mockStdin, mockStderr, argv);
       assert(
         stderr.indexOf('The following rule(s) are invalid: NoRuleOfMine') >= 0
       );
