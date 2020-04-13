@@ -5,7 +5,6 @@
   "author": "Christian Joudrey",
   "main": "lib/index.js",
   "scripts": {
-    "precommit": "lint-staged",
     "test": "mocha test/index.js",
     "prepare": "rm -rf lib/* && babel ./src --ignore test --out-dir ./lib"
   },
@@ -56,5 +55,10 @@
   "prettier": {
     "singleQuote": true,
     "trailingComma": "es5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
