@@ -4,11 +4,7 @@ import { ValidationError } from '../validation_error';
 export function InputObjectValuesHaveDescriptions(configuration, context) {
   return {
     InputValueDefinition(node, key, parent, path, ancestors) {
-      if (
-        getDescription(node, {
-          commentDescriptions: configuration.getCommentDescriptions(),
-        })
-      ) {
+      if (node.description && node.description.value != '') {
         return;
       }
 

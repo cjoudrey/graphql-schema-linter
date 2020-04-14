@@ -44,7 +44,6 @@ export function validateSchemaDefinition(
   }
 
   const schema = buildASTSchema(ast, {
-    commentDescriptions: configuration.getCommentDescriptions(),
     assumeValidSDL: true,
     assumeValid: true,
   });

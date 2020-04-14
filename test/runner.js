@@ -106,29 +106,6 @@ describe('Runner', () => {
       assert.equal(0, exitCode);
     });
 
-    it('allows setting descriptions using comments in GraphQL SDL', () => {
-      const argv = [
-        'node',
-        'lib/cli.js',
-        '--format',
-        'text',
-        '--comment-descriptions',
-        '--rules',
-        'fields-have-descriptions',
-        `${__dirname}/fixtures/schema.comment-descriptions.graphql`,
-      ];
-
-      run(mockStdout, mockStdin, mockStderr, argv);
-
-      const expected =
-        `${__dirname}/fixtures/schema.comment-descriptions.graphql\n` +
-        '3:3 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
-        '\n' +
-        '✖ 1 error detected\n';
-
-      assert.equal(expected, stripAnsi(stdout));
-    });
-
     it('allows using old `implements` syntax in GraphQL SDL', () => {
       const argv = [
         'node',

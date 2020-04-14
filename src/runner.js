@@ -29,10 +29,6 @@ export function run(stdout, stdin, stderr, argv) {
       'path to additional custom rules to be loaded. Example: rules/*.js'
     )
     .option(
-      '--comment-descriptions',
-      'use old way of defining descriptions in GraphQL SDL'
-    )
-    .option(
       '--old-implements-syntax',
       'use old way of defining implemented interfaces in GraphQL SDL'
     )
@@ -142,10 +138,6 @@ function getOptionsFromCommander(commander) {
 
   if (commander.customRulePaths) {
     options.customRulePaths = commander.customRulePaths.split(',');
-  }
-
-  if (commander.commentDescriptions) {
-    options.commentDescriptions = commander.commentDescriptions;
   }
 
   if (commander.oldImplementsSyntax) {

@@ -2,11 +2,7 @@ import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 
 function validateTypeHasDescription(configuration, context, node, typeKind) {
-  if (
-    getDescription(node, {
-      commentDescriptions: configuration.getCommentDescriptions(),
-    })
-  ) {
+  if (node.description && node.description.value != '') {
     return;
   }
 

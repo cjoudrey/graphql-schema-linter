@@ -308,18 +308,6 @@ extend type Query {
     });
   });
 
-  describe('getCommentDescriptions', () => {
-    it('defaults to false', () => {
-      const configuration = new Configuration({});
-      assert.equal(configuration.getCommentDescriptions(), false);
-    });
-
-    it('returns specified value', () => {
-      const configuration = new Configuration({ commentDescriptions: true });
-      assert.equal(configuration.getCommentDescriptions(), true);
-    });
-  });
-
   describe('getOldImplementsSyntax', () => {
     it('defaults to false', () => {
       const configuration = new Configuration({});
