@@ -8,6 +8,12 @@
 
 ### Bug fixes
 
+## 0.2.6 (April 4th, 2020)
+
+### Bug fixes
+
+- Fix an issue with `--stdin` not working correctly in some cases. [#223](https://github.com/cjoudrey/graphql-schema-linter/pull/223) (Thanks @dnerdy)
+
 ## 0.2.5 (April 4th, 2020)
 
 ### New features
