@@ -8,7 +8,7 @@
 
 ### Bug fixes
 
-## 0.2.6 (April 4th, 2020)
+## 0.2.6 (April 14th, 2020)
 
 ### Bug fixes
 
