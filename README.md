@@ -44,7 +44,7 @@ Options:
 
     schema definition will be read from STDIN instead of specified file
 
-  -c, --config-direction <path>
+  -c, --config-directory <path>
 
     path to begin searching for config files
 

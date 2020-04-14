@@ -1,19 +1,20 @@
 import assert from 'assert';
 import { validateSchemaDefinition } from '../src/validator';
 import { Configuration } from '../src/configuration';
+import { loadSchema } from '../src/schema';
 import { FieldsHaveDescriptions } from '../src/rules/fields_have_descriptions';
 import { GraphQLError } from 'graphql/error';
 
 describe('validateSchemaDefinition', () => {
-  it('returns errors sorted by line number', () => {
+  it('returns errors sorted by line number', async () => {
     const schemaPath = `${__dirname}/fixtures/schema/**/*.graphql`;
-    const configuration = new Configuration({ schemaPaths: [schemaPath] });
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const configuration = new Configuration(schema);
 
-    const schemaDefinition = configuration.getSchema();
     const rules = [FieldsHaveDescriptions, DummyValidator];
 
     const errors = validateSchemaDefinition(
-      schemaDefinition,
+      schema.definition,
       rules,
       configuration
     );
@@ -26,14 +27,13 @@ describe('validateSchemaDefinition', () => {
     assert.deepEqual(errorLineNumbers.sort(), errorLineNumbers);
   });
 
-  it('catches and returns GraphQL syntax errors', () => {
+  it('catches and returns GraphQL syntax errors', async () => {
     const schemaPath = `${__dirname}/fixtures/invalid.graphql`;
-    const configuration = new Configuration({ schemaPaths: [schemaPath] });
-
-    const schemaDefinition = configuration.getSchema();
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const configuration = new Configuration(schema);
 
     const errors = validateSchemaDefinition(
-      schemaDefinition,
+      schema.definition,
       [],
       configuration
     );
@@ -41,14 +41,13 @@ describe('validateSchemaDefinition', () => {
     assert.equal(1, errors.length);
   });
 
-  it('reports schema with missing query root', () => {
+  it('reports schema with missing query root', async () => {
     const schemaPath = `${__dirname}/fixtures/schema.missing-query-root.graphql`;
-    const configuration = new Configuration({ schemaPaths: [schemaPath] });
-
-    const schemaDefinition = configuration.getSchema();
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const configuration = new Configuration(schema);
 
     const errors = validateSchemaDefinition(
-      schemaDefinition,
+      schema.definition,
       [],
       configuration
     );
@@ -56,14 +55,13 @@ describe('validateSchemaDefinition', () => {
     assert.equal(1, errors.length);
   });
 
-  it('catches and returns GraphQL schema errors', () => {
+  it('catches and returns GraphQL schema errors', async () => {
     const schemaPath = `${__dirname}/fixtures/invalid-schema.graphql`;
-    const configuration = new Configuration({ schemaPaths: [schemaPath] });
-
-    const schemaDefinition = configuration.getSchema();
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const configuration = new Configuration(schema);
 
     const errors = validateSchemaDefinition(
-      schemaDefinition,
+      schema.definition,
       [],
       configuration
     );
@@ -77,14 +75,13 @@ describe('validateSchemaDefinition', () => {
     assert.equal(7, errors[1].locations[0].line);
   });
 
-  it('handles invalid GraphQL schemas', () => {
+  it('handles invalid GraphQL schemas', async () => {
     const schemaPath = `${__dirname}/fixtures/invalid-query-root.graphql`;
-    const configuration = new Configuration({ schemaPaths: [schemaPath] });
-
-    const schemaDefinition = configuration.getSchema();
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const configuration = new Configuration(schema);
 
     const errors = validateSchemaDefinition(
-      schemaDefinition,
+      schema.definition,
       [],
       configuration
     );
@@ -98,11 +95,10 @@ describe('validateSchemaDefinition', () => {
     assert.equal(1, errors[0].locations[0].line);
   });
 
-  it('passes configuration to rules that require it', () => {
+  it('passes configuration to rules that require it', async () => {
     const schemaPath = `${__dirname}/fixtures/valid.graphql`;
-    const configuration = new Configuration({ schemaPaths: [schemaPath] });
-
-    const schemaDefinition = configuration.getSchema();
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const configuration = new Configuration(schema);
 
     const ruleWithConfiguration = (config, context) => {
       assert.equal(configuration, config);
@@ -116,7 +112,7 @@ describe('validateSchemaDefinition', () => {
     };
 
     const errors = validateSchemaDefinition(
-      schemaDefinition,
+      schema.definition,
       [ruleWithConfiguration, ruleWithoutConfiguration],
       configuration
     );

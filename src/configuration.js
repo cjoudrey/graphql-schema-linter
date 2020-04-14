@@ -1,40 +1,29 @@
-import cosmiconfig from 'cosmiconfig';
-import { readSync, readFileSync } from 'fs';
 import path from 'path';
-import { sync as globSync, hasMagic as globHasMagic } from 'glob';
 
-import { SourceMap } from './source_map.js';
 import JSONFormatter from './formatters/json_formatter.js';
 import TextFormatter from './formatters/text_formatter.js';
 import CompactFormatter from './formatters/compact_formatter.js';
+import expandPaths from './util/expandPaths.js';
 
 export class Configuration {
   /*
     options:
-      - configDirectory: path to begin searching for config files
       - format: (required) `text` | `json`
       - rules: [string array] whitelist rules
-      - schemaPaths: [string array] file(s) to read schema from
       - customRulePaths: [string array] path to additional custom rules to be loaded
-      - stdin: [boolean] pass schema via stdin?
       - commentDescriptions: [boolean] use old way of defining descriptions in GraphQL SDL
       - oldImplementsSyntax: [boolean] use old way of defining implemented interfaces in GraphQL SDL
   */
-  constructor(options = {}, stdinFd = null) {
+  constructor(schema, options = {}) {
     const defaultOptions = {
       format: 'text',
       customRulePaths: [],
       commentDescriptions: false,
       oldImplementsSyntax: false,
     };
-    const configOptions = loadOptionsFromConfig(options.configDirectory);
 
-    // TODO Get configs from .graphqlconfig file
-
-    this.options = Object.assign({}, defaultOptions, configOptions, options);
-    this.stdinFd = stdinFd;
-    this.schema = null;
-    this.sourceMap = null;
+    this.schema = schema;
+    this.options = { ...defaultOptions, ...options };
     this.rules = null;
     this.builtInRulePaths = path.join(__dirname, 'rules/*.js');
     this.rulePaths = this.options.customRulePaths.concat(this.builtInRulePaths);
@@ -49,39 +38,11 @@ export class Configuration {
   }
 
   getSchema() {
-    if (this.schema) {
-      return this.schema;
-    }
-
-    if (this.options.stdin) {
-      this.schema = getSchemaFromFileDescriptor(this.stdinFd);
-      if (this.schema == null) {
-        return null;
-      }
-
-      this.sourceMap = new SourceMap({ stdin: this.schema });
-    } else if (this.options.schemaPaths) {
-      let schemaPaths = this.options.schemaPaths;
-
-      const expandedPaths = expandPaths(schemaPaths);
-      const segments = getSchemaSegmentsFromFiles(expandedPaths);
-
-      if (Object.keys(segments).length === 0) {
-        return null;
-      }
-      this.sourceMap = new SourceMap(segments);
-      this.schema = this.sourceMap.getCombinedSource();
-    }
-
-    return this.schema;
+    return this.schema.definition;
   }
 
   getSchemaSourceMap() {
-    if (!this.sourceMap) {
-      this.getSchema();
-    }
-
-    return this.sourceMap;
+    return this.schema.sourceMap;
   }
 
   getFormatter() {
@@ -204,108 +165,6 @@ export class Configuration {
 
     return issues;
   }
-}
-
-function loadOptionsFromConfig(configDirectory) {
-  const searchPath = configDirectory || './';
-
-  const cosmic = cosmiconfig('graphql-schema-linter', {
-    cache: false,
-  }).searchSync(searchPath);
-
-  if (cosmic) {
-    let schemaPaths = [];
-    let customRulePaths = [];
-
-    // If schemaPaths come from cosmic, we resolve the given paths relative to the searchPath.
-
-    if (cosmic.config.schemaPaths) {
-      schemaPaths = cosmic.config.schemaPaths.map(schemaPath =>
-        path.resolve(searchPath, schemaPath)
-      );
-    }
-
-    // If customRulePaths come from cosmic, we resolve the given paths relative to the searchPath.
-    if (cosmic.config.customRulePaths) {
-      customRulePaths = cosmic.config.customRulePaths.map(schemaPath =>
-        path.resolve(searchPath, schemaPath)
-      );
-    }
-
-    return {
-      rules: cosmic.config.rules,
-      customRulePaths: customRulePaths || [],
-      schemaPaths: schemaPaths,
-    };
-  } else {
-    return {};
-  }
-}
-
-function getSchemaFromFileDescriptor(fd) {
-  let b = new Buffer(1024);
-  let data = '';
-
-  while (true) {
-    let n;
-    try {
-      n = readSync(fd, b, 0, b.length);
-    } catch (e) {
-      if (e.code == 'EAGAIN') {
-        console.error(
-          'The --stdin option was specified, but not schema was provided via stdin.'
-        );
-      } else {
-        console.error(e.message);
-      }
-      return null;
-    }
-
-    if (!n) {
-      break;
-    }
-    data += b.toString('utf8', 0, n);
-  }
-
-  return data;
-}
-
-function getSchemaFromFile(path) {
-  try {
-    return readFileSync(path).toString('utf8');
-  } catch (e) {
-    console.error(e.message);
-  }
-  return null;
-}
-
-function getSchemaSegmentsFromFiles(paths) {
-  return paths.reduce((segments, path) => {
-    let schema = getSchemaFromFile(path);
-    if (schema) {
-      segments[path] = schema;
-    }
-    return segments;
-  }, {});
-}
-
-function expandPaths(pathOrPattern) {
-  return (
-    pathOrPattern
-      .map(path => {
-        if (globHasMagic(path)) {
-          return globSync(path);
-        } else {
-          return path;
-        }
-      })
-      .reduce((a, b) => {
-        return a.concat(b);
-      }, [])
-      // Resolve paths to absolute paths so that including the same file
-      // multiple times is not treated as different files
-      .map(p => path.resolve(p))
-  );
 }
 
 function toUpperCamelCase(string) {

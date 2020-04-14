@@ -2,10 +2,12 @@ import { validateSchemaDefinition } from './validator.js';
 import { version } from '../package.json';
 import { Command } from 'commander';
 import { Configuration } from './configuration.js';
+import { loadSchema } from './schema.js';
+import { loadOptionsFromConfigDir } from './options.js';
 import figures from './figures';
 import chalk from 'chalk';
 
-export function run(stdout, stdin, stderr, argv) {
+export async function run(stdout, stdin, stderr, argv) {
   const commander = new Command()
     .usage('[options] [schema.graphql ...]')
     .option(
@@ -60,10 +62,22 @@ export function run(stdout, stdin, stderr, argv) {
     );
   }
 
-  const configuration = new Configuration(
-    getOptionsFromCommander(commander),
-    stdin.fd
+  // TODO Get configs from .graphqlconfig file
+
+  const optionsFromCommandLine = getOptionsFromCommander(commander);
+  const optionsFromConfig = loadOptionsFromConfigDir(
+    optionsFromCommandLine.configDirectory
   );
+  const options = { ...optionsFromConfig, ...optionsFromCommandLine };
+
+  const schema = await loadSchema(options, stdin);
+
+  if (schema === null) {
+    console.error('No valid schema input.');
+    return 2;
+  }
+
+  const configuration = new Configuration(schema, options);
 
   const issues = configuration.validate();
 
@@ -83,17 +97,15 @@ export function run(stdout, stdin, stderr, argv) {
     return 2;
   }
 
-  const schema = configuration.getSchema();
-  if (schema == null) {
-    console.error('No valid schema input.');
-    return 2;
-  }
   const formatter = configuration.getFormatter();
   const rules = configuration.getRules();
-  const schemaSourceMap = configuration.getSchemaSourceMap();
 
-  const errors = validateSchemaDefinition(schema, rules, configuration);
-  const groupedErrors = groupErrorsBySchemaFilePath(errors, schemaSourceMap);
+  const errors = validateSchemaDefinition(
+    schema.definition,
+    rules,
+    configuration
+  );
+  const groupedErrors = groupErrorsBySchemaFilePath(errors, schema.sourceMap);
 
   stdout.write(formatter(groupedErrors));
 
