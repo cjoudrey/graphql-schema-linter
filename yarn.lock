@@ -1996,12 +1996,10 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.4:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
   integrity sha1-Dovf5NHduIVNZOBOp8AOKgJuVlg=
 
-graphql@^14.0.0:
-  version "14.1.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.1.0.tgz#f38eb11bf9b4678a9a7741de795a3d25d46a7490"
-  integrity sha512-1dFYdyjS3A2BmoYXXwmpNIr2SoSpcPkF6gXB4UqZh2mWKBLfyUaQbk2POigqrKvlCimphJoPgkb0SFxDgJwSXQ==
-  dependencies:
-    iterall "^1.2.2"
+graphql@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.0.0.tgz#042a5eb5e2506a2e2111ce41eb446a8e570b8be9"
+  integrity sha512-ZyVO1xIF9F+4cxfkdhOJINM+51B06Friuv4M66W7HzUOeFd+vNzUn4vtswYINPi6sysjf1M2Ri/rwZALqgwbaQ==
 
 growl@1.10.5:
   version "1.10.5"
@@ -2497,11 +2495,6 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
-
-iterall@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.2.2.tgz#92d70deb8028e0c39ff3164fdbf4d8b088130cd7"
-  integrity sha512-yynBb1g+RFUPY64fTrFv7nsjRrENBQJaX2UL+2Szc9REFrSNm1rpSXHGzhmAy7a9uv3vlvgBlXnf9RqmPH1/DA==
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
