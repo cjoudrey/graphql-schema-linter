@@ -10,5 +10,6 @@ script:
   - node lib/cli.js --version
   - node lib/cli.js test/fixtures/valid.graphql
   - cat test/fixtures/valid.graphql | node lib/cli.js --stdin
+  - yarn prettier --check src/**/*.js
 notifications:
   email: false
