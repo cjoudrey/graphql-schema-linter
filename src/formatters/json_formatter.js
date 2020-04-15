@@ -3,10 +3,10 @@ export default function JSONFormatter(errorsGroupedByFile) {
 
   var errors = [];
 
-  files.forEach(file => {
+  files.forEach((file) => {
     Array.prototype.push.apply(
       errors,
-      errorsGroupedByFile[file].map(error => {
+      errorsGroupedByFile[file].map((error) => {
         return {
           message: error.message,
           location: {

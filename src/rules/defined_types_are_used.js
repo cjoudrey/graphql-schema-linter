@@ -5,7 +5,7 @@ export function DefinedTypesAreUsed(context) {
   var definedTypes = [];
   var referencedTypes = new Set();
 
-  var recordDefinedType = node => {
+  var recordDefinedType = (node) => {
     if (ignoredTypes.indexOf(node.name.value) == -1) {
       definedTypes.push(node);
     }
@@ -24,15 +24,15 @@ export function DefinedTypesAreUsed(context) {
     },
 
     Document: {
-      leave: node => {
-        definedTypes.forEach(node => {
+      leave: (node) => {
+        definedTypes.forEach((node) => {
           if (node.kind == 'ObjectTypeDefinition') {
-            let implementedInterfaces = node.interfaces.map(node => {
+            let implementedInterfaces = node.interfaces.map((node) => {
               return node.name.value;
             });
 
             let anyReferencedInterfaces = implementedInterfaces.some(
-              interfaceName => {
+              (interfaceName) => {
                 return referencedTypes.has(interfaceName);
               }
             );

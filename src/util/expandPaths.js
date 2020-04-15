@@ -4,7 +4,7 @@ import { sync as globSync, hasMagic as globHasMagic } from 'glob';
 export default function expandPaths(pathOrPattern) {
   return (
     pathOrPattern
-      .map(path => {
+      .map((path) => {
         if (globHasMagic(path)) {
           return globSync(path);
         } else {
@@ -16,6 +16,6 @@ export default function expandPaths(pathOrPattern) {
       }, [])
       // Resolve paths to absolute paths so that including the same file
       // multiple times is not treated as different files
-      .map(p => path.resolve(p))
+      .map((p) => path.resolve(p))
   );
 }

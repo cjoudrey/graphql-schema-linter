@@ -19,18 +19,18 @@ export function RelayConnectionArgumentsSpec(context) {
         return;
       }
 
-      const firstArgument = node.arguments.find(argument => {
+      const firstArgument = node.arguments.find((argument) => {
         return argument.name.value == 'first';
       });
-      const afterArgument = node.arguments.find(argument => {
+      const afterArgument = node.arguments.find((argument) => {
         return argument.name.value == 'after';
       });
       const hasForwardPagination = firstArgument && afterArgument;
 
-      const lastArgument = node.arguments.find(argument => {
+      const lastArgument = node.arguments.find((argument) => {
         return argument.name.value == 'last';
       });
-      const beforeArgument = node.arguments.find(argument => {
+      const beforeArgument = node.arguments.find((argument) => {
         return argument.name.value == 'before';
       });
       const hasBackwardPagination = lastArgument && beforeArgument;

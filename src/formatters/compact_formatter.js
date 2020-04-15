@@ -5,7 +5,7 @@ export default function CompactFormatter(errorsGroupedByFile) {
   const files = Object.keys(errorsGroupedByFile);
 
   const errorsText = files
-    .map(file => {
+    .map((file) => {
       return generateErrorsForFile(file, errorsGroupedByFile[file]);
     })
     .join('\n');
@@ -13,7 +13,7 @@ export default function CompactFormatter(errorsGroupedByFile) {
 }
 
 function generateErrorsForFile(file, errors) {
-  const formattedErrors = errors.map(error => {
+  const formattedErrors = errors.map((error) => {
     const location = error.locations[0];
     return `${file}:${location.line}:${location.column} ${error.message} (${error.ruleName})`;
   });

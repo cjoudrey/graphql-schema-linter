@@ -4,7 +4,7 @@ import { print } from 'graphql/language/printer';
 export function RelayPageInfoSpec(context) {
   return {
     Document: {
-      leave: function(node) {
+      leave: function (node) {
         const pageInfoType = context.getSchema().getType('PageInfo');
 
         if (!pageInfoType) {

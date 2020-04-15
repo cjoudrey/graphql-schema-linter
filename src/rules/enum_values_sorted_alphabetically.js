@@ -4,7 +4,7 @@ import listIsAlphabetical from '../util/listIsAlphabetical';
 export function EnumValuesSortedAlphabetically(context) {
   return {
     EnumTypeDefinition(node, key, parent, path, ancestors) {
-      const enumValues = node.values.map(val => {
+      const enumValues = node.values.map((val) => {
         return val.name.value;
       });
 

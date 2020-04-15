@@ -52,7 +52,7 @@ export function DeprecationsHaveAReason(context) {
 }
 
 function getDeprecatedDirective(node) {
-  const deprecatedDirective = node.directives.find(directive => {
+  const deprecatedDirective = node.directives.find((directive) => {
     if (directive.name.value != 'deprecated') {
       return false;
     }
@@ -64,7 +64,7 @@ function getDeprecatedDirective(node) {
 }
 
 function getReasonArgument(deprecatedDirective) {
-  const reasonArgument = deprecatedDirective.arguments.find(arg => {
+  const reasonArgument = deprecatedDirective.arguments.find((arg) => {
     if (arg.name.value == 'reason') {
       return true;
     }

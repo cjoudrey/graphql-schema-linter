@@ -6,7 +6,7 @@ export default function TextFormatter(errorsGroupedByFile) {
   const files = Object.keys(errorsGroupedByFile);
 
   const errorsText = files
-    .map(file => {
+    .map((file) => {
       return generateErrorsForFile(file, errorsGroupedByFile[file]);
     })
     .join('\n\n');
@@ -17,7 +17,7 @@ export default function TextFormatter(errorsGroupedByFile) {
 }
 
 function generateErrorsForFile(file, errors) {
-  const formattedErrors = errors.map(error => {
+  const formattedErrors = errors.map((error) => {
     const location = error.locations[0];
 
     return {

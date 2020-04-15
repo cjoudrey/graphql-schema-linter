@@ -4,7 +4,7 @@ import listIsAlphabetical from '../util/listIsAlphabetical';
 export function InputObjectFieldsSortedAlphabetically(context) {
   return {
     InputObjectTypeDefinition(node) {
-      const fieldList = (node.fields || []).map(field => field.name.value);
+      const fieldList = (node.fields || []).map((field) => field.name.value);
       const { isSorted, sortedList } = listIsAlphabetical(fieldList);
 
       if (!isSorted) {
