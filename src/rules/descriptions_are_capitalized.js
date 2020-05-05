@@ -1,16 +1,16 @@
-import { getDescription } from 'graphql/utilities/buildASTSchema';
+import { getDescription } from 'graphql/utilities/extendSchema';
 import { ValidationError } from '../validation_error';
 
 export function DescriptionsAreCapitalized(configuration, context) {
   return {
     FieldDefinition(node, key, parent, path, ancestors) {
+      const description = getDescription(node, {
+        commentDescriptions: configuration.getCommentDescriptions(),
+      });
+
       // Rule should pass if there's an empty/missing string description. If empty
       // strings aren't wanted, the `*_have_descriptions` rules can be used.
-      if (!node.description || node.description.value == '') {
-        return;
-      }
-
-      const description = node.description.value;
+      if (typeof description !== 'string' || description.length === 0) return;
 
       // It's possible there could be some markdown characters that do not
       // pass this test. If we discover some examples of this, we can improve.

@@ -7,14 +7,14 @@ import { stripAnsi } from './strip_ansi.js';
 describe('Runner', () => {
   var stdout;
   var mockStdout = {
-    write: (text) => {
+    write: text => {
       stdout = stdout + text;
     },
   };
 
   var stderr;
   var mockStderr = {
-    write: (text) => {
+    write: text => {
       stderr = stderr + text;
     },
   };
@@ -105,6 +105,29 @@ describe('Runner', () => {
 
       const exitCode = await run(mockStdout, mockStdin, mockStderr, argv);
       assert.equal(0, exitCode);
+    });
+
+    it('allows setting descriptions using comments in GraphQL SDL', async () => {
+      const argv = [
+        'node',
+        'lib/cli.js',
+        '--format',
+        'text',
+        '--comment-descriptions',
+        '--rules',
+        'fields-have-descriptions',
+        `${__dirname}/fixtures/schema.comment-descriptions.graphql`,
+      ];
+
+      await run(mockStdout, mockStdin, mockStderr, argv);
+
+      const expected =
+        `${__dirname}/fixtures/schema.comment-descriptions.graphql\n` +
+        '3:3 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
+        '\n' +
+        '✖ 1 error detected\n';
+
+      assert.equal(expected, stripAnsi(stdout));
     });
 
     it('allows using old `implements` syntax in GraphQL SDL', async () => {

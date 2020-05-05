@@ -30,4 +30,17 @@ describe('FieldsHaveDescriptions rule', () => {
       ]
     );
   });
+
+  it('gets descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      FieldsHaveDescriptions,
+      `
+      type A {
+        "Description"
+        withDescription: String
+      }
+    `,
+      { commentDescriptions: true }
+    );
+  });
 });

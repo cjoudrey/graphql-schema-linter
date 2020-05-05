@@ -41,4 +41,17 @@ describe('InputObjectValuesHaveDescriptions rule', () => {
     `
     );
   });
+
+  it('gets descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      InputObjectValuesHaveDescriptions,
+      `
+      input F {
+        # F
+        f: String
+      }
+    `,
+      { commentDescriptions: true }
+    );
+  });
 });

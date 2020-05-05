@@ -28,6 +28,29 @@ describe('DescriptionsAreCapitalized rule', () => {
     );
   });
 
+  it('detects lowercase field descriptions with commentDescriptions option', () => {
+    expectFailsRuleWithConfiguration(
+      DescriptionsAreCapitalized,
+      `
+      type Widget {
+        # widget name
+        name: String!
+
+        # Valid description
+        other: Int
+      }
+    `,
+      { commentDescriptions: true },
+      [
+        {
+          message:
+            'The description for field `Widget.name` should be capitalized.',
+          locations: [{ line: 4, column: 9 }],
+        },
+      ]
+    );
+  });
+
   it('does not err on an empty description', () => {
     expectPassesRule(
       DescriptionsAreCapitalized,

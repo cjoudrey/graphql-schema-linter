@@ -43,13 +43,13 @@ describe('Configuration', () => {
       assert.equal(rules.length, 2);
       assert.equal(
         rules[0],
-        configuration.getAllRules().find((rule) => {
+        configuration.getAllRules().find(rule => {
           return rule.name == 'FieldsHaveDescriptions';
         })
       );
       assert.equal(
         rules[1],
-        configuration.getAllRules().find((rule) => {
+        configuration.getAllRules().find(rule => {
           return rule.name == 'TypesHaveDescriptions';
         })
       );
@@ -65,7 +65,7 @@ describe('Configuration', () => {
       assert.equal(rules.length, configuration.getAllRules().length - 2);
       assert.equal(
         0,
-        rules.filter((rule) => {
+        rules.filter(rule => {
           return (
             rule.name == 'FieldsHaveDescriptions' ||
             rule.name == 'TypesHaveDescriptions'
@@ -84,13 +84,13 @@ describe('Configuration', () => {
       assert.equal(rules.length, 2);
       assert.equal(
         rules[0],
-        configuration.getAllRules().find((rule) => {
+        configuration.getAllRules().find(rule => {
           return rule.name == 'FieldsHaveDescriptions';
         })
       );
       assert.equal(
         rules[1],
-        configuration.getAllRules().find((rule) => {
+        configuration.getAllRules().find(rule => {
           return rule.name == 'TypesHaveDescriptions';
         })
       );
@@ -106,7 +106,7 @@ describe('Configuration', () => {
       assert.equal(rules.length, configuration.getAllRules().length - 2);
       assert.equal(
         0,
-        rules.filter((rule) => {
+        rules.filter(rule => {
           return (
             rule.name == 'FieldsHaveDescriptions' ||
             rule.name == 'TypesHaveDescriptions'
@@ -127,7 +127,7 @@ describe('Configuration', () => {
 
       assert.equal(
         2,
-        rules.filter((rule) => {
+        rules.filter(rule => {
           return (
             rule.name == 'EnumNameCannotContainEnum' ||
             rule.name == 'TypeNameCannotContainType'
@@ -145,7 +145,7 @@ describe('Configuration', () => {
 
       assert.equal(
         4,
-        rules.filter((rule) => {
+        rules.filter(rule => {
           return (
             rule.name == 'SomeRule' ||
             rule.name == 'AnotherRule' ||
@@ -167,7 +167,7 @@ describe('Configuration', () => {
 
       assert.equal(
         1,
-        rules.filter((rule) => {
+        rules.filter(rule => {
           return rule.name == 'TypeNameCannotContainType';
         }).length
       );
@@ -235,6 +235,20 @@ describe('Configuration', () => {
       const issues = configuration.validate();
 
       assert.equal(issues.length, 2);
+    });
+  });
+
+  describe('getCommentDescriptions', () => {
+    it('defaults to false', () => {
+      const configuration = new Configuration(emptySchema, {});
+      assert.equal(configuration.getCommentDescriptions(), false);
+    });
+
+    it('returns specified value', () => {
+      const configuration = new Configuration(emptySchema, {
+        commentDescriptions: true,
+      });
+      assert.equal(configuration.getCommentDescriptions(), true);
     });
   });
 

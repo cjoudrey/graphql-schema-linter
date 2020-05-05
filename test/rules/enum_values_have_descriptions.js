@@ -31,4 +31,17 @@ describe('EnumValuesHaveDescriptions rule', () => {
       ]
     );
   });
+
+  it('get descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      EnumValuesHaveDescriptions,
+      `
+      enum Status {
+        # Hidden
+        HIDDEN
+      }
+    `,
+      { commentDescriptions: true }
+    );
+  });
 });
