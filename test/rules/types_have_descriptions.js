@@ -161,4 +161,38 @@ describe('TypesHaveDescriptions rule', () => {
     `
     );
   });
+
+  it('gets descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      TypesHaveDescriptions,
+      `
+      # A
+      scalar A
+
+      # B
+      type B {
+        b: String
+      }
+
+      # C
+      interface C {
+        c: String
+      }
+
+      # D
+      union D = B
+
+      # E
+      enum E {
+        A
+      }
+
+      # F
+      input F {
+        f: String
+      }
+    `,
+      { commentDescriptions: true }
+    );
+  });
 });

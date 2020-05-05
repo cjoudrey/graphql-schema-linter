@@ -49,4 +49,22 @@ describe('ArgumentsHaveDescriptions rule', () => {
       ]
     );
   });
+
+  it('gets descriptions correctly with commentDescriptions option', () => {
+    expectPassesRuleWithConfiguration(
+      ArgumentsHaveDescriptions,
+      `
+      type Box {
+        widget(
+          "Widget ID"
+          id: Int
+
+          # Widget type
+          type: String
+        ): String!
+      }
+    `,
+      { commentDescriptions: true }
+    );
+  });
 });
