@@ -1,4 +1,4 @@
-import { getDescription } from 'graphql/utilities/buildASTSchema';
+import { getDescription } from 'graphql/utilities/extendSchema';
 import { ValidationError } from '../validation_error';
 
 export function FieldsHaveDescriptions(configuration, context) {
