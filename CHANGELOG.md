@@ -8,6 +8,13 @@
 
 ### Bug fixes
 
+## 0.3.0 (May 4th, 2020)
+
+### Breaking changes
+
+- Support for comment descriptions has been dropped in favor of descriptions defined using strings. [#229](https://github.com/cjoudrey/graphql-schema-linter/pull/229)
+- Bumped GraphQL dependency to v15.
+
 ## 0.2.6 (April 14th, 2020)
 
 ### Bug fixes
