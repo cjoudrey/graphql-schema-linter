@@ -31,10 +31,6 @@ export async function run(stdout, stdin, stderr, argv) {
       'path to additional custom rules to be loaded. Example: rules/*.js'
     )
     .option(
-      '--comment-descriptions',
-      'use old way of defining descriptions in GraphQL SDL'
-    )
-    .option(
       '--old-implements-syntax',
       'use old way of defining implemented interfaces in GraphQL SDL'
     )
@@ -81,7 +77,7 @@ export async function run(stdout, stdin, stderr, argv) {
 
   const issues = configuration.validate();
 
-  issues.map(issue => {
+  issues.map((issue) => {
     var prefix;
     if (issue.type == 'error') {
       prefix = `${chalk.red(figures.cross)} Error`;
@@ -93,7 +89,7 @@ export async function run(stdout, stdin, stderr, argv) {
     );
   });
 
-  if (issues.some(issue => issue.type == 'error')) {
+  if (issues.some((issue) => issue.type == 'error')) {
     return 2;
   }
 
@@ -154,10 +150,6 @@ function getOptionsFromCommander(commander) {
 
   if (commander.customRulePaths) {
     options.customRulePaths = commander.customRulePaths.split(',');
-  }
-
-  if (commander.commentDescriptions) {
-    options.commentDescriptions = commander.commentDescriptions;
   }
 
   if (commander.oldImplementsSyntax) {

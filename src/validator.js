@@ -33,7 +33,7 @@ export function validateSchemaDefinition(
   let schemaErrors = validateSDL(ast);
   if (schemaErrors.length > 0) {
     return sortErrors(
-      schemaErrors.map(error => {
+      schemaErrors.map((error) => {
         return new ValidationError(
           'invalid-graphql-schema',
           error.message,
@@ -44,7 +44,6 @@ export function validateSchemaDefinition(
   }
 
   const schema = buildASTSchema(ast, {
-    commentDescriptions: configuration.getCommentDescriptions(),
     assumeValidSDL: true,
     assumeValid: true,
   });
@@ -53,7 +52,7 @@ export function validateSchemaDefinition(
   schemaErrors = validateSchema(schema);
   if (schemaErrors.length > 0) {
     return sortErrors(
-      schemaErrors.map(error => {
+      schemaErrors.map((error) => {
         return new ValidationError(
           'invalid-graphql-schema',
           error.message,
@@ -63,7 +62,7 @@ export function validateSchemaDefinition(
     );
   }
 
-  const rulesWithConfiguration = rules.map(rule => {
+  const rulesWithConfiguration = rules.map((rule) => {
     return ruleWithConfiguration(rule, configuration);
   });
 
@@ -81,7 +80,7 @@ function sortErrors(errors) {
 
 function ruleWithConfiguration(rule, configuration) {
   if (rule.length == 2) {
-    return function(context) {
+    return function (context) {
       return rule(configuration, context);
     };
   } else {
