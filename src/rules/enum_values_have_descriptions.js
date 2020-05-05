@@ -4,11 +4,7 @@ import { ValidationError } from '../validation_error';
 export function EnumValuesHaveDescriptions(configuration, context) {
   return {
     EnumValueDefinition(node, key, parent, path, ancestors) {
-      if (
-        getDescription(node, {
-          commentDescriptions: configuration.getCommentDescriptions(),
-        })
-      ) {
+      if (node.description && node.description.value != '') {
         return;
       }
 
