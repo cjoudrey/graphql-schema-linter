@@ -6,6 +6,7 @@ import { validateSDL } from 'graphql/validation/validate';
 import { validateSchema } from 'graphql/type/validate';
 import { extractInlineConfigs } from './inline_configuration';
 import { ValidationError } from './validation_error';
+import { command } from 'commander';
 
 export function validateSchemaDefinition(inputSchema, rules, configuration) {
   let ast;
@@ -125,7 +126,11 @@ function applyInlineConfig(errors, schemaSourceMap, inlineConfigs) {
 
       // Otherwise, last command wins (expected order by line)
       if (config.line < errorLine) {
-        shouldApplyRule = config.command === 'enable';
+        if (config.command === 'enable') {
+          shouldApplyRule = true;
+        } else if (config.command === 'disable') {
+          shouldApplyRule = false;
+        }
       }
     }
 

@@ -12,6 +12,19 @@ describe('loadSchema', () => {
   author: User!
 }
 
+# lint-disable fields-have-descriptions
+extend type Query {
+  comments: [Comment!]!
+}
+# lint-enable fields-have-descriptions
+
+type Post {
+  id: ID!
+  title: String! # lint-disable-line fields-have-descriptions
+  description: String!
+  author: User!
+}
+
 type Query {
   something: String!
 }

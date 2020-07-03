@@ -18,7 +18,7 @@ describe('validateSchemaDefinition', () => {
       return error.locations[0].line;
     });
 
-    assert.equal(7, errors.length);
+    assert.equal(10, errors.length);
 
     assert.deepEqual(errorLineNumbers.sort(), errorLineNumbers);
   });
