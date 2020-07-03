@@ -8,6 +8,7 @@ require('./runner');
 require('./schema');
 require('./source_map');
 require('./validator');
+require('./inline_configuration');
 require('./rules/arguments_have_descriptions');
 require('./rules/defined_types_are_used');
 require('./rules/deprecations_have_a_reason');

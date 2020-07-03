@@ -81,7 +81,7 @@ export async function run(stdout, stdin, stderr, argv) {
 
   const issues = configuration.validate();
 
-  issues.map(issue => {
+  issues.map((issue) => {
     var prefix;
     if (issue.type == 'error') {
       prefix = `${chalk.red(figures.cross)} Error`;
@@ -93,18 +93,14 @@ export async function run(stdout, stdin, stderr, argv) {
     );
   });
 
-  if (issues.some(issue => issue.type == 'error')) {
+  if (issues.some((issue) => issue.type == 'error')) {
     return 2;
   }
 
   const formatter = configuration.getFormatter();
   const rules = configuration.getRules();
 
-  const errors = validateSchemaDefinition(
-    schema.definition,
-    rules,
-    configuration
-  );
+  const errors = validateSchemaDefinition(schema, rules, configuration);
   const groupedErrors = groupErrorsBySchemaFilePath(errors, schema.sourceMap);
 
   stdout.write(formatter(groupedErrors));

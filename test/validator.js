@@ -13,12 +13,8 @@ describe('validateSchemaDefinition', () => {
 
     const rules = [FieldsHaveDescriptions, DummyValidator];
 
-    const errors = validateSchemaDefinition(
-      schema.definition,
-      rules,
-      configuration
-    );
-    const errorLineNumbers = errors.map(error => {
+    const errors = validateSchemaDefinition(schema, rules, configuration);
+    const errorLineNumbers = errors.map((error) => {
       return error.locations[0].line;
     });
 
@@ -32,11 +28,7 @@ describe('validateSchemaDefinition', () => {
     const schema = await loadSchema({ schemaPaths: [schemaPath] });
     const configuration = new Configuration(schema);
 
-    const errors = validateSchemaDefinition(
-      schema.definition,
-      [],
-      configuration
-    );
+    const errors = validateSchemaDefinition(schema, [], configuration);
 
     assert.equal(1, errors.length);
   });
@@ -46,11 +38,7 @@ describe('validateSchemaDefinition', () => {
     const schema = await loadSchema({ schemaPaths: [schemaPath] });
     const configuration = new Configuration(schema);
 
-    const errors = validateSchemaDefinition(
-      schema.definition,
-      [],
-      configuration
-    );
+    const errors = validateSchemaDefinition(schema, [], configuration);
 
     assert.equal(1, errors.length);
   });
@@ -60,11 +48,7 @@ describe('validateSchemaDefinition', () => {
     const schema = await loadSchema({ schemaPaths: [schemaPath] });
     const configuration = new Configuration(schema);
 
-    const errors = validateSchemaDefinition(
-      schema.definition,
-      [],
-      configuration
-    );
+    const errors = validateSchemaDefinition(schema, [], configuration);
 
     assert.equal(2, errors.length);
 
@@ -80,11 +64,7 @@ describe('validateSchemaDefinition', () => {
     const schema = await loadSchema({ schemaPaths: [schemaPath] });
     const configuration = new Configuration(schema);
 
-    const errors = validateSchemaDefinition(
-      schema.definition,
-      [],
-      configuration
-    );
+    const errors = validateSchemaDefinition(schema, [], configuration);
 
     assert.equal(1, errors.length);
 
@@ -106,13 +86,13 @@ describe('validateSchemaDefinition', () => {
       return {};
     };
 
-    const ruleWithoutConfiguration = context => {
+    const ruleWithoutConfiguration = (context) => {
       assert.equal('ValidationContext', context.constructor.name);
       return {};
     };
 
     const errors = validateSchemaDefinition(
-      schema.definition,
+      schema,
       [ruleWithConfiguration, ruleWithoutConfiguration],
       configuration
     );
@@ -124,7 +104,7 @@ describe('validateSchemaDefinition', () => {
 function DummyValidator(context) {
   return {
     Document: {
-      leave: node => {
+      leave: (node) => {
         context.reportError(new GraphQLError('Dummy message', [node]));
       },
     },

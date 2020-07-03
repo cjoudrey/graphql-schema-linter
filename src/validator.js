@@ -4,13 +4,10 @@ import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { GraphQLError } from 'graphql/error';
 import { validateSDL } from 'graphql/validation/validate';
 import { validateSchema } from 'graphql/type/validate';
+import { extractInlineConfigs } from './inline_configuration';
 import { ValidationError } from './validation_error';
 
-export function validateSchemaDefinition(
-  schemaDefinition,
-  rules,
-  configuration
-) {
+export function validateSchemaDefinition(inputSchema, rules, configuration) {
   let ast;
 
   let parseOptions = {};
@@ -19,7 +16,7 @@ export function validateSchemaDefinition(
   }
 
   try {
-    ast = parse(schemaDefinition, parseOptions);
+    ast = parse(inputSchema.definition, parseOptions);
   } catch (e) {
     if (e instanceof GraphQLError) {
       e.ruleName = 'graphql-syntax-error';
@@ -33,7 +30,7 @@ export function validateSchemaDefinition(
   let schemaErrors = validateSDL(ast);
   if (schemaErrors.length > 0) {
     return sortErrors(
-      schemaErrors.map(error => {
+      schemaErrors.map((error) => {
         return new ValidationError(
           'invalid-graphql-schema',
           error.message,
@@ -53,7 +50,7 @@ export function validateSchemaDefinition(
   schemaErrors = validateSchema(schema);
   if (schemaErrors.length > 0) {
     return sortErrors(
-      schemaErrors.map(error => {
+      schemaErrors.map((error) => {
         return new ValidationError(
           'invalid-graphql-schema',
           error.message,
@@ -63,7 +60,7 @@ export function validateSchemaDefinition(
     );
   }
 
-  const rulesWithConfiguration = rules.map(rule => {
+  const rulesWithConfiguration = rules.map((rule) => {
     return ruleWithConfiguration(rule, configuration);
   });
 
@@ -81,7 +78,7 @@ function sortErrors(errors) {
 
 function ruleWithConfiguration(rule, configuration) {
   if (rule.length == 2) {
-    return function(context) {
+    return function (context) {
       return rule(configuration, context);
     };
   } else {
