@@ -83,6 +83,16 @@ function sortErrors(errors) {
   });
 }
 
+function ruleWithConfiguration(rule, configuration) {
+  if (rule.length == 2) {
+    return function (context) {
+      return rule(configuration, context);
+    };
+  } else {
+    return rule;
+  }
+}
+
 function applyInlineConfig(errors, schemaSourceMap, inlineConfigs) {
   if (inlineConfigs.length === 0) {
     return errors;
@@ -121,14 +131,4 @@ function applyInlineConfig(errors, schemaSourceMap, inlineConfigs) {
 
     return shouldApplyRule;
   });
-}
-
-function ruleWithConfiguration(rule, configuration) {
-  if (rule.length == 2) {
-    return function (context) {
-      return rule(configuration, context);
-    };
-  } else {
-    return rule;
-  }
 }
