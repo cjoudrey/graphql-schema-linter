@@ -6,7 +6,6 @@ import { validateSDL } from 'graphql/validation/validate';
 import { validateSchema } from 'graphql/type/validate';
 import { extractInlineConfigs } from './inline_configuration';
 import { ValidationError } from './validation_error';
-import { command } from 'commander';
 
 export function validateSchemaDefinition(inputSchema, rules, configuration) {
   let ast;
