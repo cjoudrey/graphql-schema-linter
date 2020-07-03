@@ -67,12 +67,59 @@ export function validateSchemaDefinition(inputSchema, rules, configuration) {
   const errors = validate(schema, ast, rulesWithConfiguration);
   const sortedErrors = sortErrors(errors);
 
-  return sortedErrors;
+  const inlineConfigs = extractInlineConfigs(ast);
+  const filteredErrors = applyInlineConfig(
+    sortedErrors,
+    inputSchema.sourceMap,
+    inlineConfigs
+  );
+
+  return filteredErrors;
 }
 
 function sortErrors(errors) {
   return errors.sort((a, b) => {
     return a.locations[0].line - b.locations[0].line;
+  });
+}
+
+function applyInlineConfig(errors, schemaSourceMap, inlineConfigs) {
+  if (inlineConfigs.length === 0) {
+    return errors;
+  }
+
+  return errors.filter((error) => {
+    let shouldApplyRule = true;
+    const errorLine = error.locations[0].line;
+    const errorFilePath = schemaSourceMap.getOriginalPathForLine(errorLine);
+
+    for (const config of inlineConfigs) {
+      // Skip inline configs that don't modify this error's rule
+      if (!config.rules.includes(error.ruleName)) {
+        continue;
+      }
+
+      // Skip inline configs that aren't in the same source file as the errored line
+      const configFilePath = schemaSourceMap.getOriginalPathForLine(
+        config.line
+      );
+      if (configFilePath !== errorFilePath) {
+        continue;
+      }
+
+      // When 'disable-line': disable the rule if the error line and the command line match
+      if (config.command === 'disable-line' && config.line === errorLine) {
+        shouldApplyRule = false;
+        break;
+      }
+
+      // Otherwise, last command wins (expected order by line)
+      if (config.line < errorLine) {
+        shouldApplyRule = config.command === 'enable';
+      }
+    }
+
+    return shouldApplyRule;
   });
 }
 
