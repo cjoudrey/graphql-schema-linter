@@ -12,7 +12,7 @@
 
 ### New features
 
-- Add support for enabling / disabling rules for parts of the GraphQL schema using an inline rule override. See section in README.md for usage information. [#237](https://github.com/cjoudrey/graphql-schema-linter/pull/237) (Thanks @mshwery)
+- Add support for enabling / disabling rules for parts of the GraphQL schema using an inline rule override. See [usage information in README.md](https://github.com/cjoudrey/graphql-schema-linter#inline-rule-overrides). [#237](https://github.com/cjoudrey/graphql-schema-linter/pull/237) (Thanks @mshwery)
 
 ## 0.4.0 (May 5th, 2020)
 
