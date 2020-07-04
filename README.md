@@ -211,6 +211,8 @@ type Mutation {
   Field description
   """
   field: String
+
+  field2: String # lint-disable-line fields-have-descriptions
 }
 ```
 
