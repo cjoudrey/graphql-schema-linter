@@ -30,7 +30,7 @@ export function expectFailsRuleWithConfiguration(
 
   assert.deepEqual(
     errors,
-    expectedErrors.map(expectedError => {
+    expectedErrors.map((expectedError) => {
       return Object.assign(expectedError, {
         ruleName: rule.name
           .replace(/([A-Z])/g, '-$1')
@@ -62,11 +62,7 @@ function validateSchemaWithRule(rule, schemaSDL, configurationOptions) {
   const rules = [rule];
   const schema = new Schema(`${schemaSDL}${DefaultSchema}`, null);
   const configuration = new Configuration(schema, configurationOptions);
-  const errors = validateSchemaDefinition(
-    schema.definition,
-    rules,
-    configuration
-  );
+  const errors = validateSchemaDefinition(schema, rules, configuration);
 
   return errors;
 }

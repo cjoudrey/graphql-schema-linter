@@ -7,14 +7,14 @@ import { stripAnsi } from './strip_ansi.js';
 describe('Runner', () => {
   var stdout;
   var mockStdout = {
-    write: text => {
+    write: (text) => {
       stdout = stdout + text;
     },
   };
 
   var stderr;
   var mockStderr = {
-    write: text => {
+    write: (text) => {
       stderr = stderr + text;
     },
   };
@@ -269,7 +269,7 @@ describe('Runner', () => {
 
       var errors = JSON.parse(stdout)['errors'];
       assert(errors);
-      assert.equal(6, errors.length);
+      assert.equal(9, errors.length);
     });
 
     it('validates a schema composed of multiple files (args) and outputs in json', async () => {
