@@ -178,6 +178,42 @@ module.exports = {
 };
 ```
 
+## Inline rule overrides
+
+There could be cases where a linter rule is undesirable for a specific part of a GraphQL schema.
+
+Rather than disable the rule for the entire schema, it is possible to disable it for that specific part of the schema using an inline configuration.
+
+There are 4 different inline configurations:
+
+- `lint-disable rule1, rule2, ..., ruleN` will disable the specified rules, starting at the line it is defined, and until the end of the file or until the rule is re-enabled by an inline configuration.
+
+- `lint-enable rule1, rule2, ..., ruleN` will enable the specified rules, starting at the line it is defined, and until the end of the file or until the rule is disabled by an inline configuration.
+
+- `lint-disable-line rule1, rule2, ..., ruleN` will disable the specified rules for the given line.
+
+- `lint-enable-line rule1, rule2, ..., ruleN` will enable the specified rules for the given line.
+
+One can use these inline configurations by adding them directly to the GraphQL schema as comments.
+
+```graphql
+# lint-disable types-have-descriptions, fields-have-descriptions
+type Query {
+  field: String
+}
+# lint-enable types-have-descriptions, fields-have-descriptions
+
+"""
+Mutation root
+"""
+type Mutation {
+  """
+  Field description
+  """
+  field: String
+}
+```
+
 ## Built-in rules
 
 ### `arguments-have-descriptions`
