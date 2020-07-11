@@ -34,6 +34,12 @@ Options:
 
     example: --rules fields-have-descriptions,types-have-descriptions
 
+  -i, --ignore <ignore list>
+
+    ignore errors in specific entries
+
+    example: --ignore "{'fields-have-descriptions':['Obvious','Query.obvious','Query.something.obvious']}"
+
   -f, --format <format>
 
     choose the output format of the report

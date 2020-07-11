@@ -14,13 +14,30 @@ describe('Config', () => {
       assert.equal(rules.length, 2);
       assert.equal(
         2,
-        rules.filter(rule => {
+        rules.filter((rule) => {
           return (
             rule.name == 'EnumValuesSortedAlphabetically' ||
             rule.name == 'EnumNameCannotContainEnum'
           );
         }).length
       );
+    });
+  });
+
+  describe('getIgnoreList', () => {
+    it('pulls ignore list from a *.config.js', () => {
+      const options = loadOptionsFromConfigDir(__dirname);
+      const configuration = new Configuration(emptySchema, options);
+
+      const ignoreList = configuration.getIgnoreList();
+
+      assert.deepEqual(ignoreList, {
+        'fields-have-descriptions': [
+          'Obvious',
+          'Query.obvious',
+          'Query.something.obvious',
+        ],
+      });
     });
   });
 });

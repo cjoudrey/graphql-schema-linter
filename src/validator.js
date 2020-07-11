@@ -6,6 +6,7 @@ import { validateSDL } from 'graphql/validation/validate';
 import { validateSchema } from 'graphql/type/validate';
 import { extractInlineConfigs } from './inline_configuration';
 import { ValidationError } from './validation_error';
+import { findSchemaNodes } from './find_schema_nodes';
 
 export function validateSchemaDefinition(inputSchema, rules, configuration) {
   let ast;
@@ -66,12 +67,12 @@ export function validateSchemaDefinition(inputSchema, rules, configuration) {
 
   const errors = validate(schema, ast, rulesWithConfiguration);
   const sortedErrors = sortErrors(errors);
-
-  const inlineConfigs = extractInlineConfigs(ast);
-  const filteredErrors = applyInlineConfig(
-    sortedErrors,
-    inputSchema.sourceMap,
-    inlineConfigs
+  const errorFilters = [
+    inlineConfigErrorFilter(ast, inputSchema),
+    ignoreListErrorFilter(schema, configuration),
+  ];
+  const filteredErrors = sortedErrors.filter((error) =>
+    errorFilters.every((filter) => filter(error))
   );
 
   return filteredErrors;
@@ -93,12 +94,14 @@ function ruleWithConfiguration(rule, configuration) {
   }
 }
 
-function applyInlineConfig(errors, schemaSourceMap, inlineConfigs) {
+function inlineConfigErrorFilter(ast, inputSchema) {
+  const inlineConfigs = extractInlineConfigs(ast);
   if (inlineConfigs.length === 0) {
-    return errors;
+    return () => true;
   }
+  const schemaSourceMap = inputSchema.sourceMap;
 
-  return errors.filter((error) => {
+  return (error) => {
     let shouldApplyRule = true;
     const errorLine = error.locations[0].line;
     const errorFilePath = schemaSourceMap.getOriginalPathForLine(errorLine);
@@ -134,5 +137,22 @@ function applyInlineConfig(errors, schemaSourceMap, inlineConfigs) {
     }
 
     return shouldApplyRule;
-  });
+  };
+}
+
+function ignoreListErrorFilter(schema, configuration) {
+  const ignoreList = configuration.getIgnoreList();
+  const index = {};
+  for (const [rule, scopes] of Object.entries(ignoreList)) {
+    index[rule] = findSchemaNodes(scopes, schema);
+  }
+
+  return (error) => {
+    if (error instanceof ValidationError) {
+      const subjects = index[error.ruleName];
+      return subjects === undefined || !subjects.has(error.nodes[0]);
+    } else {
+      return true;
+    }
+  };
 }

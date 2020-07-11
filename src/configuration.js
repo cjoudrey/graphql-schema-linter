@@ -10,6 +10,7 @@ export class Configuration {
     options:
       - format: (required) `text` | `json`
       - rules: [string array] whitelist rules
+      - ignore: [string to string array object] ignore list for rules. Example: {'fields-have-descriptions': ['Obvious', 'Query.obvious', 'Query.something.obvious']}
       - customRulePaths: [string array] path to additional custom rules to be loaded
       - commentDescriptions: [boolean] use old way of defining descriptions in GraphQL SDL
       - oldImplementsSyntax: [boolean] use old way of defining implemented interfaces in GraphQL SDL
@@ -20,6 +21,7 @@ export class Configuration {
       customRulePaths: [],
       commentDescriptions: false,
       oldImplementsSyntax: false,
+      ignore: {},
     };
 
     this.schema = schema;
@@ -61,7 +63,7 @@ export class Configuration {
     let specifiedRules;
     if (this.options.rules && this.options.rules.length > 0) {
       specifiedRules = this.options.rules.map(toUpperCamelCase);
-      rules = this.getAllRules().filter(rule => {
+      rules = this.getAllRules().filter((rule) => {
         return specifiedRules.indexOf(rule.name) >= 0;
       });
     }
@@ -69,7 +71,7 @@ export class Configuration {
     // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.only && this.options.only.length > 0) {
       specifiedRules = this.options.only.map(toUpperCamelCase);
-      rules = this.getAllRules().filter(rule => {
+      rules = this.getAllRules().filter((rule) => {
         return specifiedRules.indexOf(rule.name) >= 0;
       });
     }
@@ -77,7 +79,7 @@ export class Configuration {
     // DEPRECATED - This code should be removed in v1.0.0.
     if (this.options.except && this.options.except.length > 0) {
       specifiedRules = this.options.except.map(toUpperCamelCase);
-      rules = this.getAllRules().filter(rule => {
+      rules = this.getAllRules().filter((rule) => {
         return specifiedRules.indexOf(rule.name) == -1;
       });
     }
@@ -99,9 +101,9 @@ export class Configuration {
     const expandedPaths = expandPaths(rulePaths);
     const rules = new Set([]);
 
-    expandedPaths.map(rulePath => {
+    expandedPaths.map((rulePath) => {
       let ruleMap = require(rulePath);
-      Object.keys(ruleMap).forEach(k => rules.add(ruleMap[k]));
+      Object.keys(ruleMap).forEach((k) => rules.add(ruleMap[k]));
     });
 
     return Array.from(rules);
@@ -109,6 +111,10 @@ export class Configuration {
 
   getAllBuiltInRules() {
     return this.getRulesFromPaths([this.builtInRulePaths]);
+  }
+
+  getIgnoreList() {
+    return this.options.ignore;
   }
 
   validate() {
@@ -134,7 +140,7 @@ export class Configuration {
       }
     }
 
-    const ruleNames = rules.map(rule => rule.name);
+    const ruleNames = rules.map((rule) => rule.name);
 
     let misConfiguredRuleNames = []
       .concat(
@@ -143,7 +149,7 @@ export class Configuration {
         this.options.rules || []
       )
       .map(toUpperCamelCase)
-      .filter(name => ruleNames.indexOf(name) == -1);
+      .filter((name) => ruleNames.indexOf(name) == -1);
 
     if (this.getFormatter() == null) {
       issues.push({
@@ -170,6 +176,6 @@ export class Configuration {
 function toUpperCamelCase(string) {
   return string
     .split('-')
-    .map(part => part[0].toUpperCase() + part.slice(1))
+    .map((part) => part[0].toUpperCase() + part.slice(1))
     .join('');
 }

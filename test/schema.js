@@ -25,6 +25,15 @@ type Post {
   author: User!
 }
 
+type Obvious {
+  one: String!
+  two: Int
+}
+
+type DontPanic {
+  obvious: Boolean
+}
+
 type Query {
   something: String!
 }
