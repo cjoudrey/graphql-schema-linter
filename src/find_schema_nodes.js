@@ -1,7 +1,7 @@
 import { visit } from 'graphql';
 
 /*
-  scopes: (requried) string | string array
+  scopes: (requried) string array
   schema: (required) GraphQLSchema
 
   A scope could be a `Type`, `Type.field` or `Type.field.argument`.
