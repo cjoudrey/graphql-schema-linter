@@ -103,6 +103,13 @@ describe('findSchemaNodes', () => {
     });
   });
 
+  it('returns relevant AST nodes given union as a scope', () => {
+    test({
+      scopes: ['SomeUnion'],
+      expected: ['UnionTypeDefinition : SomeUnion'],
+    });
+  });
+
   const ast = parse(`
     type Query {
       foo: Foo!
@@ -135,6 +142,8 @@ describe('findSchemaNodes', () => {
       id: ID!
       name: String!
     }
+
+    union SomeUnion = Fizz | Foo
   `);
 
   const schema = buildASTSchema(ast, {
