@@ -4,7 +4,7 @@ import { visit } from 'graphql';
   scopes: (required) string array
   schema: (required) GraphQLSchema
 
-  A scope could be a `Type`, `Type.field` or `Type.field.argument`.
+  A scope could be a `Type`, `Type.field`, `Type.field.argument` or `Enum.VALUE`.
 */
 export function findSchemaNodes(scopes, schema) {
   const result = new Set();
@@ -29,7 +29,10 @@ function findScopeNode(scope, schema) {
     return astNode;
   }
 
-  const field = type?.getFields()[fieldName];
+  const field =
+    astNode?.kind === 'EnumTypeDefinition'
+      ? type?.getValue(fieldName)
+      : type?.getFields()[fieldName];
   astNode = field?.astNode;
   if (argumentName === undefined) {
     return astNode;
