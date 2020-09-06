@@ -14,10 +14,27 @@ describe('Config', () => {
       assert.equal(rules.length, 1);
       assert.equal(
         1,
-        rules.filter(rule => {
+        rules.filter((rule) => {
           return rule.name == 'EnumValuesSortedAlphabetically';
         }).length
       );
+    });
+  });
+
+  describe('getIgnoreList', () => {
+    it('pulls ignore list from a .graphql-schema-linterrc dotfile', () => {
+      const options = loadOptionsFromConfigDir(__dirname);
+      const configuration = new Configuration(emptySchema, options);
+
+      const ignoreList = configuration.getIgnoreList();
+
+      assert.deepEqual(ignoreList, {
+        'fields-have-descriptions': [
+          'Obvious',
+          'Query.obvious',
+          'Query.something.obvious',
+        ],
+      });
     });
   });
 });

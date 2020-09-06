@@ -15,6 +15,10 @@ export async function run(stdout, stdin, stderr, argv) {
       'only the rules specified will be used to validate the schema. Example: fields-have-descriptions,types-have-descriptions'
     )
     .option(
+      '-i, --ignore <ignore list>',
+      "ignore errors for specific subjects. Example: {'fields-have-descriptions':['Obvious','Query.obvious','Query.something.obvious']}"
+    )
+    .option(
       '-f, --format <format>',
       'choose the output format of the report. Possible values: json, text, compact'
     )
@@ -146,6 +150,10 @@ function getOptionsFromCommander(commander) {
 
   if (commander.rules) {
     options.rules = commander.rules.split(',');
+  }
+
+  if (commander.ignore) {
+    options.ignore = JSON.parse(commander.ignore);
   }
 
   if (commander.customRulePaths) {

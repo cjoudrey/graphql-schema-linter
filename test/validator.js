@@ -9,7 +9,10 @@ describe('validateSchemaDefinition', () => {
   it('returns errors sorted by line number', async () => {
     const schemaPath = `${__dirname}/fixtures/schema/**/*.graphql`;
     const schema = await loadSchema({ schemaPaths: [schemaPath] });
-    const configuration = new Configuration(schema);
+    const options = {
+      ignore: { 'fields-have-descriptions': ['Obvious', 'DontPanic.obvious'] },
+    };
+    const configuration = new Configuration(schema, options);
 
     const rules = [FieldsHaveDescriptions, DummyValidator];
 

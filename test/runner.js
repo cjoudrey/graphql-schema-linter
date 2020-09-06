@@ -262,6 +262,8 @@ describe('Runner', () => {
         'json',
         '--rules',
         'fields-have-descriptions',
+        '--ignore',
+        '{"fields-have-descriptions": ["Obvious", "DontPanic.obvious"]}',
         `${__dirname}/fixtures/schema/*.graphql`,
       ];
 

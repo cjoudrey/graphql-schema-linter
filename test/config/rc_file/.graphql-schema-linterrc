@@ -1,3 +1,4 @@
 {
-  "rules": ["enum-values-sorted-alphabetically"]
+  "rules": ["enum-values-sorted-alphabetically"],
+  "ignore": {"fields-have-descriptions": ["Obvious", "Query.obvious", "Query.something.obvious"]},
 }
