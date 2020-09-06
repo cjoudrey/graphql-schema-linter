@@ -8,6 +8,18 @@
 
 ### Bug fixes
 
+## 1.0.0 (September 6th, 2020)
+
+`graphql-schema-linter` has been in development since August 2017. During that time, 18 people have contributed 131 pull requests that make up the tool that we have today. :tada:
+
+I believe the tool is now stable and can follow semantic versioning.
+
+On that note, the addition or modification of existing rules will be considered a breaking change and thus will require bumping the MAJOR version of the library. By doing this, users of `graphql-schema-linter` won't get caught off guard by those changes.
+
+### New features
+
+- Add support for enabling / disabling rules for parts of the GraphQL schema using the `--ignore` option. This works functionally the same way as inline rule overrides, but is meant to be used when adding comments to the GraphQL schema is not possible. [#240](https://github.com/cjoudrey/graphql-schema-linter) (Thanks @id-ilych)
+
 ## 0.5.0 (July 4th, 2020)
 
 ### New features
