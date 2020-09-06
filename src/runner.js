@@ -16,7 +16,7 @@ export async function run(stdout, stdin, stderr, argv) {
     )
     .option(
       '-i, --ignore <ignore list>',
-      "ignore errors for specific subjects. Example: {'fields-have-descriptions':['Obvious','Query.obvious','Query.something.obvious']}"
+      "ignore errors for specific schema members, example: {'fields-have-descriptions':['Obvious','Query.obvious','Query.something.obvious']}"
     )
     .option(
       '-f, --format <format>',

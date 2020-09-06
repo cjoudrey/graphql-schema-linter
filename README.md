@@ -36,9 +36,9 @@ Options:
 
   -i, --ignore <ignore list>
 
-    ignore errors in specific entries
+    ignore errors for specific schema members (see "Inline rule overrides" for an alternative way to do this)
 
-    example: --ignore "{'fields-have-descriptions':['Obvious','Query.obvious','Query.something.obvious']}"
+    example: --ignore '{"fields-have-descriptions":["Obvious","Query.obvious","Query.something.obvious"]}'
 
   -f, --format <format>
 
@@ -221,6 +221,8 @@ type Mutation {
   field2: String # lint-disable-line fields-have-descriptions
 }
 ```
+
+**Note:** If you are authoring your GraphQL schema using a tool that prevents you from adding comments, you may use the `--ignore` to obtain the same functionality.
 
 ## Built-in rules
 
