@@ -8,6 +8,12 @@
 
 ### Bug fixes
 
+## 1.0.1 (September 10th, 2020)
+
+### Bug fixes
+
+- Fix a bug that would cause `graphql-schema-linter` to crash when configured via `package.json` and `ignore` config was not set. [#253](https://github.com/cjoudrey/graphql-schema-linter/pull/253) (Thanks @paramjitkaur)
+
 ## 1.0.0 (September 6th, 2020)
 
 `graphql-schema-linter` has been in development since August 2017. During that time, 18 people have contributed 131 pull requests that make up the tool that we have today. :tada:
