@@ -53,6 +53,15 @@ describe('Config', () => {
         ],
       });
     });
+
+    it('defaults to {} when unspecified', () => {
+      const options = loadOptionsFromConfigDir(temporaryConfigDirectory({}));
+      const configuration = new Configuration(emptySchema, options);
+
+      const ignoreList = configuration.getIgnoreList();
+
+      assert.deepEqual(ignoreList, {});
+    });
   });
 
   describe('customRulePaths', () => {
