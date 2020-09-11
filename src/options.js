@@ -29,7 +29,7 @@ export function loadOptionsFromConfigDir(configDirectory) {
 
     return {
       rules: cosmic.config.rules,
-      ignore: cosmic.config.ignore,
+      ignore: cosmic.config.ignore || {},
       customRulePaths: customRulePaths || [],
       schemaPaths: schemaPaths,
     };
