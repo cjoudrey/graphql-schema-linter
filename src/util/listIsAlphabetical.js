@@ -15,7 +15,7 @@ function arraysEqual(a, b) {
  * @return {Object} { isSorted: Bool, sortedList: String[] }
  */
 export default function listIsAlphabetical(list) {
-  const sortedList = list.slice().sort();
+  const sortedList = list.slice().sort((a, b) => a.localeCompare(b));
   return {
     isSorted: arraysEqual(list, sortedList),
     sortedList,

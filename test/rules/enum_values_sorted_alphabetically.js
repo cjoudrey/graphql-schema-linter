@@ -32,4 +32,17 @@ describe('EnumValuesSortedAlphabetically rule', () => {
     `
     );
   });
+
+  it('sorts enum values with underscores first', () => {
+    expectPassesRule(
+      EnumValuesSortedAlphabetically,
+      `
+      enum Stage {
+        AA_
+        AAA
+        ZZZ
+      }
+    `
+    );
+  });
 });
