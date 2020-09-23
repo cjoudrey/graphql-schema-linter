@@ -9,12 +9,13 @@ describe('InputObjectFieldsSortedAlphabetically rule', () => {
       input Stage {
         foo: String
         bar: String
+        Bar: String
       }
     `,
       [
         {
           message:
-            'The fields of input type `Stage` should be sorted alphabetically. Expected sorting: bar, foo',
+            'The fields of input type `Stage` should be sorted alphabetically. Expected sorting: bar, Bar, foo',
           locations: [{ line: 2, column: 7 }],
         },
       ]
@@ -27,6 +28,7 @@ describe('InputObjectFieldsSortedAlphabetically rule', () => {
       `
       input Stage {
         bar: String
+        Bar: String
         foo: String
       }
     `

@@ -9,12 +9,14 @@ describe('EnumValuesSortedAlphabetically rule', () => {
       enum Stage {
         ZZZ
         AAA
+        AA_
+        aaa
       }
     `,
       [
         {
           message:
-            'The enum `Stage` should be sorted alphabetically. Expected sorting: AAA, ZZZ',
+            'The enum `Stage` should be sorted alphabetically. Expected sorting: AA_, aaa, AAA, ZZZ',
           locations: [{ line: 2, column: 7 }],
         },
       ]
@@ -26,6 +28,8 @@ describe('EnumValuesSortedAlphabetically rule', () => {
       EnumValuesSortedAlphabetically,
       `
       enum Stage {
+        AA_
+        aaa
         AAA
         ZZZ
       }
