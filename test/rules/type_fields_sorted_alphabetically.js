@@ -15,7 +15,7 @@ describe('TypeFieldsSortedAlphabetically rule', () => {
       [
         {
           message:
-            'The fields of object type `Stage` should be sorted alphabetically. Expected sorting: bar, foo, Foo',
+            'The fields of object type `Stage` should be sorted alphabetically. Expected sorting: Foo, bar, foo',
           locations: [{ line: 2, column: 7 }],
         },
       ]
@@ -27,9 +27,9 @@ describe('TypeFieldsSortedAlphabetically rule', () => {
       TypeFieldsSortedAlphabetically,
       `
       type Stage {
+        Foo: String
         bar: String
         foo: String
-        Foo: String
       }
     `
     );
