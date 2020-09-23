@@ -254,6 +254,10 @@ This rule will validate that all enum values have a description.
 
 This rule will validate that all enum values are sorted alphabetically.
 
+### `enum-values-sorted-lexicographically`
+
+This rule will validate that all enum values are sorted lexicographically.
+
 ### `fields-are-camel-cased`
 
 This rule will validate that object type field and interface type field names are camel cased.
@@ -265,6 +269,10 @@ This rule will validate that object type fields and interface type fields have a
 ### `input-object-fields-sorted-alphabetically`
 
 This rule will validate that all input object fields are sorted alphabetically.
+
+### `input-object-fields-sorted-lexicographically`
+
+This rule will validate that all input object fields are sorted lexicographically.
 
 ### `input-object-values-are-camel-cased`
 
@@ -307,6 +315,10 @@ More specifically:
 ### `type-fields-sorted-alphabetically`
 
 This rule will validate that all type object fields are sorted alphabetically.
+
+### `type-fields-sorted-lexicographically`
+
+This rule will validate that all type object fields are sorted lexicographically.
 
 ### `types-are-capitalized`
 
