@@ -21,6 +21,7 @@ const getRelocatedPath = (dir, fullPath) => {
 
 export const temporaryConfigDirectory = ({
   rules = null,
+  rulesOptions = null,
   ignore = null,
   customRulePaths = [],
   schemaPaths = [],
@@ -28,7 +29,7 @@ export const temporaryConfigDirectory = ({
   const configDirectory = mkdtempSync(path.join(os.tmpdir(), TEMP_DIR_PREFIX));
   let fixCustomRulePaths = [];
   let fixedSchemaPaths = [];
-  const options = { rules, ignore };
+  const options = { rules, rulesOptions, ignore };
 
   // due to the temp nature of the directory creation we ought to fix the provided paths to match the location.
   if (customRulePaths.length) {

@@ -24,6 +24,21 @@ describe('Config', () => {
     });
   });
 
+  describe('getRulesOptions', () => {
+    it('pulls rulesOptions config from a *.config.js', () => {
+      const options = loadOptionsFromConfigDir(__dirname);
+      const configuration = new Configuration(emptySchema, options);
+      const rulesOptions = configuration.getRulesOptions();
+
+      assert.equal(Object.entries(rulesOptions).length, 1);
+      assert.deepEqual(rulesOptions, {
+        'enum-values-sorted-alphabetically': {
+          sortOrder: 'lexicographical',
+        },
+      });
+    });
+  });
+
   describe('getIgnoreList', () => {
     it('pulls ignore list from a *.config.js', () => {
       const options = loadOptionsFromConfigDir(__dirname);
