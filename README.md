@@ -34,6 +34,12 @@ Options:
 
     example: --rules fields-have-descriptions,types-have-descriptions
 
+  -o, --rules-options <rulesOptions>
+
+    configure the specified rules with the passed in configuration options
+
+    example: --rules-options '{"enum-values-sorted-alphabetically":{"sortOrder":"lexicographical"}'
+
   -i, --ignore <ignore list>
 
     ignore errors for specific schema members (see "Inline rule overrides" for an alternative way to do this)
@@ -159,7 +165,10 @@ For now, only `rules`, `customRulePaths` and `schemaPaths` can be configured in 
   "graphql-schema-linter": {
     "rules": ["enum-values-sorted-alphabetically"],
     "schemaPaths": ["path/to/my/schema/files/**.graphql"],
-    "customRulePaths": ["path/to/my/custom/rules/*.js"]
+    "customRulePaths": ["path/to/my/custom/rules/*.js"],
+    "rulesOptions": {
+      "enum-values-sorted-alphabetically": { "sortOrder": "lexicographical" }
+    }
   }
 }
 ```
@@ -170,7 +179,10 @@ For now, only `rules`, `customRulePaths` and `schemaPaths` can be configured in 
 {
   "rules": ["enum-values-sorted-alphabetically"],
   "schemaPaths": ["path/to/my/schema/files/**.graphql"],
-  "customRulePaths": ["path/to/my/custom/rules/*.js"]
+  "customRulePaths": ["path/to/my/custom/rules/*.js"],
+  "rulesOptions": {
+      "enum-values-sorted-alphabetically": { "sortOrder": "lexicographical" }
+    }
 }
 ```
 
@@ -181,6 +193,9 @@ module.exports = {
   rules: ['enum-values-sorted-alphabetically'],
   schemaPaths: ['path/to/my/schema/files/**.graphql'],
   customRulePaths: ['path/to/my/custom/rules/*.js'],
+  rulesOptions: {
+    'enum-values-sorted-alphabetically': { sortOrder: 'lexicographical' }
+  }
 };
 ```
 
@@ -252,11 +267,9 @@ This rule will validate that all enum values have a description.
 
 ### `enum-values-sorted-alphabetically`
 
-This rule will validate that all enum values are sorted alphabetically.
+This rule will validate that all enum values are sorted alphabetically. Accepts following rule options:
 
-### `enum-values-sorted-lexicographically`
-
-This rule will validate that all enum values are sorted lexicographically.
+- sortOrder: <String> - either 'alphabetical' or 'lexicographical', defaults: 'alphabetical'
 
 ### `fields-are-camel-cased`
 
@@ -268,11 +281,9 @@ This rule will validate that object type fields and interface type fields have a
 
 ### `input-object-fields-sorted-alphabetically`
 
-This rule will validate that all input object fields are sorted alphabetically.
+This rule will validate that all input object fields are sorted alphabetically. Accepts following rule options:
 
-### `input-object-fields-sorted-lexicographically`
-
-This rule will validate that all input object fields are sorted lexicographically.
+- sortOrder: <String> - either 'alphabetical' or 'lexicographical', defaults: 'alphabetical'
 
 ### `input-object-values-are-camel-cased`
 
@@ -314,11 +325,9 @@ More specifically:
 
 ### `type-fields-sorted-alphabetically`
 
-This rule will validate that all type object fields are sorted alphabetically.
+This rule will validate that all type object fields are sorted alphabetically. Accepts following rule options:
 
-### `type-fields-sorted-lexicographically`
-
-This rule will validate that all type object fields are sorted lexicographically.
+- sortOrder: <String> - either 'alphabetical' or 'lexicographical', defaults: 'alphabetical'
 
 ### `types-are-capitalized`
 

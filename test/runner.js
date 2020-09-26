@@ -264,6 +264,8 @@ describe('Runner', () => {
         'fields-have-descriptions',
         '--ignore',
         '{"fields-have-descriptions": ["Obvious", "DontPanic.obvious"]}',
+        '--rules-options',
+        '{"enum-values-sorted-alphabetically":{"sortOrder":"lexicographical"}}',
         `${__dirname}/fixtures/schema/*.graphql`,
       ];
 
