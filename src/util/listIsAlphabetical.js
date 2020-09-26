@@ -6,8 +6,13 @@ import arraysEqual from './arraysEqual';
  * @param {String[]} list Array of strings
  * @return {Object} { isSorted: Bool, sortedList: String[] }
  */
-export default function listIsAlphabetical(list) {
-  const sortedList = list.slice().sort();
+export default function listIsAlphabetical(list, sortOrder = 'alphabetical') {
+  let sortFn;
+  if (sortOrder === 'lexicographical') {
+    sortFn = (a, b) => a.localeCompare(b);
+  }
+
+  const sortedList = list.slice().sort(sortFn);
   return {
     isSorted: arraysEqual(list, sortedList),
     sortedList,
