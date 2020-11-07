@@ -274,6 +274,10 @@ This rule will validate that input object value names are camel cased.
 
 This rule will validate that input object values have a description.
 
+### `interface-fields-sorted-alphabetically`
+
+This rule will validate that all interface object fields are sorted alphabetically.
+
 ### `relay-connection-types-spec`
 
 This rule will validate the schema adheres to [section 2 (Connection Types)](https://facebook.github.io/relay/graphql/connections.htm#sec-Connection-Types) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
