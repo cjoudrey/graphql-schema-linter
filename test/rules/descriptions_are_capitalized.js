@@ -24,7 +24,16 @@ describe('DescriptionsAreCapitalized rule', () => {
             'The description for field `Widget.name` should be capitalized.',
           locations: [{ line: 3, column: 9 }],
         },
-      ]
+      ],
+      `
+      type Widget {
+        "Widget name"
+        name: String!
+
+        "Valid description"
+        other: Int
+      }
+    `
     );
   });
 

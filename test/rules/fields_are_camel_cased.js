@@ -44,7 +44,33 @@ describe('FieldsAreCamelCased rule', () => {
           message: 'The field `Something.invalid_name` is not camel cased.',
           locations: [{ line: 18, column: 9 }],
         },
-      ]
+      ],
+      `
+      type A {
+        # Invalid
+        invalidName: String
+
+        # Valid
+        thisIsValid: String
+
+        # Valid
+        thisIDIsValid: String
+
+        # Invalid
+        thisIsInvalid: String
+      }
+
+      interface Something {
+        # Invalid
+        invalidName: String
+
+        # Valid
+        thisIsValid: String
+
+        # Valid
+        thisIDIsValid: String
+      }
+    `
     );
   });
 });

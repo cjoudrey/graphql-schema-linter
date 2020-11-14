@@ -8,6 +8,7 @@ describe('EnumValuesAllCaps rule', () => {
       `
       enum Stage {
         aaa
+        """A great enum value."""
         bbb_bbb
       }
     `,
@@ -20,7 +21,14 @@ describe('EnumValuesAllCaps rule', () => {
           message: 'The enum value `Stage.bbb_bbb` should be uppercase.',
           locations: [{ line: 4, column: 9 }],
         },
-      ]
+      ],
+      `
+      enum Stage {
+        AAA
+        """A great enum value."""
+        BBB_BBB
+      }
+    `
     );
   });
 

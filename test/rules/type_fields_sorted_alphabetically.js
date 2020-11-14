@@ -17,7 +17,13 @@ describe('TypeFieldsSortedAlphabetically rule', () => {
             'The fields of object type `Stage` should be sorted alphabetically. Expected sorting: bar, foo',
           locations: [{ line: 2, column: 7 }],
         },
-      ]
+      ],
+      `
+      type Stage {
+        bar: String
+        foo: String
+      }
+    `
     );
   });
 

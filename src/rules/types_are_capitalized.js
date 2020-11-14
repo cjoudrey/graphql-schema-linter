@@ -9,7 +9,11 @@ export function TypesAreCapitalized(context) {
           new ValidationError(
             'types-are-capitalized',
             `The object type \`${typeName}\` should start with a capital letter.`,
-            [node.name]
+            [node.name],
+            {
+              loc: node.name.loc,
+              replacement: typeName[0].toUpperCase() + typeName.slice(1),
+            }
           )
         );
       }
@@ -22,7 +26,11 @@ export function TypesAreCapitalized(context) {
           new ValidationError(
             'types-are-capitalized',
             `The interface type \`${typeName}\` should start with a capital letter.`,
-            [node.name]
+            [node.name],
+            {
+              loc: node.name.loc,
+              replacement: typeName[0].toUpperCase() + typeName.slice(1),
+            }
           )
         );
       }
