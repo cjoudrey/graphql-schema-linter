@@ -6,16 +6,21 @@ describe('TypesAreCapitalized rule', () => {
     expectFailsRule(
       TypesAreCapitalized,
       `
-      type a {
+      type ab {
         a: String
       }
     `,
       [
         {
-          message: 'The object type `a` should start with a capital letter.',
+          message: 'The object type `ab` should start with a capital letter.',
           locations: [{ line: 2, column: 12 }],
         },
-      ]
+      ],
+      `
+      type Ab {
+        a: String
+      }
+    `
     );
   });
 
@@ -32,7 +37,12 @@ describe('TypesAreCapitalized rule', () => {
           message: 'The interface type `a` should start with a capital letter.',
           locations: [{ line: 2, column: 17 }],
         },
-      ]
+      ],
+      `
+      interface A {
+        a: String
+      }
+    `
     );
   });
 });

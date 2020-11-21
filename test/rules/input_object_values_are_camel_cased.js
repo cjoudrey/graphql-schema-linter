@@ -18,7 +18,15 @@ describe('InputObjectValuesAreCamelCased rule', () => {
           message: 'The input value `User.user_name` is not camel cased.',
           locations: [{ line: 3, column: 9 }],
         },
-      ]
+      ],
+      `
+      input User {
+        userName: String
+
+        userID: String
+        withDescription: String
+      }
+    `
     );
   });
 
@@ -36,7 +44,12 @@ describe('InputObjectValuesAreCamelCased rule', () => {
             'The input value `hello.argument_without_description` is not camel cased.',
           locations: [{ line: 3, column: 15 }],
         },
-      ]
+      ],
+      `
+      type A {
+        hello(argumentWithoutDescription: String): String
+      }
+    `
     );
   });
 });

@@ -4,6 +4,7 @@ require('@babel/register');
 
 // The tests, however, can and should be written with ECMAScript 2015.
 require('./configuration');
+require('./fix');
 require('./runner');
 require('./schema');
 require('./source_map');

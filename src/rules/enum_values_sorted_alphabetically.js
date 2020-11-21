@@ -1,22 +1,22 @@
 import { ValidationError } from '../validation_error';
-import listIsAlphabetical from '../util/listIsAlphabetical';
+import alphabetizeNodes from '../util/alphabetizeNodes';
 
 export function EnumValuesSortedAlphabetically(context) {
   return {
     EnumTypeDefinition(node, key, parent, path, ancestors) {
-      const enumValues = node.values.map((val) => {
-        return val.name.value;
-      });
-
-      const { isSorted, sortedList } = listIsAlphabetical(enumValues);
+      const { isSorted, sortedNames, fix } = alphabetizeNodes(
+        node.values,
+        (val) => val.name.value
+      );
 
       if (!isSorted) {
         context.reportError(
           new ValidationError(
             'enum-values-sorted-alphabetically',
             `The enum \`${node.name.value}\` should be sorted alphabetically. ` +
-              `Expected sorting: ${sortedList.join(', ')}`,
-            [node]
+              `Expected sorting: ${sortedNames.join(', ')}`,
+            [node],
+            fix
           )
         );
       }

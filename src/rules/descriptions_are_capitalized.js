@@ -22,11 +22,26 @@ export function DescriptionsAreCapitalized(configuration, context) {
       const fieldName = node.name.value;
       const parentName = ancestors[ancestors.length - 1].name.value;
 
+      let fix;
+      if (node.description != null) {
+        // Supporting autofixes for comment-descriptions is a bunch of extra
+        // work, just do it for real descriptions.
+        let start = node.description.loc.start;
+        while (node.description.loc.source.body[start] === '"') {
+          start++;
+        }
+        fix = {
+          loc: { start, end: start + 1 },
+          replacement: node.description.loc.source.body[start].toUpperCase(),
+        };
+      }
+
       context.reportError(
         new ValidationError(
           'descriptions-are-capitalized',
           `The description for field \`${parentName}.${fieldName}\` should be capitalized.`,
-          [node]
+          [node],
+          fix
         )
       );
     },

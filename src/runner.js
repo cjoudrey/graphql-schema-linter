@@ -4,6 +4,7 @@ import { Command } from 'commander';
 import { Configuration } from './configuration.js';
 import { loadSchema } from './schema.js';
 import { loadOptionsFromConfigDir } from './options.js';
+import { applyFixes, fixSchema } from './fix.js';
 import figures from './figures';
 import chalk from 'chalk';
 
@@ -41,6 +42,10 @@ export async function run(stdout, stdin, stderr, argv) {
     .option(
       '--old-implements-syntax',
       'use old way of defining implemented interfaces in GraphQL SDL'
+    )
+    .option(
+      '--fix',
+      'when possible, automatically update input files to fix errors; incompatible with --stdin'
     )
     // DEPRECATED - This code should be removed in v1.0.0.
     .option(
@@ -107,6 +112,10 @@ export async function run(stdout, stdin, stderr, argv) {
   const errors = validateSchemaDefinition(schema, rules, configuration);
   const groupedErrors = groupErrorsBySchemaFilePath(errors, schema.sourceMap);
 
+  if (configuration.options.fix) {
+    applyFixes(fixSchema(errors, schema.sourceMap));
+  }
+
   stdout.write(formatter(groupedErrors));
 
   return errors.length > 0 ? 1 : 0;
@@ -166,6 +175,10 @@ function getOptionsFromCommander(commander) {
 
   if (commander.oldImplementsSyntax) {
     options.oldImplementsSyntax = commander.oldImplementsSyntax;
+  }
+
+  if (commander.fix) {
+    options.fix = commander.fix;
   }
 
   if (commander.args && commander.args.length) {

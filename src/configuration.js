@@ -14,6 +14,7 @@ export class Configuration {
       - customRulePaths: [string array] path to additional custom rules to be loaded
       - commentDescriptions: [boolean] use old way of defining descriptions in GraphQL SDL
       - oldImplementsSyntax: [boolean] use old way of defining implemented interfaces in GraphQL SDL
+      - fix: [boolean] automatically fix errors where possible
   */
   constructor(schema, options = {}) {
     const defaultOptions = {
@@ -22,6 +23,7 @@ export class Configuration {
       commentDescriptions: false,
       oldImplementsSyntax: false,
       ignore: {},
+      fix: false,
     };
 
     this.schema = schema;
@@ -119,6 +121,15 @@ export class Configuration {
 
   validate() {
     const issues = [];
+
+    if (this.options.stdin && this.options.fix) {
+      this.options.fix = false;
+      issues.push({
+        message: `--fix and --stdin are incompatible; --fix will be ignored`,
+        field: 'fix',
+        type: 'warning',
+      });
+    }
 
     let rules;
 

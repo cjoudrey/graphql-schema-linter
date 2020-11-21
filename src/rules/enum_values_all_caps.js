@@ -11,7 +11,8 @@ export function EnumValuesAllCaps(context) {
           new ValidationError(
             'enum-values-all-caps',
             `The enum value \`${parentName}.${enumValueName}\` should be uppercase.`,
-            [node]
+            [node],
+            { loc: node.name.loc, replacement: enumValueName.toUpperCase() }
           )
         );
       }
