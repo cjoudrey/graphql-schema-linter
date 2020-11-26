@@ -107,7 +107,12 @@ export async function run(stdout, stdin, stderr, argv) {
   const errors = validateSchemaDefinition(schema, rules, configuration);
   const groupedErrors = groupErrorsBySchemaFilePath(errors, schema.sourceMap);
 
-  stdout.write(formatter(groupedErrors));
+  const writeResult = stdout.write(formatter(groupedErrors));
+  if (!writeResult) {
+    await new Promise((resolve) => {
+      stdout.on('drain', () => resolve());
+    });
+  }
 
   return errors.length > 0 ? 1 : 0;
 }

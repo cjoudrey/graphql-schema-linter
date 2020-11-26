@@ -10,12 +10,20 @@ describe('Runner', () => {
     write: (text) => {
       stdout = stdout + text;
     },
+    on: (_eventName, callback) => {
+      const delay = Math.random() * (20 - 10) + 10;
+      setTimeout(callback, delay);
+    },
   };
 
   var stderr;
   var mockStderr = {
     write: (text) => {
       stderr = stderr + text;
+    },
+    on: (_eventName, callback) => {
+      const delay = Math.random() * (20 - 10) + 10;
+      setTimeout(callback, delay);
     },
   };
 
