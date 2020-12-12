@@ -1,58 +1,139 @@
+import { Kind } from 'graphql';
 import { ValidationError } from '../validation_error';
 
-export function DefinedTypesAreUsed(context) {
-  var ignoredTypes = ['Query', 'Mutation', 'Subscription'];
-  var definedTypes = [];
-  var referencedTypes = new Set();
+// Removes any NonNull or List wrapping
+function unwrapType(typeAst) {
+  let type = typeAst;
+  while (type.type) {
+    type = type.type;
+  }
+  return type;
+}
 
-  var recordDefinedType = (node) => {
-    if (ignoredTypes.indexOf(node.name.value) == -1) {
-      definedTypes.push(node);
-    }
+export function DefinedTypesAreUsed(context) {
+  const typeMap = new Map();
+  const topLevelTypes = new Set();
+
+  let seenSchemaDefinition = false;
+  let currentType = null;
+
+  const visitType = {
+    enter(node) {
+      currentType = node.name.value;
+
+      if (!typeMap.has(currentType)) {
+        typeMap.set(currentType, {
+          node,
+          interfaces: new Set(),
+          referencedTypes: new Set(),
+        });
+      }
+
+      if (node.interfaces) {
+        for (const interfaceType of node.interfaces) {
+          typeMap.get(currentType).interfaces.add(interfaceType.name.value);
+        }
+      }
+
+      if (
+        node.kind === Kind.UNION_TYPE_DEFINITION ||
+        node.kind === Kind.UNION_TYPE_EXTENSION
+      ) {
+        for (const type of node.types) {
+          typeMap.get(node.name.value).referencedTypes.add(type.name.value);
+        }
+      }
+    },
+    leave() {
+      currentType = null;
+    },
   };
 
   return {
-    ScalarTypeDefinition: recordDefinedType,
-    ObjectTypeDefinition: recordDefinedType,
-    InterfaceTypeDefinition: recordDefinedType,
-    UnionTypeDefinition: recordDefinedType,
-    EnumTypeDefinition: recordDefinedType,
-    InputObjectTypeDefinition: recordDefinedType,
+    SchemaDefinition() {
+      seenSchemaDefinition = true;
+    },
+    ScalarTypeDefinition: visitType,
+    ObjectTypeDefinition: visitType,
+    ObjectTypeExtension: visitType,
+    InterfaceTypeDefinition: visitType,
+    InterfaceTypeExtension: visitType,
+    EnumTypeDefinition: visitType,
+    EnumTypeExtension: visitType,
+    InputObjectTypeDefinition: visitType,
+    InputObjectExtension: visitType,
+    UnionTypeDefinition: visitType,
+    UnionTypeExtension: visitType,
 
-    NamedType: (node, key, parent, path, ancestors) => {
-      referencedTypes.add(node.name.value);
+    OperationTypeDefinition(node) {
+      // Used as a root type in the schema definition
+      topLevelTypes.add(node.type.name.value);
+    },
+
+    InputValueDefinition(node) {
+      if (currentType) {
+        // Used as an input
+        typeMap
+          .get(currentType)
+          .referencedTypes.add(unwrapType(node.type).name.value);
+      } else {
+        // Used in a directive's arguments - this doesn't check whether the directive itself is used
+        topLevelTypes.add(unwrapType(node.type).name.value);
+      }
+    },
+
+    FieldDefinition(node) {
+      // Used as the result of a field
+      typeMap
+        .get(currentType)
+        .referencedTypes.add(unwrapType(node.type).name.value);
     },
 
     Document: {
-      leave: (node) => {
-        definedTypes.forEach((node) => {
-          if (node.kind == 'ObjectTypeDefinition') {
-            let implementedInterfaces = node.interfaces.map((node) => {
-              return node.name.value;
-            });
+      leave() {
+        if (!seenSchemaDefinition) {
+          // If we haven't seen a schema definition these types are used if they exist.
+          topLevelTypes.add('Query');
+          topLevelTypes.add('Mutation');
+          topLevelTypes.add('Subscription');
+        }
 
-            let anyReferencedInterfaces = implementedInterfaces.some(
-              (interfaceName) => {
-                return referencedTypes.has(interfaceName);
+        // Interfaces are inverted dependencies, so we have to un-invert them here.
+        for (const [typeName, { interfaces }] of typeMap.entries()) {
+          for (const interfaceName of interfaces.values()) {
+            typeMap.get(interfaceName).referencedTypes.add(typeName);
+          }
+        }
+
+        // BFS of types to find the used ones
+        const referencedTypes = new Set(topLevelTypes);
+        const typeQueue = [...topLevelTypes];
+        for (const typeName of typeQueue) {
+          if (typeMap.has(typeName)) {
+            for (const childType of typeMap
+              .get(typeName)
+              .referencedTypes.values()) {
+              if (!referencedTypes.has(childType)) {
+                referencedTypes.add(childType);
+                typeQueue.push(childType);
               }
-            );
-
-            if (anyReferencedInterfaces) {
-              return;
             }
           }
+        }
 
-          if (!referencedTypes.has(node.name.value)) {
+        // For every type in the document, check if it is used.
+        for (const [name, { node }] of typeMap.entries()) {
+          if (!referencedTypes.has(name)) {
             context.reportError(
               new ValidationError(
                 'defined-types-are-used',
-                `The type \`${node.name.value}\` is defined in the ` +
+                `The type \`${name}\` is defined in the ` +
                   `schema but not used anywhere.`,
                 [node]
               )
             );
           }
-        });
+        }
       },
     },
   };

@@ -110,6 +110,123 @@ describe('DefinedTypesAreUsed rule', () => {
     );
   });
 
+  it('catches Query type if a custom query type is used', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+        extend type Query {
+          b: String
+        }
+
+        type CustomQuery {
+          a: String
+        }
+
+        schema {
+          query: CustomQuery,
+        }
+      `,
+      [
+        {
+          message:
+            'The type `Query` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 9 }],
+        },
+      ]
+    );
+  });
+
+  it('catches Mutation type if a custom mutation type is used', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+        type Mutation {
+          a: String
+        }
+
+        schema {
+          query: Query
+          mutation: Query
+        }
+      `,
+      [
+        {
+          message:
+            'The type `Mutation` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 9 }],
+        },
+      ]
+    );
+  });
+
+  it('catches Subscription type if a custom subscription type is used', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+        type Subscription {
+          a: String
+        }
+
+        schema {
+          query: Query
+          subscription: Query
+        }
+      `,
+      [
+        {
+          message:
+            'The type `Subscription` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 9 }],
+        },
+      ]
+    );
+  });
+
+  it('catches a self-referential type that is unused', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+        type A {
+          a: A
+        }
+      `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 9 }],
+        },
+      ]
+    );
+  });
+
+  it('catches co-referential types that are unused', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+        type A {
+          b: B
+        }
+
+        type B {
+          a: A
+        }
+      `,
+      [
+        {
+          message:
+            'The type `A` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 9 }],
+        },
+        {
+          message:
+            'The type `B` is defined in the schema but not used anywhere.',
+          locations: [{ line: 6, column: 9 }],
+        },
+      ]
+    );
+  });
+
   it('ignores types that are a member of a union', () => {
     expectPassesRule(
       DefinedTypesAreUsed,
@@ -124,6 +241,24 @@ describe('DefinedTypesAreUsed rule', () => {
 
       union B = A | Query
     `
+    );
+  });
+
+  it('ignores types that are a member of an extended union', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+        extend type Query {
+          b: B
+        }
+
+        type A {
+          a: String
+        }
+
+        union B = Query
+        extend union B = A
+      `
     );
   });
 
@@ -143,6 +278,29 @@ describe('DefinedTypesAreUsed rule', () => {
         id: ID!
       }
     `
+    );
+  });
+
+  it('ignores types that implement an interface that is used in an extension', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+        extend type Query {
+          c: Node
+        }
+
+        interface Node {
+          id: ID!
+        }
+
+        type A {
+          a: String
+        }
+
+        extend type A implements Node{
+          id: ID!
+        }
+      `
     );
   });
 
@@ -167,7 +325,7 @@ describe('DefinedTypesAreUsed rule', () => {
       `
       extend type Query {
         b(date: Date): String
-        c(c: C): String
+        c(c: [C!]!): String
       }
 
       scalar Date
@@ -176,6 +334,21 @@ describe('DefinedTypesAreUsed rule', () => {
         c: String
       }
     `
+    );
+  });
+
+  it('ignores types that are used in directives', () => {
+    expectPassesRule(
+      DefinedTypesAreUsed,
+      `
+        directive @exampleDirective(argument1: [C!], argument2: Date) on FIELD_DEFINITION
+
+        scalar Date
+
+        input C {
+          c: String
+        }
+      `
     );
   });
 
