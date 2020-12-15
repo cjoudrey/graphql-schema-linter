@@ -22,6 +22,7 @@ require('./rules/fields_have_descriptions');
 require('./rules/input_object_fields_sorted_alphabetically');
 require('./rules/input_object_values_are_camel_cased');
 require('./rules/input_object_values_have_descriptions');
+require('./rules/interface_fields_sorted_alphabetically');
 require('./rules/relay_connection_arguments_spec');
 require('./rules/relay_connection_types_spec');
 require('./rules/relay_page_info_spec');
