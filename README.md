@@ -156,7 +156,7 @@ If you have multiple schemas in the same folder, your `lint-staged` configuratio
 In addition to being able to configure `graphql-schema-linter` via command line options, it can also be configured via
 one of the following configuration files.
 
-For now, only `rules`, `customRulePaths` and `schemaPaths` can be configured in a configuration file, but more options may be added in the future.
+For now, only `rules`, `schemaPaths`, `customRulePaths`, and `rulesOptions` can be configured in a configuration file, but more options may be added in the future.
 
 ### In `package.json`
 
