@@ -1,13 +1,5 @@
 # Changelog
 
-### Breaking changes
-
-### Deprecations
-
-### New features
-
-### Bug fixes
-
 ## 2.0.0 (December 14th, 2020)
 
 ### New rules
