@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 (December 14th, 2020)
+
+### Bug fixes
+
+- Fix a bug that prevented ignoring errors (`--ignore ...`) that originated from custom rules. [#267](https://github.com/cjoudrey/graphql-schema-linter/pull/267) (Thanks @steverice)
+
 ## 2.0.0 (December 14th, 2020)
 
 ### New rules
