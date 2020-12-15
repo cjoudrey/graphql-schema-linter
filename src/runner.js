@@ -15,6 +15,10 @@ export async function run(stdout, stdin, stderr, argv) {
       'only the rules specified will be used to validate the schema. Example: fields-have-descriptions,types-have-descriptions'
     )
     .option(
+      '-o, --rules-options <rulesOptions>',
+      'configure the specified rules with the passed in configuration options. example: {"enum-values-sorted-alphabetically":{"sortOrder":"lexicographical"}}'
+    )
+    .option(
       '-i, --ignore <ignore list>',
       "ignore errors for specific schema members, example: {'fields-have-descriptions':['Obvious','Query.obvious','Query.something.obvious']}"
     )
@@ -150,6 +154,10 @@ function getOptionsFromCommander(commander) {
 
   if (commander.rules) {
     options.rules = commander.rules.split(',');
+  }
+
+  if (commander.rulesOptions) {
+    options.rulesOptions = JSON.parse(commander.rulesOptions);
   }
 
   if (commander.ignore) {

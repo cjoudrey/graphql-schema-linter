@@ -28,6 +28,27 @@ describe('Config', () => {
     });
   });
 
+  describe('getRulesOptions', () => {
+    it('pulls rule config from the package.json file', () => {
+      const options = loadOptionsFromConfigDir(
+        temporaryConfigDirectory({
+          rulesOptions: {
+            'enum-values-sorted-alphabetically': {
+              sortOrder: 'alphabetical',
+            },
+          },
+        })
+      );
+      const configuration = new Configuration(emptySchema, options);
+      const rulesOptions = configuration.getRulesOptions();
+
+      assert.equal(1, Object.entries(rulesOptions).length);
+      assert.deepEqual(rulesOptions, {
+        'enum-values-sorted-alphabetically': { sortOrder: 'alphabetical' },
+      });
+    });
+  });
+
   describe('getIgnoreList', () => {
     it('pulls ignore list from the package.json file', () => {
       const options = loadOptionsFromConfigDir(

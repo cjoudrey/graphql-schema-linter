@@ -10,6 +10,7 @@ export class Configuration {
     options:
       - format: (required) `text` | `json`
       - rules: [string array] whitelist rules
+      - rulesOptions: [string to object] configuration options for rules. Example: "rulesOptions": { "enum-values-sorted-alphabetically": { "sortOrder": "lexicographical" } }
       - ignore: [string to string array object] ignore list for rules. Example: {"fields-have-descriptions": ["Obvious", "Query.obvious", "Query.something.obvious"]}
       - customRulePaths: [string array] path to additional custom rules to be loaded
       - commentDescriptions: [boolean] use old way of defining descriptions in GraphQL SDL
@@ -21,6 +22,7 @@ export class Configuration {
       customRulePaths: [],
       commentDescriptions: false,
       oldImplementsSyntax: false,
+      rulesOptions: {},
       ignore: {},
     };
 
@@ -111,6 +113,10 @@ export class Configuration {
 
   getAllBuiltInRules() {
     return this.getRulesFromPaths([this.builtInRulePaths]);
+  }
+
+  getRulesOptions() {
+    return this.options.rulesOptions;
   }
 
   getIgnoreList() {

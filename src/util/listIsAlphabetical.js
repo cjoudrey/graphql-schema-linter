@@ -1,12 +1,4 @@
-/**
- * @summary Returns `true` if two arrays have the same item values in the same order.
- */
-function arraysEqual(a, b) {
-  for (var i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
-}
+import arraysEqual from './arraysEqual';
 
 /**
  * @summary Returns `true` if the list is in alphabetical order,
@@ -14,8 +6,13 @@ function arraysEqual(a, b) {
  * @param {String[]} list Array of strings
  * @return {Object} { isSorted: Bool, sortedList: String[] }
  */
-export default function listIsAlphabetical(list) {
-  const sortedList = list.slice().sort();
+export default function listIsAlphabetical(list, sortOrder = 'alphabetical') {
+  let sortFn;
+  if (sortOrder === 'lexicographical') {
+    sortFn = (a, b) => a.localeCompare(b);
+  }
+
+  const sortedList = list.slice().sort(sortFn);
   return {
     isSorted: arraysEqual(list, sortedList),
     sortedList,

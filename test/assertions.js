@@ -14,8 +14,18 @@ const DefaultSchema = `
   }
 `;
 
-export function expectFailsRule(rule, schemaSDL, expectedErrors = []) {
-  return expectFailsRuleWithConfiguration(rule, schemaSDL, {}, expectedErrors);
+export function expectFailsRule(
+  rule,
+  schemaSDL,
+  expectedErrors = [],
+  configurationOptions = {}
+) {
+  return expectFailsRuleWithConfiguration(
+    rule,
+    schemaSDL,
+    configurationOptions,
+    expectedErrors
+  );
 }
 
 export function expectFailsRuleWithConfiguration(
@@ -41,8 +51,8 @@ export function expectFailsRuleWithConfiguration(
   );
 }
 
-export function expectPassesRule(rule, schemaSDL) {
-  expectPassesRuleWithConfiguration(rule, schemaSDL, {});
+export function expectPassesRule(rule, schemaSDL, configurationOptions = {}) {
+  expectPassesRuleWithConfiguration(rule, schemaSDL, configurationOptions);
 }
 
 export function expectPassesRuleWithConfiguration(

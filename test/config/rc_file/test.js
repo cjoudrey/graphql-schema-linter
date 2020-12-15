@@ -21,6 +21,20 @@ describe('Config', () => {
     });
   });
 
+  describe('getRulesOptions', () => {
+    it('pulls rule config from a .graphql-schema-linterrc dotfile', () => {
+      const options = loadOptionsFromConfigDir(__dirname);
+      const configuration = new Configuration(emptySchema, options);
+
+      const rulesOptions = configuration.getRulesOptions();
+
+      assert.equal(1, Object.entries(rulesOptions).length);
+      assert.deepEqual(rulesOptions, {
+        'enum-values-sorted-alphabetically': { sortOrder: 'lexicographical' },
+      });
+    });
+  });
+
   describe('getIgnoreList', () => {
     it('pulls ignore list from a .graphql-schema-linterrc dotfile', () => {
       const options = loadOptionsFromConfigDir(__dirname);
