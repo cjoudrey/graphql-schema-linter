@@ -4,6 +4,7 @@ import { Configuration } from '../src/configuration';
 import { loadSchema } from '../src/schema';
 import { FieldsHaveDescriptions } from '../src/rules/fields_have_descriptions';
 import { GraphQLError } from 'graphql/error';
+import { ValidationError } from '../src/validation_error';
 
 describe('validateSchemaDefinition', () => {
   it('returns errors sorted by line number', async () => {
@@ -102,6 +103,51 @@ describe('validateSchemaDefinition', () => {
 
     assert.equal(0, errors.length);
   });
+
+  it('can be configured to ignore validation rule failures', async () => {
+    const schemaPath = `${__dirname}/fixtures/schema/schema.graphql`;
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const options = {
+      ignore: { 'rule-validator': ['Query.something'] },
+    };
+    const configuration = new Configuration(schema, options);
+
+    const rules = [FieldRuleValidator];
+
+    const errors = validateSchemaDefinition(schema, rules, configuration);
+
+    assert.equal(0, errors.length);
+  });
+
+  it('can be configured to ignore custom validation rule failures', async () => {
+    const schemaPath = `${__dirname}/fixtures/schema/schema.graphql`;
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const options = {
+      ignore: { 'custom-rule-validator': ['Query.something'] },
+    };
+    const configuration = new Configuration(schema, options);
+
+    const rules = [FieldCustomRuleValidator];
+
+    const errors = validateSchemaDefinition(schema, rules, configuration);
+
+    assert.equal(0, errors.length);
+  });
+
+  it('cannot be configured to ignore syntax errors', async () => {
+    const schemaPath = `${__dirname}/fixtures/schema/schema.graphql`;
+    const schema = await loadSchema({ schemaPaths: [schemaPath] });
+    const options = {
+      ignore: { 'rule-validator': ['Query.something'] },
+    };
+    const configuration = new Configuration(schema, options);
+
+    const rules = [FieldCoreValidator];
+
+    const errors = validateSchemaDefinition(schema, rules, configuration);
+
+    assert.equal(1, errors.length);
+  });
 });
 
 function DummyValidator(context) {
@@ -110,6 +156,44 @@ function DummyValidator(context) {
       leave: (node) => {
         context.reportError(new GraphQLError('Dummy message', [node]));
       },
+    },
+  };
+}
+
+function FieldCoreValidator(context) {
+  return {
+    FieldDefinition(node) {
+      context.reportError(new GraphQLError('Dummy message', [node]));
+    },
+  };
+}
+
+function FieldRuleValidator(context) {
+  return {
+    FieldDefinition(node) {
+      context.reportError(
+        new ValidationError('rule-validator', 'Dummy message', [node])
+      );
+    },
+  };
+}
+
+class CustomValidationError extends GraphQLError {
+  constructor(ruleName, message, nodes) {
+    super(message, nodes);
+
+    this.ruleName = ruleName;
+  }
+}
+
+function FieldCustomRuleValidator(context) {
+  return {
+    FieldDefinition(node) {
+      context.reportError(
+        new CustomValidationError('custom-rule-validator', 'Dummy message', [
+          node,
+        ])
+      );
     },
   };
 }
