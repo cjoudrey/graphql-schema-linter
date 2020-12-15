@@ -443,5 +443,5 @@ You may define custom rules by following the usage of [visitor.js](https://githu
 
 You can then instruct `graphql-schema-linter` to include this rule using the `--custom-rule-paths <paths>` option flag.
 
-For sample rules, see the [`src/rules`](https://github.com/cjoudrey/graphql-schema-linter/tree/bae18260108ba8aa09ee7305773fad274195dab9/src/rules) folder of this repository or
+For sample rules, see the [`src/rules`](https://github.com/cjoudrey/graphql-schema-linter/tree/master/src/rules) folder of this repository or
 GraphQL.js' [`src/validation/rules`](https://github.com/graphql/graphql-js/tree/6f151233defaaed93fe8a9b38fa809f22e0f5928/src/validation/rules) folder.
