@@ -267,7 +267,9 @@ This rule will validate that all enum values have a description.
 
 ### `enum-values-sorted-alphabetically`
 
-This rule will validate that all enum values are sorted alphabetically. Accepts following rule options:
+This rule will validate that all enum values are sorted alphabetically.
+
+Accepts following rule options:
 
 - sortOrder: <String> - either 'alphabetical' or 'lexicographical', defaults: 'alphabetical'
 
@@ -281,7 +283,9 @@ This rule will validate that object type fields and interface type fields have a
 
 ### `input-object-fields-sorted-alphabetically`
 
-This rule will validate that all input object fields are sorted alphabetically. Accepts following rule options:
+This rule will validate that all input object fields are sorted alphabetically.
+
+Accepts following rule options:
 
 - sortOrder: <String> - either 'alphabetical' or 'lexicographical', defaults: 'alphabetical'
 
@@ -325,7 +329,9 @@ More specifically:
 
 ### `type-fields-sorted-alphabetically`
 
-This rule will validate that all type object fields are sorted alphabetically. Accepts following rule options:
+This rule will validate that all type object fields are sorted alphabetically.
+
+Accepts following rule options:
 
 - sortOrder: <String> - either 'alphabetical' or 'lexicographical', defaults: 'alphabetical'
 
