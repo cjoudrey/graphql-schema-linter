@@ -301,6 +301,10 @@ This rule will validate that input object values have a description.
 
 This rule will validate that all interface object fields are sorted alphabetically.
 
+Accepts following rule options:
+
+- sortOrder: <String> - either 'alphabetical' or 'lexicographical', defaults: 'alphabetical'
+
 ### `relay-connection-types-spec`
 
 This rule will validate the schema adheres to [section 2 (Connection Types)](https://facebook.github.io/relay/graphql/connections.htm#sec-Connection-Types) of the [Relay Cursor Connections Specification](https://facebook.github.io/relay/graphql/connections.htm).
