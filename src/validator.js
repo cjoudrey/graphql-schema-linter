@@ -148,7 +148,7 @@ function ignoreListErrorFilter(schema, configuration) {
   }
 
   return (error) => {
-    if (error instanceof ValidationError) {
+    if (error.ruleName) {
       const subjects = index[error.ruleName];
       const ignore = subjects?.has(error.nodes[0]);
       return !ignore;
