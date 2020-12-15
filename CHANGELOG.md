@@ -8,6 +8,20 @@
 
 ### Bug fixes
 
+## 2.0.0 (December 14th, 2020)
+
+### New rules
+
+- [`interface-fields-sorted-alphabetically`](https://github.com/cjoudrey/graphql-schema-linter#interface-fields-sorted-alphabetically) has been added to validate that interface fields are sorted alphabetically. [#260](https://github.com/cjoudrey/graphql-schema-linter/pull/260) (Thanks @hipper)
+
+### New features
+
+- Rules that previously verified that elements were sorted alphabetically can now be configured to check for lexicographical sort order. This is useful for folks using schema stitching and sorting their schema at runtime using graphql-js' `lexicographicSortSchema`. The sort order can be configured per-rule using the new [`rulesOptions`](https://github.com/cjoudrey/graphql-schema-linter#in-packagejson) ([`--rule-options`](https://github.com/cjoudrey/graphql-schema-linter#usage)) feature and specifying a different `sortOrder`. When unspecified, `sortOrder` will default to the existing behaviour: `alphabetical`. [#256](https://github.com/cjoudrey/graphql-schema-linter/pull/256) (Thanks @dustinsgoodman)
+
+### Bug fixes
+
+- Fix a race condition where writing to stdout on certain platforms / streams would lead to partial results or corrupted JSON. [#262](https://github.com/cjoudrey/graphql-schema-linter/pull/262) (Thanks @steverice)
+
 ## 1.0.1 (September 10th, 2020)
 
 ### Bug fixes
