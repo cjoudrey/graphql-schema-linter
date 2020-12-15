@@ -38,7 +38,7 @@ Options:
 
     configure the specified rules with the passed in configuration options
 
-    example: --rules-options '{"enum-values-sorted-alphabetically":{"sortOrder":"lexicographical"}'
+    example: --rules-options '{"enum-values-sorted-alphabetically":{"sortOrder":"lexicographical"}}'
 
   -i, --ignore <ignore list>
 
