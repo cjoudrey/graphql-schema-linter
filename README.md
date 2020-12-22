@@ -151,6 +151,10 @@ If you have multiple schemas in the same folder, your `lint-staged` configuratio
 }
 ```
 
+### Usage with CI
+
+- [Mega-Linter](https://nvuillam.github.io/mega-linter/) embeds 70+ linters including [graphql-schema-linter](https://nvuillam.github.io/mega-linter/descriptors/graphql_graphql_schema_linter/) in its default configuration. It can be used as a GitHub Action or in other CI tools 
+
 ## Configuration file
 
 In addition to being able to configure `graphql-schema-linter` via command line options, it can also be configured via
