@@ -6,6 +6,10 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/index.js",
+    "test:ci": "yarn test && yarn test:ci:graphql-v15.x && yarn test:ci:graphql-v16.0 && yarn test:ci:graphql-v16.x",
+    "test:ci:graphql-v15.x": "yarn upgrade graphql@^15.0.0 && yarn test",
+    "test:ci:graphql-v16.0": "yarn upgrade graphql@=16.0.0 && yarn test",
+    "test:ci:graphql-v16.x": "yarn upgrade graphql@^16.0.0 && yarn test",
     "prepare": "rm -rf lib/* && babel ./src --ignore test --out-dir ./lib"
   },
   "pkg": {

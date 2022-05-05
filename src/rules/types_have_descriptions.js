@@ -1,4 +1,4 @@
-import { getDescription } from 'graphql/utilities/extendSchema';
+import { getDescription } from '../util/getDescription';
 import { ValidationError } from '../validation_error';
 
 function validateTypeHasDescription(configuration, context, node, typeKind) {

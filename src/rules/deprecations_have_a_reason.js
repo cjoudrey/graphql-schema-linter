@@ -1,4 +1,3 @@
-import { getDescription } from 'graphql/utilities/buildASTSchema';
 import { ValidationError } from '../validation_error';
 
 export function DeprecationsHaveAReason(context) {

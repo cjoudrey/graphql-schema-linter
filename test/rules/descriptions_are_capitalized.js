@@ -1,9 +1,12 @@
+import { version } from 'graphql';
 import { DescriptionsAreCapitalized } from '../../src/rules/descriptions_are_capitalized';
 import {
   expectFailsRule,
   expectFailsRuleWithConfiguration,
   expectPassesRule,
 } from '../assertions';
+
+const itPotentially = version.startsWith('15.') ? it : it.skip;
 
 describe('DescriptionsAreCapitalized rule', () => {
   it('detects lowercase field descriptions', () => {
@@ -28,10 +31,12 @@ describe('DescriptionsAreCapitalized rule', () => {
     );
   });
 
-  it('detects lowercase field descriptions with commentDescriptions option', () => {
-    expectFailsRuleWithConfiguration(
-      DescriptionsAreCapitalized,
-      `
+  itPotentially(
+    'detects lowercase field descriptions with commentDescriptions option',
+    () => {
+      expectFailsRuleWithConfiguration(
+        DescriptionsAreCapitalized,
+        `
       type Widget {
         # widget name
         name: String!
@@ -40,16 +45,17 @@ describe('DescriptionsAreCapitalized rule', () => {
         other: Int
       }
     `,
-      { commentDescriptions: true },
-      [
-        {
-          message:
-            'The description for field `Widget.name` should be capitalized.',
-          locations: [{ line: 4, column: 9 }],
-        },
-      ]
-    );
-  });
+        { commentDescriptions: true },
+        [
+          {
+            message:
+              'The description for field `Widget.name` should be capitalized.',
+            locations: [{ line: 4, column: 9 }],
+          },
+        ]
+      );
+    }
+  );
 
   it('does not err on an empty description', () => {
     expectPassesRule(

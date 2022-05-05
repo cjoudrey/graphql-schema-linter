@@ -6,7 +6,7 @@ node_js:
 before_script:
   - yarn prepare
 script:
-  - yarn test
+  - yarn test:ci
   - node lib/cli.js --version
   - node lib/cli.js test/fixtures/valid.graphql
   - cat test/fixtures/valid.graphql | node lib/cli.js --stdin
