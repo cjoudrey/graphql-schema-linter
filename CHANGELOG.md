@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2 (May 5th, 2022)
+
+### New features
+
+- Export `ValidationError` to make it easier for folks to write custom rules. [#271](https://github.com/cjoudrey/graphql-schema-linter/pull/271) (Thanks @vvakame)
+
 ## 2.0.1 (December 14th, 2020)
 
 ### Bug fixes
