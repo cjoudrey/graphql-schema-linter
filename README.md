@@ -8,16 +8,26 @@ If you're looking to lint your GraphQL queries, check out this ESLint plugin: [a
 
 ## Install
 
-Yarn:
+`graphql-schema-linter` depends on `graphql` as a peer dependency.
+
+In order to use `graphql-schema-linter`, you can either add it to an existing project that uses the `graphql` package:
 
 ```
-yarn global add graphql-schema-linter
+# Using yarn
+yarn add graphql-schema-linter
+
+# Using npm
+npm install --save graphql-schema-linter
 ```
 
-npm:
+Or, you may install it globally along side `graphql`:
 
 ```
-npm install -g graphql-schema-linter
+# Using yarn
+yarn global add graphql-schema-linter graphql
+
+# Using npm
+npm install -g graphql-schema-linter graphql
 ```
 
 ## Usage
