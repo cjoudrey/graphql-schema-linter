@@ -6,7 +6,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/index.js && yarn test:integration",
-    "test:integration": "node lib/cli.js --version && node lib/cli.js test/fixtures/valid.graphql && (cat test/fixtures/valid.graphql | node lib/cli.js --stdin)",
+    "test:integration": "node -e 'console.log(\"GraphQL version: \", require(\"graphql\").version);' node lib/cli.js --version && node lib/cli.js test/fixtures/valid.graphql && (cat test/fixtures/valid.graphql | node lib/cli.js --stdin)",
     "test:ci": "yarn test && yarn test:ci:graphql-v15.x && yarn test:ci:graphql-v16.x",
     "test:ci:graphql-v15.x": "yarn upgrade graphql@^15.0.0 && yarn test",
     "test:ci:graphql-v16.x": "yarn upgrade graphql@^16.0.0 && yarn test",
