@@ -29,7 +29,7 @@
     "@babel/preset-env": "^7.9.5",
     "@babel/register": "^7.9.0",
     "graphql": "=15.0.0",
-    "husky": "4.3.0",
+    "husky": "7.0.4",
     "lint-staged": "10.5.4",
     "mocha": "8.4.0",
     "prettier": "2.2.1"
