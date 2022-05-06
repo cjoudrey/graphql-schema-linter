@@ -73,6 +73,11 @@ function validateSchemaWithRule(rule, schemaSDL, configurationOptions) {
   const schema = new Schema(`${schemaSDL}${DefaultSchema}`, null);
   const configuration = new Configuration(schema, configurationOptions);
   const errors = validateSchemaDefinition(schema, rules, configuration);
+  const transformedErrors = errors.map((error) => ({
+    locations: error.locations,
+    message: error.message,
+    ruleName: error.ruleName,
+  }));
 
-  return errors;
+  return transformedErrors;
 }

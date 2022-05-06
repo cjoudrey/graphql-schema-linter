@@ -1,4 +1,4 @@
-import { getDescription } from 'graphql/utilities/extendSchema';
+import { getDescription } from '../util/getDescription';
 import { ValidationError } from '../validation_error';
 
 export function DescriptionsAreCapitalized(configuration, context) {

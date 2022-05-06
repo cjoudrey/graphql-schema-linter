@@ -1,8 +1,11 @@
+import { version } from 'graphql';
 import { EnumValuesHaveDescriptions } from '../../src/rules/enum_values_have_descriptions';
 import {
   expectFailsRule,
   expectPassesRuleWithConfiguration,
 } from '../assertions';
+
+const itPotentially = version.startsWith('15.') ? it : it.skip;
 
 describe('EnumValuesHaveDescriptions rule', () => {
   it('catches enum values that have no description', () => {
@@ -32,16 +35,19 @@ describe('EnumValuesHaveDescriptions rule', () => {
     );
   });
 
-  it('get descriptions correctly with commentDescriptions option', () => {
-    expectPassesRuleWithConfiguration(
-      EnumValuesHaveDescriptions,
-      `
+  itPotentially(
+    'get descriptions correctly with commentDescriptions option',
+    () => {
+      expectPassesRuleWithConfiguration(
+        EnumValuesHaveDescriptions,
+        `
       enum Status {
         # Hidden
         HIDDEN
       }
     `,
-      { commentDescriptions: true }
-    );
-  });
+        { commentDescriptions: true }
+      );
+    }
+  );
 });

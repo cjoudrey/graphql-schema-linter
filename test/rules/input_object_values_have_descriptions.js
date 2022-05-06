@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { parse } from 'graphql';
+import { version, parse } from 'graphql';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 
@@ -9,6 +9,8 @@ import {
   expectPassesRule,
   expectPassesRuleWithConfiguration,
 } from '../assertions';
+
+const itPotentially = version.startsWith('15.') ? it : it.skip;
 
 describe('InputObjectValuesHaveDescriptions rule', () => {
   it('catches input object type values that have no description', () => {
@@ -42,16 +44,19 @@ describe('InputObjectValuesHaveDescriptions rule', () => {
     );
   });
 
-  it('gets descriptions correctly with commentDescriptions option', () => {
-    expectPassesRuleWithConfiguration(
-      InputObjectValuesHaveDescriptions,
-      `
+  itPotentially(
+    'gets descriptions correctly with commentDescriptions option',
+    () => {
+      expectPassesRuleWithConfiguration(
+        InputObjectValuesHaveDescriptions,
+        `
       input F {
         # F
         f: String
       }
     `,
-      { commentDescriptions: true }
-    );
-  });
+        { commentDescriptions: true }
+      );
+    }
+  );
 });

@@ -1,9 +1,12 @@
+import { version } from 'graphql';
 import { TypesHaveDescriptions } from '../../src/rules/types_have_descriptions';
 import {
   expectFailsRule,
   expectPassesRule,
   expectPassesRuleWithConfiguration,
 } from '../assertions';
+
+const itPotentially = version.startsWith('15.') ? it : it.skip;
 
 describe('TypesHaveDescriptions rule', () => {
   it('catches enum types that have no description', () => {
@@ -162,10 +165,12 @@ describe('TypesHaveDescriptions rule', () => {
     );
   });
 
-  it('gets descriptions correctly with commentDescriptions option', () => {
-    expectPassesRuleWithConfiguration(
-      TypesHaveDescriptions,
-      `
+  itPotentially(
+    'gets descriptions correctly with commentDescriptions option',
+    () => {
+      expectPassesRuleWithConfiguration(
+        TypesHaveDescriptions,
+        `
       # A
       scalar A
 
@@ -192,7 +197,8 @@ describe('TypesHaveDescriptions rule', () => {
         f: String
       }
     `,
-      { commentDescriptions: true }
-    );
-  });
+        { commentDescriptions: true }
+      );
+    }
+  );
 });

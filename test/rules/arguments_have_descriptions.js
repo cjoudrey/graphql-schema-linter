@@ -1,8 +1,11 @@
+import { version } from 'graphql';
 import { ArgumentsHaveDescriptions } from '../../src/rules/arguments_have_descriptions';
 import {
   expectFailsRule,
   expectPassesRuleWithConfiguration,
 } from '../assertions';
+
+const itPotentially = version.startsWith('15.') ? it : it.skip;
 
 describe('ArgumentsHaveDescriptions rule', () => {
   it('catches field arguments that have no description', () => {
@@ -50,10 +53,12 @@ describe('ArgumentsHaveDescriptions rule', () => {
     );
   });
 
-  it('gets descriptions correctly with commentDescriptions option', () => {
-    expectPassesRuleWithConfiguration(
-      ArgumentsHaveDescriptions,
-      `
+  itPotentially(
+    'gets descriptions correctly with commentDescriptions option',
+    () => {
+      expectPassesRuleWithConfiguration(
+        ArgumentsHaveDescriptions,
+        `
       type Box {
         widget(
           "Widget ID"
@@ -64,7 +69,8 @@ describe('ArgumentsHaveDescriptions rule', () => {
         ): String!
       }
     `,
-      { commentDescriptions: true }
-    );
-  });
+        { commentDescriptions: true }
+      );
+    }
+  );
 });

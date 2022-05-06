@@ -6,6 +6,9 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha test/index.js",
+    "test:ci": "yarn test && yarn test:ci:graphql-v15.x && yarn test:ci:graphql-v16.x",
+    "test:ci:graphql-v15.x": "yarn upgrade graphql@^15.0.0 && yarn test",
+    "test:ci:graphql-v16.x": "yarn upgrade graphql@^16.0.0 && yarn test",
     "prepare": "rm -rf lib/* && babel ./src --ignore test --out-dir ./lib"
   },
   "pkg": {
@@ -16,11 +19,15 @@
     "type": "git",
     "url": "git+https://github.com/cjoudrey/graphql-schema-linter.git"
   },
+  "peerDependencies": {
+    "graphql": "^15.0.0 || ^16.0.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
     "@babel/register": "^7.9.0",
+    "graphql": "=15.0.0",
     "husky": "4.3.0",
     "lint-staged": "10.5.4",
     "mocha": "8.2.1",
@@ -44,8 +51,7 @@
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
     "cosmiconfig": "^5.2.1",
-    "glob": "^7.1.2",
-    "graphql": "^15.0.0"
+    "glob": "^7.1.2"
   },
   "bin": {
     "graphql-schema-linter": "lib/cli.js"

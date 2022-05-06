@@ -1,8 +1,11 @@
 import assert from 'assert';
+import { version } from 'graphql';
 import { run } from '../src/runner.js';
 import { createReadStream } from 'fs';
 import { Readable } from 'stream';
 import { stripAnsi } from './strip_ansi.js';
+
+const itPotentially = version.startsWith('15.') ? it : it.skip;
 
 describe('Runner', () => {
   var stdout;
@@ -115,45 +118,51 @@ describe('Runner', () => {
       assert.equal(0, exitCode);
     });
 
-    it('allows setting descriptions using comments in GraphQL SDL', async () => {
-      const argv = [
-        'node',
-        'lib/cli.js',
-        '--format',
-        'text',
-        '--comment-descriptions',
-        '--rules',
-        'fields-have-descriptions',
-        `${__dirname}/fixtures/schema.comment-descriptions.graphql`,
-      ];
+    itPotentially(
+      'allows setting descriptions using comments in GraphQL SDL',
+      async () => {
+        const argv = [
+          'node',
+          'lib/cli.js',
+          '--format',
+          'text',
+          '--comment-descriptions',
+          '--rules',
+          'fields-have-descriptions',
+          `${__dirname}/fixtures/schema.comment-descriptions.graphql`,
+        ];
 
-      await run(mockStdout, mockStdin, mockStderr, argv);
+        await run(mockStdout, mockStdin, mockStderr, argv);
 
-      const expected =
-        `${__dirname}/fixtures/schema.comment-descriptions.graphql\n` +
-        '3:3 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
-        '\n' +
-        '✖ 1 error detected\n';
+        const expected =
+          `${__dirname}/fixtures/schema.comment-descriptions.graphql\n` +
+          '3:3 The field `Query.a` is missing a description.  fields-have-descriptions\n' +
+          '\n' +
+          '✖ 1 error detected\n';
 
-      assert.equal(expected, stripAnsi(stdout));
-    });
+        assert.equal(expected, stripAnsi(stdout));
+      }
+    );
 
-    it('allows using old `implements` syntax in GraphQL SDL', async () => {
-      const argv = [
-        'node',
-        'lib/cli.js',
-        '--format',
-        'json',
-        '--old-implements-syntax',
-        '--rules',
-        'types-have-descriptions',
-        `${__dirname}/fixtures/schema.old-implements.graphql`,
-      ];
+    itPotentially(
+      'allows using old `implements` syntax in GraphQL SDL',
+      async () => {
+        const argv = [
+          'node',
+          'lib/cli.js',
+          '--format',
+          'json',
+          '--old-implements-syntax',
+          '--rules',
+          'types-have-descriptions',
+          `${__dirname}/fixtures/schema.old-implements.graphql`,
+        ];
 
-      await run(mockStdout, mockStdin, mockStderr, argv);
+        await run(mockStdout, mockStdin, mockStderr, argv);
 
-      assert.deepEqual([], JSON.parse(stdout)['errors']);
-    });
+        assert.deepEqual([], JSON.parse(stdout)['errors']);
+      }
+    );
 
     it('validates using new `implements` syntax in GraphQL SDL', async () => {
       const argv = [
