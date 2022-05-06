@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.0 (May 6th, 2022)
+
+### Breaking changes
+
+- `graphql` has been moved to `peerDependencies` in order to more flexible. This should help projects that were previously unable to upgrade the `graphql` package due to `graphql-schema-linter` requiring `graphql` v15. Usage information for this tool has been updated in the `README.md` to reflect this change. [#298](https://github.com/cjoudrey/graphql-schema-linter/pull/298) (Thanks @dchambers)
+
 ## 2.0.2 (May 5th, 2022)
 
 ### New features
