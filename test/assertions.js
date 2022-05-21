@@ -18,13 +18,15 @@ export function expectFailsRule(
   rule,
   schemaSDL,
   expectedErrors = [],
-  configurationOptions = {}
+  configurationOptions = {},
+  omitDefaultSchema = false
 ) {
   return expectFailsRuleWithConfiguration(
     rule,
-    schemaSDL,
+    `${schemaSDL}`,
     configurationOptions,
-    expectedErrors
+    expectedErrors,
+    omitDefaultSchema
   );
 }
 
@@ -32,9 +34,12 @@ export function expectFailsRuleWithConfiguration(
   rule,
   schemaSDL,
   configurationOptions,
-  expectedErrors = []
+  expectedErrors = [],
+  omitDefaultSchema = false
 ) {
-  const errors = validateSchemaWithRule(rule, schemaSDL, configurationOptions);
+  var schema = omitDefaultSchema ? schemaSDL : `${schemaSDL}${DefaultSchema}`;
+
+  const errors = validateSchemaWithRule(rule, schema, configurationOptions);
 
   assert(errors.length > 0, "Expected rule to fail but didn't");
 
@@ -52,7 +57,7 @@ export function expectFailsRuleWithConfiguration(
 }
 
 export function expectPassesRule(rule, schemaSDL, configurationOptions = {}) {
-  expectPassesRuleWithConfiguration(rule, schemaSDL, configurationOptions);
+  expectPassesRuleWithConfiguration(rule, `${schemaSDL}`, configurationOptions);
 }
 
 export function expectPassesRuleWithConfiguration(
@@ -60,7 +65,11 @@ export function expectPassesRuleWithConfiguration(
   schemaSDL,
   configurationOptions
 ) {
-  const errors = validateSchemaWithRule(rule, schemaSDL, configurationOptions);
+  const errors = validateSchemaWithRule(
+    rule,
+    `${schemaSDL}${DefaultSchema}`,
+    configurationOptions
+  );
 
   assert(
     errors.length == 0,
@@ -70,7 +79,7 @@ export function expectPassesRuleWithConfiguration(
 
 function validateSchemaWithRule(rule, schemaSDL, configurationOptions) {
   const rules = [rule];
-  const schema = new Schema(`${schemaSDL}${DefaultSchema}`, null);
+  const schema = new Schema(schemaSDL, null);
   const configuration = new Configuration(schema, configurationOptions);
   const errors = validateSchemaDefinition(schema, rules, configuration);
   const transformedErrors = errors.map((error) => ({
