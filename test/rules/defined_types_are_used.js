@@ -179,7 +179,7 @@ describe('DefinedTypesAreUsed rule', () => {
     );
   });
 
-  it('ignores unreferenced Mutation object type', () => {
+  it('ignores unreferenced Mutation object type when schema definition is omitted', () => {
     expectPassesRule(
       DefinedTypesAreUsed,
       `
@@ -190,7 +190,7 @@ describe('DefinedTypesAreUsed rule', () => {
     );
   });
 
-  it('ignores unreferenced Subscription object type', () => {
+  it('ignores unreferenced Subscription object type when schema definition is omitted', () => {
     expectPassesRule(
       DefinedTypesAreUsed,
       `
@@ -201,14 +201,165 @@ describe('DefinedTypesAreUsed rule', () => {
     );
   });
 
-  it('ignores unreferenced Query object type', () => {
-    expectPassesRule(
+  it('reports unused Mutation object type when schema definition is provided', () => {
+    expectFailsRule(
       DefinedTypesAreUsed,
       `
-      extend type Query {
+      type Mutation {
         c: String
       }
-    `
+
+      type Something {
+        a: String
+      }
+
+      schema {
+        query: Query
+        mutation: Something
+      }
+    `,
+      [
+        {
+          message:
+            'The type `Mutation` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ]
+    );
+  });
+
+  it('reports unused Subscription object type when schema definition is provided', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+      type Subscription {
+        c: String
+      }
+
+      type Something {
+        a: String
+      }
+
+      schema {
+        query: Query
+        subscription: Something
+      }
+    `,
+      [
+        {
+          message:
+            'The type `Subscription` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ]
+    );
+  });
+
+  it('reports unused Query object type when schema definition is provided', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+      type Query {
+        c: String
+      }
+
+      type Something {
+        a: String
+      }
+
+      schema {
+        query: Something
+      }
+    `,
+      [
+        {
+          message:
+            'The type `Query` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ],
+      {},
+      true
+    );
+  });
+
+  it('reports unused Query object type when schema has been extended', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+      type Query {
+        c: String
+      }
+
+      type Something {
+        a: String
+      }
+
+      extend schema {
+        query: Something
+      }
+    `,
+      [
+        {
+          message:
+            'The type `Query` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ],
+      {},
+      true
+    );
+  });
+
+  it('reports unused Mutation object type when schema has been extended', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+      type Mutation {
+        a: String
+      }
+
+      type Something {
+        a: String
+      }
+
+      extend schema {
+        mutation: Something
+      }
+    `,
+      [
+        {
+          message:
+            'The type `Mutation` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ]
+    );
+  });
+
+  it('reports unused Subscription object type when schema has been extended', () => {
+    expectFailsRule(
+      DefinedTypesAreUsed,
+      `
+      type Subscription {
+        a: String
+      }
+
+      type Something {
+        a: String
+      }
+
+      extend schema {
+        subscription: Something
+      }
+    `,
+      [
+        {
+          message:
+            'The type `Subscription` is defined in the schema but not used anywhere.',
+          locations: [{ line: 2, column: 7 }],
+        },
+      ]
     );
   });
 });
