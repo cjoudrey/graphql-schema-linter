@@ -52,7 +52,7 @@
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
     "cosmiconfig": "^5.2.1",
-    "glob": "^7.1.2"
+    "glob": "^8.0.0"
   },
   "bin": {
     "graphql-schema-linter": "lib/cli.js"
