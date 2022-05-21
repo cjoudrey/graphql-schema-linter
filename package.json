@@ -48,7 +48,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "chalk": "^2.0.1",
+    "chalk": "^5.0.0",
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
     "cosmiconfig": "^5.2.1",
