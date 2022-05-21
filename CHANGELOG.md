@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.1 (May 21st, 2022)
+
+### Bug fixes
+
+- Fixed an issue that caused the linter to crash when using GraphQL v16 on a schema that had too many errors. [#309](https://github.com/cjoudrey/graphql-schema-linter/pull/309) (Thanks @vojtech-dobes)
+
 ## 3.0.0 (May 6th, 2022)
 
 ### Breaking changes
