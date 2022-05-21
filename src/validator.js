@@ -1,4 +1,4 @@
-import { parse } from 'graphql';
+import { parse, version } from 'graphql';
 import { validate } from 'graphql/validation';
 import { buildASTSchema } from 'graphql/utilities/buildASTSchema';
 import { GraphQLError } from 'graphql/error';
@@ -65,7 +65,18 @@ export function validateSchemaDefinition(inputSchema, rules, configuration) {
     return ruleWithConfiguration(rule, configuration);
   });
 
-  const errors = validate(schema, ast, rulesWithConfiguration);
+  const isGraphQLVersion15 = version.startsWith('15');
+  const validateOptions = {
+    maxErrors: Number.MAX_SAFE_INTEGER,
+  };
+
+  const errors = validate(
+    schema,
+    ast,
+    rulesWithConfiguration,
+    isGraphQLVersion15 ? undefined : validateOptions,
+    isGraphQLVersion15 ? validateOptions : undefined
+  );
   const sortedErrors = sortErrors(errors);
   const errorFilters = [
     inlineConfigErrorFilter(ast, inputSchema),
