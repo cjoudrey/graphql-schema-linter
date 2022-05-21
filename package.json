@@ -51,7 +51,7 @@
     "chalk": "^2.0.1",
     "columnify": "^1.5.4",
     "commander": "^3.0.0",
-    "cosmiconfig": "^5.2.1",
+    "cosmiconfig": "^7.0.0",
     "glob": "^7.1.2"
   },
   "bin": {
