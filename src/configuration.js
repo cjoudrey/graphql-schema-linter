@@ -78,9 +78,8 @@ export class Configuration {
       });
     }
 
-    // DEPRECATED - This code should be removed in v1.0.0.
-    if (this.options.except && this.options.except.length > 0) {
-      specifiedRules = this.options.except.map(toUpperCamelCase);
+    if (this.options.ignore && this.options.ignore.length > 0) {
+      specifiedRules = this.options.ignore.map(toUpperCamelCase);
       rules = this.getAllRules().filter((rule) => {
         return specifiedRules.indexOf(rule.name) == -1;
       });
