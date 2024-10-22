@@ -24,10 +24,10 @@
     "graphql": "^15.0.0 || ^16.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.17.10",
-    "@babel/core": "7.18.0",
-    "@babel/preset-env": "7.18.0",
-    "@babel/register": "7.17.7",
+    "@babel/cli": "7.25.9",
+    "@babel/core": "7.25.9",
+    "@babel/preset-env": "7.25.9",
+    "@babel/register": "7.25.9",
     "graphql": "=15.0.0",
     "husky": "4.3.8",
     "lint-staged": "10.5.4",
